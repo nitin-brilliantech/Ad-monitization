@@ -113,8 +113,8 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
   const btnClass = (isBusy) =>
     `w-full py-2 text-white font-medium transition rounded-full ${
       isBusy
-        ? "bg-[#849fb7] cursor-not-allowed"
-        : "bg-[#5F7C95] hover:bg-[#476279]"
+        ? "bg-[#4684ff] opacity-80 cursor-not-allowed"
+        : "bg-[#4684ff] hover:bg-[#3a6fe6] hover:shadow-lg"
     }`;
 
   return (
@@ -149,7 +149,7 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
                     message: "Enter a valid email",
                   },
                 })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff] focus:border-transparent transition-all duration-200 bg-white"
               />
               {errorsOtp.email && (
                 <p className="text-sm text-red-500 mt-1">
@@ -191,14 +191,14 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
               type="email"
               value={email}
               disabled
-              className="w-full px-4 py-2 border rounded-lg bg-gray-100"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
             />
 
             <input
               type="text"
               placeholder="Enter OTP"
               {...register("otp", { required: "OTP is required" })}
-              className="w-full px-4 py-2 border rounded-lg"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff] focus:border-transparent transition-all duration-200 bg-white"
             />
             {errors.otp && (
               <p className="text-sm text-red-500">{errors.otp.message}</p>
@@ -214,7 +214,7 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
                   message: "Minimum 6 characters required",
                 },
               })}
-              className="w-full px-4 py-2 border rounded-lg"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff] focus:border-transparent transition-all duration-200 bg-white"
             />
             {errors.newPassword && (
               <p className="text-sm text-red-500">

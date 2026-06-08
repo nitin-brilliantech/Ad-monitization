@@ -257,8 +257,8 @@ const SignIn = () => {
                 </button>
               </form>
               <p className="text-sm text-gray-900 mt-6 text-center">
-                Don't have an account?{" "}
-                <Link to="/contact-us" className="font-semibold text-[#4684ff] hover:text-white/80 hover:underline transition-colors">
+                Don't have an account?{"  "}
+                <Link to="/contact-us" className="font-semibold text-[#4684ff] hover:text-[#3a6fe6] hover:underline transition-colors">
                   Register here
                 </Link>
               </p>

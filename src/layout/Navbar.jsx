@@ -91,7 +91,7 @@ const Navbar = ({ toggleSidebar }) => {
 };
 
   return (
-    <div className="h-16 bg-white shadow-md flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
+    <div className="h-20 bg-white shadow-md flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       {/* Left: Sidebar + Search */}
       <div className="flex items-center gap-3 w-full max-w-lg">
         <button className="md:hidden text-xl" onClick={toggleSidebar}>

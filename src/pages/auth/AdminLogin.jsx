@@ -61,10 +61,10 @@ const AdminLogin = () => {
           <h1 className="text-2xl font-bold mb-2 text-center">
             One Platform to Streamline <br /> All Product Analytics
           </h1>
-          <p className="text-sm text-center opacity-75">
+          <p className="text-md text-center opacity-75">
             Your Revenue are set to grow by 20% next month.
             <br />
-            Your Revenue is increased by next month.
+            Your Revenueee is increased by next month.
           </p>
         </div>
 

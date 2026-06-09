@@ -68,7 +68,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`fixed md:static top-0 left-0 h-full z-40 bg-white w-64 flex flex-col transition-transform duration-300 ease-in-out shadow-lg border-r border-gray-100 ${
+      className={`fixed md:static top-0 left-0 h-full z-40 bg-white w-70 flex flex-col transition-transform duration-300 ease-in-out shadow-lg border-r border-gray-100 ${
         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       }`}
     >
@@ -84,7 +84,13 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
       </div>
 
       {/* Sidebar Items */}
-      <nav className="flex flex-col px-3 overflow-y-auto flex-1 py-2">
+      <nav 
+        className="flex flex-col px-3 overflow-y-auto flex-1 py-2"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#9ca3af #f3f4f6'
+        }}
+      >
         {sidebarItems.map((item) => (
           <SidebarItem
             key={item.path}

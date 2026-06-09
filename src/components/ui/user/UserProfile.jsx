@@ -4,6 +4,7 @@ import { logoutUser } from "../../../redux/slices/user/userSlice";
 import { logoutAdmin } from "../../../redux/slices/admin/adminSlice";
 import { closeCampaignSSE } from "../../../util/services/sseService";
 import { clearCampaigns } from "../../../redux/slices/user/approvedCampaignSlice";
+import { UserPlus, User, LogOut } from "lucide-react";
 
 // Role badge colours
 const ROLE_STYLE = {
@@ -24,7 +25,7 @@ const getRoleLabel = (role) => {
 };
 
 // Menu item wrapper
-const MenuItem = ({ onClick, to, icon, label, danger = false }) => {
+const MenuItem = ({ onClick, to, icon, label, danger = false, onClose }) => {
   const base = `flex items-center gap-3 w-full px-4 py-2.5 text-sm rounded-xl
     transition-all duration-150 cursor-pointer
     ${danger
@@ -34,7 +35,7 @@ const MenuItem = ({ onClick, to, icon, label, danger = false }) => {
 
   if (to) {
     return (
-      <Link to={to} className={base}>
+      <Link to={to} className={base} onClick={onClose}>
         <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm
           ${danger ? "bg-red-100 text-red-500" : "bg-[#4684ff]/10 text-[#4684ff]"}`}>
           {icon}
@@ -55,7 +56,7 @@ const MenuItem = ({ onClick, to, icon, label, danger = false }) => {
   );
 };
 
-const UserProfile = ({ profile, onAddAdminClick }) => {
+const UserProfile = ({ profile, onAddAdminClick, onClose }) => {
   const dispatch = useDispatch();
   const navigate  = useNavigate();
 
@@ -116,24 +117,16 @@ const UserProfile = ({ profile, onAddAdminClick }) => {
         {profile?.role === "SUPERADMIN" && onAddAdminClick && (
           <MenuItem
             onClick={onAddAdminClick}
-            icon={
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-            }
+            icon={<UserPlus size={16} />}
             label="Add Admin"
           />
         )}
 
         <MenuItem
           to="/profile"
-          icon={
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5">
-              <path strokeLinecap="round" strokeLinejoin="round"
-                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 0115 0" />
-            </svg>
-          }
+          icon={<User size={16} />}
           label="My Profile"
+          onClose={onClose}
         />
 
         {/* Divider */}
@@ -142,12 +135,7 @@ const UserProfile = ({ profile, onAddAdminClick }) => {
         <MenuItem
           onClick={handleLogout}
           danger
-          icon={
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5">
-              <path strokeLinecap="round" strokeLinejoin="round"
-                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 15l3-3m0 0l-3-3m3 3H9" />
-            </svg>
-          }
+          icon={<LogOut size={16} />}
           label="Sign Out"
         />
       </div>

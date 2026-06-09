@@ -184,7 +184,7 @@ const Navbar = ({ toggleSidebar }) => {
 
       {/* Right: Lang + Profile */}
       <div className="flex items-center gap-4">
-        <select
+        {/* <select
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
           className="text-sm border border-gray-200 rounded-lg px-2.5 py-1.5 bg-white text-gray-600 focus:outline-none focus:border-[#4684ff] transition-colors cursor-pointer"
@@ -192,7 +192,7 @@ const Navbar = ({ toggleSidebar }) => {
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>{lang.label}</option>
           ))}
-        </select>
+        </select> */}
 
         <div className="relative" ref={profileRef}>
           <div
@@ -215,6 +215,7 @@ const Navbar = ({ toggleSidebar }) => {
             <UserProfile
               profile={user}
               onAddAdminClick={() => { setIsModalOpen(true); setShowProfile(false); }}
+              onClose={() => setShowProfile(false)}
             />
           )}
         </div>

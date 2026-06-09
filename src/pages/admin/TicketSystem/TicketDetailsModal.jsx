@@ -264,18 +264,17 @@ const TicketDetailsModal = ({
     <div>
       {/* Main Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="lg" showCloseButton={true}>
-        <div className="p-6 space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold">{localTicket?.subject}</h2>
-            <span
-              className={`px-3 py-1 rounded-md text-sm font-medium flex items-center gap-2 ${getPriorityColor(localTicket.priority).bg
-                } ${getPriorityColor(localTicket.priority).text} ${getPriorityColor(localTicket.priority).border
-                }`}
-            >
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+            <h2 className="text-2xl font-bold text-white truncate pr-4">{localTicket?.subject}</h2>
+            <span className={`shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white`}>
               {localTicket.priority}
               <PriorityPulseDot priority={localTicket.priority} />
             </span>
           </div>
+
+          <div className="space-y-5 pt-2">
 
           {/* Info */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
@@ -374,17 +373,15 @@ const TicketDetailsModal = ({
 
           {/* Submit Button */}
           {isEditable && (
-            <div className="flex justify-end">
-              <button
-                className="px-5 py-2 rounded-md bg-blue-100 text-blue-600 hover:bg-blue-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={handleSubmit}
-                disabled={!localTicket.adminRemark?.trim()}
-              >
+            <div className="flex justify-end pt-2 border-t border-blue-100">
+              <button onClick={handleSubmit} disabled={!localTicket.adminRemark?.trim()}
+                className="px-5 py-2 rounded-full bg-[#4684ff] text-white text-sm font-medium hover:bg-[#3a6fe6] transition disabled:opacity-50 disabled:cursor-not-allowed">
                 Update Status
               </button>
             </div>
           )}
-        </div>
+          </div>{/* end space-y-5 */}
+        </div>{/* end space-y-6 */}
       </Modal>
 
       {/* Media Carousel Modal */}
@@ -406,29 +403,26 @@ const TicketDetailsModal = ({
       {/* Confirm Modal */}
       {showConfirmation && (
         <Modal isOpen={true} onClose={handleCancelClose} size="md" showCloseButton={false}>
-          <div className="p-6 space-y-4">
-            <h3 className="text-lg font-semibold">Confirm Ticket Closure</h3>
-            <p>Are you sure you want to close this ticket?</p>
-            <div className="flex justify-end gap-4">
-              <button
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                onClick={handleCancelClose}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={handleConfirmClose}
-                disabled={!localTicket.adminRemark?.trim()}
-              >
-                Confirm Close
-              </button>
+          <div className="space-y-6">
+            <div className="flex items-center -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+              <h3 className="text-2xl font-bold text-white">Confirm Ticket Closure</h3>
             </div>
-            {!localTicket.adminRemark?.trim() && (
-              <p className="text-red-500 text-sm">
-                Please enter an admin remark before closing
-              </p>
-            )}
+            <div className="space-y-4 pt-2">
+              <p className="text-sm text-gray-600">Are you sure you want to close this ticket?</p>
+              {!localTicket.adminRemark?.trim() && (
+                <p className="text-red-500 text-sm">Please enter an admin remark before closing.</p>
+              )}
+              <div className="flex justify-end gap-3 pt-2 border-t border-blue-100">
+                <button onClick={handleCancelClose}
+                  className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full transition cursor-pointer">
+                  Cancel
+                </button>
+                <button onClick={handleConfirmClose} disabled={!localTicket.adminRemark?.trim()}
+                  className="px-5 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+                  Confirm Close
+                </button>
+              </div>
+            </div>
           </div>
         </Modal>
       )}

@@ -2,8 +2,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import {useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { agencyRouteMap, retailerRouteMap, adminRouteMap } from "../routes/routeMaps"; // ✅ import all maps
-import Input from "../components/ui/input/Input";
-import { SearchIcon } from "../icon";
+import SearchBar from "../components/ui/search-bar/SearchBar";
 import { Modal } from "../components/ui/modal/Modal";
 import AddAdminForm from "../components/ui/user/AddAdminForm";
 import UserProfile from "../components/ui/user/UserProfile";
@@ -98,15 +97,11 @@ const Navbar = ({ toggleSidebar }) => {
           ☰
         </button>
         <div className="relative">
-          <Input
-            name="search"
-            placeholder="Search..."
+          <SearchBar
             value={query}
-            onChange={(e) => handleSearch(e.target.value)}
-            autoComplete="off"
-            inputProps={{ type: "search" }}
-            icon={<SearchIcon />}
-            iconPosition="left"
+            onChange={handleSearch}
+            placeholder="Search..."
+            className="w-[280px]"
           />
           {query && (
             <div className="absolute mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50">

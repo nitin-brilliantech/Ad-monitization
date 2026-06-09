@@ -13,8 +13,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import { FiFilter, FiRefreshCw } from "react-icons/fi";
-import Input from "../../components/ui/input/Input";
-import { SearchIcon } from "../../icon/index";
+import SearchBar from "../../components/ui/search-bar/SearchBar";
 import Loader from "../../components/loader/Loader";
 import COLORS from "../../constants/Colors";
 
@@ -131,13 +130,11 @@ const ReusableTable = ({
       {/* Search + Filter */}
       <div className="flex justify-between bg-white rounded-2xl items-center p-3 mb-4">
         <div className="flex w-1/3">
-          <Input
-            name="search"
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
             placeholder="Search..."
-            icon={<SearchIcon />}
-            iconPosition="left"
-            className="mt-2 flex-1"
-            inputProps={{ type: "search", value: searchQuery, onChange: (e) => setSearchQuery(e.target.value) }}
+            className="flex-1"
           />
         </div>
 

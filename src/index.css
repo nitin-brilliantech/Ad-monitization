@@ -20,27 +20,46 @@
 .animate-slideDown { animation: var(--animate-slideDown); }
 
 
-/* For WebKit browsers (Chrome, Edge, Safari) */
+/* Default scrollbar for all elements */
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-/* 
+
 *::-webkit-scrollbar-track {
   background: transparent;
-} */
+}
 
 *::-webkit-scrollbar-thumb {
-  background-color: #6B7A99; 
+  background-color: #4684ff; 
   border-radius: 4px;
 } 
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #5B6A87; 
+  background-color: #3a6fe6; 
 }
 
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #445E94 transparent;
+  scrollbar-color: #4684ff #ffffff;
+}
+
+/* Custom Sidebar Scrollbar - Blue theme matching loading screen */
+nav::-webkit-scrollbar {
+  width: 8px;
+}
+
+nav::-webkit-scrollbar-track {
+  background: #2d5acc;
+  border-radius: 10px;
+}
+
+nav::-webkit-scrollbar-thumb {
+  background: #4684ff;
+  border-radius: 10px;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background: #3a6fe6;
 }

@@ -14,11 +14,12 @@ export const columns = (handleStatusChange,switchLoading) => [
         label={row.role}
         size="small"
         sx={{
-          backgroundColor: row.role === "Retailer" ? COLORS.gold : COLORS.primary,
+          backgroundColor: row.role === "Retailer" ? "#10b981" : "#5B7FE5",
           color: "white",
           fontWeight: 600,
           px: 1.5,
-          borderRadius: 2,
+          borderRadius: 10,
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
         }}
       />
     ),
@@ -38,9 +39,9 @@ export const columns = (handleStatusChange,switchLoading) => [
         onChange={() => handleStatusChange(row.id, row.status)}
         size="small"
         sx={{
-          "& .MuiSwitch-switchBase.Mui-checked": { color: COLORS.primary },
+          "& .MuiSwitch-switchBase.Mui-checked": { color: COLORS.newBlue },
           "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-            backgroundColor: COLORS.primary,
+            backgroundColor: COLORS.newBlue,
           },
         }}
       />

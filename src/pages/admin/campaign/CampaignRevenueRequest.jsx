@@ -53,7 +53,12 @@ const CampaignRevenueRequest = () => {
       label: "Actions",
       render: (row) =>
         row.isTransferred ? (
-          <span className="text-gray-500 text-sm">Already Transferred</span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>
+            Already Transferred
+          </span>
         ) 
          : (
           <Button
@@ -61,6 +66,7 @@ const CampaignRevenueRequest = () => {
             onClick={() => handleRequest(row)}
             isIcon={false}
             loading={transferLoading}
+            className="bg-[#5B7FE5] hover:bg-[#4a6dd4] text-white px-4 py-2 rounded-lg font-medium shadow-sm hover:shadow-md transition-all duration-200"
           />
         ),
     },

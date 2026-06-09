@@ -60,7 +60,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 
   if (loadingRole) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-b from-[#4684ff] via-[#3a6fe6] to-[#2d5acc] text-white">
+      <div className="flex justify-center items-center h-screen bg-white text-gray-600">
         <p className="text-lg font-medium animate-pulse">Loading Sidebar...</p>
       </div>
     );
@@ -68,25 +68,27 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`fixed md:static top-0 left-0 h-full z-40 bg-gradient-to-br from-blue-600 to-blue-300 text-white w-64 flex flex-col transition-transform duration-300 ease-in-out shadow-xl ${
+      className={`fixed md:static top-0 left-0 h-full z-40 bg-white w-70 flex flex-col transition-transform duration-300 ease-in-out shadow-lg border-r border-gray-100 ${
         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       }`}
     >
       {/* Logo Header */}
-      <div className="flex items-center p-6 mb-4 bg-white backdrop-blur-sm border-b border-white/20">
-        <img src="/images/logo/bts-short-logo.png" alt="bts-logo" className="h-8" />
-        <button className="md:hidden ml-auto relative justify-end font-bold text-2xl text-white hover:text-white/80 transition-colors" onClick={toggleSidebar}>
-          <RxCross2 />
+      <div className="flex items-center justify-between p-5 mb-2 border-b border-gray-300 shadow-md">
+        <img src="/images/logo/bts-short-logo.png" alt="logo" className="h-10" />
+        <button 
+          className="md:hidden text-gray-500 hover:text-gray-700 transition-colors p-1" 
+          onClick={toggleSidebar}
+        >
+          <RxCross2 size={24} />
         </button>
       </div>
 
       {/* Sidebar Items */}
       <nav 
-        className="flex flex-col gap-2 overflow-y-auto pb-4 px-3"
+        className="flex flex-col px-3 overflow-y-auto flex-1 py-2"
         style={{
-          // scrollbarWidth: 'thin',
-          scrollbarColor: '#4684ff transparent',
-          borderRadius: '10px',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#9ca3af #f3f4f6'
         }}
       >
         {sidebarItems.map((item) => (

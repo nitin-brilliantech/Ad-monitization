@@ -7,10 +7,10 @@ import { clearCampaigns } from "../../../redux/slices/user/approvedCampaignSlice
 
 // Role badge colours
 const ROLE_STYLE = {
-  SUPERADMIN: "bg-purple-100 text-purple-700",
-  ADMIN:      "bg-blue-100  text-blue-700",
-  Retailer:   "bg-green-100 text-green-700",
-  "Ad-Agency":"bg-orange-100 text-orange-700",
+  SUPERADMIN: "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-sm",
+  ADMIN:      "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-sm",
+  Retailer:   "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm",
+  "Ad-Agency":"bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-sm",
 };
 
 const getRoleLabel = (role) => {
@@ -103,7 +103,7 @@ const UserProfile = ({ profile, onAddAdminClick }) => {
               <p className="text-xs text-gray-400 truncate mt-0.5">{email}</p>
             )}
             {profile?.role && (
-              <span className={`inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${ROLE_STYLE[profile.role] ?? "bg-gray-100 text-gray-600"}`}>
+              <span className={`inline-block mt-1 text-[10px] font-bold px-2.5 py-1 rounded-full ${ROLE_STYLE[profile.role] ?? "bg-gray-100 text-gray-600"}`}>
                 {getRoleLabel(profile.role)}
               </span>
             )}

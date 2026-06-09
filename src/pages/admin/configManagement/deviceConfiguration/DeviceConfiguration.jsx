@@ -92,7 +92,7 @@ const DeviceConfiguration = () => {
           <h2 className="text-lg font-semibold text-gray-800">Device Configuration</h2>
           <p className="text-sm text-gray-400 mt-0.5">Manage display devices and their specifications</p>
         </div>
-        <Button label="Add Device" onClick={() => setIsAddOpen(true)} />
+        <Button variant="primary" label="Add Device" onClick={() => setIsAddOpen(true)} />
       </div>
 
       {/* Add Device Modal */}

@@ -85,7 +85,7 @@ const AdminMyEarnings = () => {
       {/* Summary */}
       <section className="w-full mb-6">
         <div
-          className="grid gap-4 w-full"
+          className="grid gap-10 w-full"
           style={{ gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))" }}
         >
           {statsData.map((item, index) => (

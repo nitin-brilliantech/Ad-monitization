@@ -100,7 +100,7 @@ const Navbar = ({ toggleSidebar }) => {
   };
 
   return (
-    <div className="h-20 bg-white shadow-sm border-b border-gray-100 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
+    <div className="h-20 bg-white shadow-sm flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       {/* Left: Sidebar toggle + Global Search */}
       <div className="flex items-center gap-3 w-full max-w-md">
         <button className="md:hidden text-xl text-gray-500 hover:text-gray-800 transition-colors" onClick={toggleSidebar}>
@@ -197,18 +197,18 @@ const Navbar = ({ toggleSidebar }) => {
         <div className="relative" ref={profileRef}>
           <div
             onClick={() => setShowProfile((prev) => !prev)}
-            className="cursor-pointer flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
+            className="cursor-pointer flex items-center gap-2.5 px-3 py-2 bg-gradient-to-r from-[#4684ff] to-[#3a6fe6] rounded-xl hover:from-[#3a6fe6] hover:to-[#2d5acc] hover:shadow-lg transition-all duration-200"
           >
             <img
               src={user?.avatar || user?.profile_url || "logo.svg"}
               alt="User"
-              className="w-8 h-8 rounded-full border-2 border-[#4684ff]/20 object-cover"
+              className="w-8 h-8 rounded-full border-3 border-white object-cover shadow-sm"
             />
-            <span className="text-sm font-medium text-gray-700 hidden sm:block">
+            <span className="text-sm font-semibold text-white hidden sm:block">
               {user?.fullName || user?.name || "Loading..."}
             </span>
-            <svg className="w-3.5 h-3.5 text-gray-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <svg className={`w-4 h-4 text-white/90 hidden sm:block transition-transform duration-200 ${showProfile ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
             </svg>
           </div>
           {showProfile && (

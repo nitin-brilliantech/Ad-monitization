@@ -22,10 +22,10 @@ import LocationFields from "../../components/LocationsDropdown/LocationFields";
 /* ── tiny helpers ─────────────────────────────────────────── */
 
 const ROLE_STYLE = {
-  SUPERADMIN: "bg-purple-100 text-purple-700",
-  ADMIN:      "bg-blue-100  text-[#4684ff]",
-  Retailer:   "bg-green-100 text-green-700",
-  "Ad-Agency":"bg-orange-100 text-orange-700",
+  SUPERADMIN: "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md",
+  ADMIN:      "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md",
+  Retailer:   "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md",
+  "Ad-Agency":"bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md",
 };
 const ROLE_LABEL = {
   SUPERADMIN: "Super Admin",
@@ -214,7 +214,7 @@ const UserDetails = () => {
   const avatar   = user?.avatar || user?.profile_url || user?.profilePic;
 
   return (
-    <div className="relative w-full mx-auto max-w-4xl px-4 py-6">
+    <div className="relative w-full mx-auto max-w-9xl px-4 py-6">
       {!user && (
         <div className="absolute inset-0 bg-white/80 z-50 flex items-center justify-center">
           <Loader />
@@ -269,7 +269,7 @@ const UserDetails = () => {
                 <p className="text-sm text-gray-400 mt-0.5">{user?.email}</p>
               </div>
               {user?.role && (
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${ROLE_STYLE[user.role] ?? "bg-gray-100 text-gray-600"}`}>
+                <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${ROLE_STYLE[user.role] ?? "bg-gray-100 text-gray-600"}`}>
                   {ROLE_LABEL[user.role] ?? user.role}
                 </span>
               )}

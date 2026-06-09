@@ -18,7 +18,8 @@ const COLORS = {
   softBlue: '#849fb7',          // light bluish-gray for backgrounds
   midGray: '#888888',           // medium gray shorthand
   gold: '#CA9225',              // warm gold shade (maybe for highlights or icons)
-  softBackground: '#E3E8F3',    // very light blue-gray, likely for layout BGs
+  softBackground: '#E3E8F3', 
+  newBlue: '#4684ff'   // very light blue-gray, likely for layout BGs
 };
 
 // For ES Modules (React)

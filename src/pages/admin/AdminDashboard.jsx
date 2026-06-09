@@ -108,6 +108,7 @@ const AdminDashboard  = () => {
       currency: true,
       changeColor: "text-green-600",
       bgGradient: "bg-gradient-to-br from-white via-red-50 to-pink-100",
+      description: "Total number of bids awaiting approval from retailers",
     },
     {
       title: "Open Requests",
@@ -116,6 +117,7 @@ const AdminDashboard  = () => {
       currency: false,
       changeColor: "text-green-700",
       bgGradient: "bg-gradient-to-br from-white via-yellow-50 to-yellow-100",
+      description: "Active campaign requests pending review",
     },
     {
       title: "Total Revenue",
@@ -124,6 +126,7 @@ const AdminDashboard  = () => {
       currency: true,
       changeColor: "text-green-600",
       bgGradient: "bg-gradient-to-br from-white via-slate-50 to-blue-100",
+      description: "Cumulative revenue from approved campaigns",
     },
   ];
 

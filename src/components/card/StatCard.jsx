@@ -7,11 +7,12 @@ const StatCard = ({
   changeColor = "text-green-600",
   bgGradient = "bg-white", 
   currency = false,
+  description = "",
   className = "",
 }) => {
   return (
     <div
-      className={`flex flex-col w-full min-h-[102px] rounded-[16px] border-l-4 border-[#5B7FE5] bg-white p-4 gap-3 shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
+      className={`flex flex-col justify-between w-full h-[140px] rounded-[16px] border-l-4 border-[#5B7FE5] bg-white p-4 shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
     >
       <div className="flex justify-between items-start">
         <p className="text-sm font-medium text-gray-600">{title}</p>
@@ -19,10 +20,17 @@ const StatCard = ({
           {change}
         </span>
       </div>
-      <h3 className="text-3xl font-bold text-gray-900">
-        {currency && "₹"}
-        {value}
-      </h3>
+      <div>
+        <h3 className="text-3xl font-bold text-gray-900 mb-2">
+          {currency && "₹"}
+          {value}
+        </h3>
+        {description && (
+          <p className="text-xs text-gray-500 leading-relaxed">
+            {description}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

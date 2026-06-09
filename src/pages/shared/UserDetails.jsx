@@ -61,18 +61,8 @@ const SectionCard = ({ title, icon, action, children }) => (
   </div>
 );
 
-// Modal header shared pattern
-const ModalHeader = ({ icon, title, subtitle }) => (
-  <div className="flex items-center gap-3 mb-6">
-    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4684ff] to-[#3a6fe6] flex items-center justify-center shadow-sm shrink-0">
-      <span className="text-white text-base">{icon}</span>
-    </div>
-    <div>
-      <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-      {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
-    </div>
-  </div>
-);
+// Modal header shared pattern — kept for potential future use
+// const ModalHeader = ({ icon, title, subtitle }) => ( ... )
 
 /* ── icons (inline SVG keeps bundle light) ────────────────── */
 const IconUser = () => (
@@ -324,8 +314,19 @@ const UserDetails = () => {
       {/* ── Edit Profile Modal ────────────────────────────── */}
       {isAdminOrSuperAdmin && (
         <Modal isOpen={editMode.profile} onClose={() => cancelEdit("profile")} size="md">
-          <ModalHeader icon={<IconEdit />} title="Edit Profile" subtitle="Update your personal information" />
-          <form onSubmit={handleProfileSubmitForm(handleProfileSubmit)} className="space-y-4" autoComplete="off">
+          {/* Full-bleed header */}
+          <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Edit Profile</h2>
+              <p className="text-sm text-white/70 mt-0.5">Update your personal information</p>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zM16.862 4.487L19.5 7.125" />
+              </svg>
+            </div>
+          </div>
+          <form onSubmit={handleProfileSubmitForm(handleProfileSubmit)} className="space-y-4 mt-6" autoComplete="off">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 label="Full Name"
@@ -360,7 +361,7 @@ const UserDetails = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-3 pt-2">
+            <div className="flex justify-end gap-3 pt-4 border-t border-blue-100">
               <button type="button" onClick={() => cancelEdit("profile")}
                 className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full transition-all duration-150 cursor-pointer">
                 Cancel
@@ -375,8 +376,19 @@ const UserDetails = () => {
 
       {/* ── Change Password Modal ─────────────────────────── */}
       <Modal isOpen={editMode.passwordModal} onClose={() => cancelEdit("passwordModal")}>
-        <ModalHeader icon={<IconLock />} title="Change Password" subtitle="Keep your account secure" />
-        <form onSubmit={handlePasswordSubmitForm(handlePasswordSubmit)} className="flex flex-col gap-4">
+        {/* Full-bleed header */}
+        <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+          <div>
+            <h2 className="text-2xl font-bold text-white">Change Password</h2>
+            <p className="text-sm text-white/70 mt-0.5">Keep your account secure</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          </div>
+        </div>
+        <form onSubmit={handlePasswordSubmitForm(handlePasswordSubmit)} className="flex flex-col gap-4 mt-6">
           <Input
             type="password"
             label="Current Password"
@@ -407,7 +419,7 @@ const UserDetails = () => {
               validate: (v) => v === watchPassword("newPassword") || "Passwords do not match",
             })}
           />
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-3 pt-4 border-t border-blue-100">
             <button type="button" onClick={() => cancelEdit("passwordModal")}
               className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full transition-all duration-150 cursor-pointer">
               Cancel

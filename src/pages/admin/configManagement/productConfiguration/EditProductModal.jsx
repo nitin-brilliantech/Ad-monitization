@@ -56,54 +56,26 @@ const EditProductModal = ({ isOpen, onClose, initialData }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="md" showCloseButton={true}>
       <form onSubmit={handleSubmit(submitHandler)}>
-        <div className="p-4 space-y-6">
-          <h2 className="text-xl font-bold">Edit Product</h2>
-
-          <Controller
-            control={control}
-            name="name"
-            rules={{ required: "Product name is required" }}
-            render={({ field }) => (
-              <Input
-                {...field}
-                value={field.value ?? ""}
-                label="Product Name"
-                placeholder="Enter product name"
-                error={errors.name?.message}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="price"
-            rules={{
-              required: "Price is required",
-              validate: (value) =>
-                (!isNaN(value) && Number(value) > 0) ||
-                "Price must be a positive number",
-            }}
-            render={({ field }) => (
-              <Input
-                {...field}
-                value={field.value ?? ""}
-                label="Price"
-                placeholder="Enter price"
-                type="number"
-                error={errors.price?.message}
-              />
-            )}
-          />
-
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              variant="primary"
-              label="Update Product"
-              className="px-6 py-2"
-              isIcon={false}
-              loading={formLoading}
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+            <h2 className="text-2xl font-bold text-white">Edit Product</h2>
+          </div>
+          <div className="space-y-4 pt-2">
+            <Controller control={control} name="name" rules={{ required: "Product name is required" }}
+              render={({ field }) => (
+                <Input {...field} value={field.value ?? ""} label="Product Name" placeholder="Enter product name" error={errors.name?.message} />
+              )}
             />
+            <Controller control={control} name="price"
+              rules={{ required: "Price is required", validate: (v) => (!isNaN(v) && Number(v) > 0) || "Price must be a positive number" }}
+              render={({ field }) => (
+                <Input {...field} value={field.value ?? ""} label="Price" placeholder="Enter price" type="number" error={errors.price?.message} />
+              )}
+            />
+            <div className="flex justify-end pt-2 border-t border-blue-100">
+              <Button type="submit" variant="primary" label="Update Product" isIcon={false} loading={formLoading} />
+            </div>
           </div>
         </div>
       </form>

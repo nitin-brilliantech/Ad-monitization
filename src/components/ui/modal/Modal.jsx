@@ -41,8 +41,8 @@ export const Modal = ({
       disableAutoFocus
       disableEnforceFocus
       sx={{
-        // backdropFilter: "blur(32px)",
-        backgroundColor: "rgba(0, 0, 0, 0)",
+        backdropFilter: "blur(4px)",
+        backgroundColor: "rgba(59, 89, 152, 0.15)",
         zIndex: 1300,
         ...modalSx,
       }}
@@ -50,7 +50,7 @@ export const Modal = ({
       <Box
         onClick={(e) => e.stopPropagation()}
         className={`
-          relative bg-white rounded-3xl shadow-lg p-6 
+          relative bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-2xl border border-blue-100
           max-h-[90vh] overflow-y-auto ${getSizeClass()} ${containerClassName}
         `}
         sx={{
@@ -58,10 +58,23 @@ export const Modal = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          scrollbarWidth: "none", 
-          msOverflowStyle: "none", 
+          padding: "24px",
+          scrollbarWidth: "thin",
+          scrollbarColor: "#5B7FE5 #E0E7FF",
           "&::-webkit-scrollbar": {
-            display: "none", 
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#E0E7FF",
+            borderRadius: "10px",
+            margin: "8px 0",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#5B7FE5",
+            borderRadius: "10px",
+            "&:hover": {
+              background: "#4a6dd4",
+            },
           },
           ...containerSx,
         }}
@@ -69,7 +82,7 @@ export const Modal = ({
         {showCloseButton && (
           <IconButton
             onClick={onClose}
-            className="!absolute right-4 top-4 text-gray-400 hover:text-gray-700 dark:hover:text-white z-10"
+            className="!absolute right-4 top-4 text-gray-400 hover:text-blue-600 z-10 transition-colors"
           >
             <CloseIcon />
           </IconButton>

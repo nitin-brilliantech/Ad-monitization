@@ -81,7 +81,14 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
       </div>
 
       {/* Sidebar Items */}
-      <nav className="flex flex-col gap-2 overflow-y-auto pb-4 px-3">
+      <nav 
+        className="flex flex-col gap-2 overflow-y-auto pb-4 px-3"
+        style={{
+          // scrollbarWidth: 'thin',
+          scrollbarColor: '#4684ff transparent',
+          borderRadius: '10px',
+        }}
+      >
         {sidebarItems.map((item) => (
           <SidebarItem
             key={item.path}

@@ -164,7 +164,7 @@ const UserDetails = () => {
   const avatar   = user?.avatar || user?.profile_url || user?.profilePic;
 
   return (
-    <div className="relative w-full mx-auto max-w-9xl py-6">
+    <div className="relative w-full mx-auto py-6">
       {!user && (
         <div className="absolute inset-0 bg-white/80 z-50 flex items-center justify-center">
           <Loader />

@@ -114,7 +114,7 @@ const RevenuePayouts = () => {
   const filterdPayouts = payouts.filter((c)=>c.isApproved==='APPROVED')
   
   return (
-    <div className="p-6">
+    <div className="">
       <Typography variant="h5" fontWeight={600} mb={3}>
         Revenue & Payouts
       </Typography>

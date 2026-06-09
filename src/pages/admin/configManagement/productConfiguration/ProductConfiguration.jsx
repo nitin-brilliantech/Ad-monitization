@@ -38,9 +38,13 @@ useEffect(() => {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h2 className="font-bold">Product Configuration</h2>
+    <div className="flex flex-col gap-4">
+      {/* Header card */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-5 py-4 flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800">Product Configuration</h2>
+          <p className="text-sm text-gray-400 mt-0.5">Manage products and their pricing</p>
+        </div>
         <Button label="Add Product" onClick={() => setIsAddOpen(true)} />
       </div>
 
@@ -59,7 +63,7 @@ useEffect(() => {
         />
       )}
 
-      <div className="mt-4">
+      <div>
         <ReusableTable
           columns={productColumns}
           rows={products}

@@ -221,7 +221,7 @@ const ReusableTable = ({
                         selected={isSelected}
                         sx={{
                           cursor: "pointer",
-                          backgroundColor: isSelected ? "#F2F5F9 !important" : "white",
+                          backgroundColor: isSelected ? "#dbeafe !important" : index % 2 === 0 ? "white" : "#f8fafc",
                           "&:hover": { backgroundColor: "#F2F5F9 !important" },
                         }}
                         onClick={() => handleRowClick(row)}

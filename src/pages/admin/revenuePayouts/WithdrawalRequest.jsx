@@ -90,7 +90,7 @@ const WithdrawalRequest = () => {
   ];
 
   return (
-    <div className="p-6">
+    <div className="">
       <Typography variant="h5" fontWeight={600} mb={3}>
         Withdrawal Requests
       </Typography>

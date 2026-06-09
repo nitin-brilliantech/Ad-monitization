@@ -79,9 +79,13 @@ const LocationConfiguration = () => {
   const tierColumns = getTierColumns();
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h2 className="font-bold">Location Configuration</h2>
+    <div className="flex flex-col gap-4">
+      {/* Header card */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-5 py-4 flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800">Location Configuration</h2>
+          <p className="text-sm text-gray-400 mt-0.5">Manage location tiers and pricing</p>
+        </div>
         <Button label="Add Tier" onClick={() => setIsAddOpen(true)} />
       </div>
 
@@ -108,7 +112,7 @@ const LocationConfiguration = () => {
         />
       )}
 
-      <div className="mt-4">
+      <div>
         <ReusableTable
           columns={tierColumns}
           rows={tiers}

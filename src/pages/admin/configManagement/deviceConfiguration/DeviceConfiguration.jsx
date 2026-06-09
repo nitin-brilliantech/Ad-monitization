@@ -85,9 +85,13 @@ const DeviceConfiguration = () => {
   const deviceColumns = getDeviceColumns();
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h2 className="font-bold">Device Configuration</h2>
+    <div className="flex flex-col gap-4">
+      {/* Header card */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-5 py-4 flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800">Device Configuration</h2>
+          <p className="text-sm text-gray-400 mt-0.5">Manage display devices and their specifications</p>
+        </div>
         <Button label="Add Device" onClick={() => setIsAddOpen(true)} />
       </div>
 
@@ -119,7 +123,7 @@ const DeviceConfiguration = () => {
         />
       )}
 
-      <div className="mt-4">
+      <div>
         <ReusableTable
           columns={deviceColumns}
           rows={devices}

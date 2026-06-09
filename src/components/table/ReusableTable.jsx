@@ -169,21 +169,27 @@ const ReusableTable = ({
         <Paper elevation={0} sx={{ borderRadius: 3, overflow: "hidden" }}>
           <TableContainer>
             <Table sx={{ minWidth: 750 }}>
-              <TableHead sx={{ backgroundColor: COLORS.softBackground }}>
+              <TableHead sx={{ backgroundColor: "#4684ff" }}>
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={selected.length > 0 && selected.length === filteredAndSortedRows.length}
                       indeterminate={selected.length > 0 && selected.length < filteredAndSortedRows.length}
                       onChange={handleSelectAll}
+                      sx={{ color: "white", "&.Mui-checked": { color: "white" } }}
                     />
                   </TableCell>
                   {columns.map((col) => (
-                    <TableCell key={col.id} align={col.numeric ? "center" : "left"} sx={{ fontWeight: 600, color: COLORS.blueGray }}>
+                    <TableCell key={col.id} align={col.numeric ? "center" : "left"} sx={{ fontWeight: 600, color: "white" }}>
                       <TableSortLabel
                         active={orderBy === col.id}
                         direction={orderBy === col.id ? order : "asc"}
                         onClick={(e) => handleSort(e, col.id)}
+                        sx={{
+                          color: "white !important",
+                          "&:hover": { color: "white !important" },
+                          "& .MuiTableSortLabel-icon": { color: "white !important" }
+                        }}
                       >
                         {col.label}
                       </TableSortLabel>

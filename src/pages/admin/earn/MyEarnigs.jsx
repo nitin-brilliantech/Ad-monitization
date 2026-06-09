@@ -4,6 +4,7 @@ import { getRevenue } from "../../../api/admin/admin-api/admin-api";
 import { getAllRevenueHistory } from "../../../redux/slices/admin/adminRevenueSlice";
 import ReusableTable from "../../../components/table/ReusableTable"; 
 import  {Modal} from "../../../components/ui/modal/Modal"
+import StatCard from "../../../components/card/StatCard";
 
 const AdminMyEarnings = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,25 @@ const AdminMyEarnings = () => {
     { id: "businessName", label: "Business" },
   ];
 
+  const statsData = [
+    {
+      title: "Total Earnings",
+      value: revenue?.totalRevenue ?? 0,
+      change: "+15%",
+      currency: true,
+      changeColor: "text-green-600",
+      description: "All-time revenue from campaigns",
+    },
+    {
+      title: "Monthly Earnings",
+      value: revenue?.monthlyRevenue?.[0]?.totalRevenue?.toLocaleString() ?? 0,
+      change: "+8%",
+      currency: true,
+      changeColor: "text-green-600",
+      description: "Revenue earned this month",
+    },
+  ];
+
   return (
     <main className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
       <header className="max-w-7xl mx-auto mb-8">
@@ -63,30 +83,14 @@ const AdminMyEarnings = () => {
       </header>
 
       {/* Summary */}
-      <section className="w-full gap-6">
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex items-center p-6 bg-white rounded-xl shadow">
-            <div className="p-3 bg-green-100 rounded-full mr-4">💰</div>
-            <div>
-              <p className="text-gray-600 font-medium">Total Earnings</p>
-              <p className="text-2xl font-bold text-gray-900">
-                ₹{revenue?.totalRevenue ?? 0}
-              </p>
-              <p className="text-sm text-gray-500 mt-1">All-time revenue</p>
-            </div>
-          </div>
-
-          <div className="flex items-center p-6 bg-white rounded-xl shadow">
-            <div className="p-3 bg-blue-100 rounded-full mr-4">📅</div>
-            <div>
-              <p className="text-gray-600 font-medium">Monthly Earnings</p>
-              <p className="text-2xl font-bold text-gray-900">
-                ₹
-                {revenue?.monthlyRevenue?.[0]?.totalRevenue?.toLocaleString() ??
-                  0}
-              </p>
-            </div>
-          </div>
+      <section className="w-full mb-6">
+        <div
+          className="grid gap-4 w-full"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))" }}
+        >
+          {statsData.map((item, index) => (
+            <StatCard key={index} {...item} />
+          ))}
         </div>
       </section>
 

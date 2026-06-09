@@ -1,24 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ApprovalBadge = ({ status = 'UNKNOWN', size = 10 }) => {
+const TicketStatusBadge = ({ status = 'UNKNOWN', size = 10 }) => {
   const normalized = status?.toUpperCase();
 
   const colorMap = {
-    APPROVED: {
-      bg: '#10b981',
+    OPEN: {
+      bg: '#f97316',
       text: '#ffffff',
-      shadow: 'rgba(16, 185, 129, 0.2)',
+      shadow: 'rgba(249, 115, 22, 0.2)',
     },
-    REJECTED: {
+    INPROGRESS: {
+      bg: '#f59e0b',
+      text: '#ffffff',
+      shadow: 'rgba(245, 158, 11, 0.2)',
+    },
+    RESOLVED: {
+      bg: '#3b82f6',
+      text: '#ffffff',
+      shadow: 'rgba(59, 130, 246, 0.2)',
+    },
+    REOPEN: {
       bg: '#ef4444',
       text: '#ffffff',
       shadow: 'rgba(239, 68, 68, 0.2)',
     },
-    PENDING: {
-      bg: '#f59e0b',
+    CLOSED: {
+      bg: '#10b981',
       text: '#ffffff',
-      shadow: 'rgba(245, 158, 11, 0.2)',
+      shadow: 'rgba(16, 185, 129, 0.2)',
     },
     UNKNOWN: {
       bg: '#6b7280',
@@ -45,9 +55,9 @@ const ApprovalBadge = ({ status = 'UNKNOWN', size = 10 }) => {
   );
 };
 
-ApprovalBadge.propTypes = {
+TicketStatusBadge.propTypes = {
   status: PropTypes.string,
   size: PropTypes.number,
 };
 
-export default ApprovalBadge;
+export default TicketStatusBadge;

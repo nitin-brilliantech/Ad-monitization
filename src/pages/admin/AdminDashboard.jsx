@@ -4,6 +4,7 @@ import ReusableTable from "../../components/table/ReusableTable";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCampaigns } from "../../redux/slices/admin/campaignSlice";
 import { fetchAdminProfile } from "../../redux/slices/admin/adminSlice";
+import ApprovalBadge from "../../components/ui/badges/ApprovalBadge";
 
 const AdminDashboard  = () => {
   const dispatch = useDispatch();
@@ -86,17 +87,7 @@ const AdminDashboard  = () => {
     {
       id: "isApproved",
       label: "Approval",
-      render: (row) => (
-        <span
-          className={`px-3 py-1 rounded text-sm ${
-            row.isApproved === "APPROVED"
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
-          }`}
-        >
-          {row.isApproved}
-        </span>
-      ),
+      render: (row) => <ApprovalBadge status={row.isApproved} size={11} />,
     },
   ];
 

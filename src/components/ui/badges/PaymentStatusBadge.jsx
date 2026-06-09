@@ -1,24 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ApprovalBadge = ({ status = 'UNKNOWN', size = 10 }) => {
+const PaymentStatusBadge = ({ status = 'UNKNOWN', size = 10 }) => {
   const normalized = status?.toUpperCase();
 
   const colorMap = {
-    APPROVED: {
+    PAID: {
       bg: '#10b981',
       text: '#ffffff',
       shadow: 'rgba(16, 185, 129, 0.2)',
     },
-    REJECTED: {
-      bg: '#ef4444',
+    UNPAID: {
+      bg: '#f59e0b',
       text: '#ffffff',
-      shadow: 'rgba(239, 68, 68, 0.2)',
+      shadow: 'rgba(245, 158, 11, 0.2)',
     },
     PENDING: {
       bg: '#f59e0b',
       text: '#ffffff',
       shadow: 'rgba(245, 158, 11, 0.2)',
+    },
+    OVERDUE: {
+      bg: '#ef4444',
+      text: '#ffffff',
+      shadow: 'rgba(239, 68, 68, 0.2)',
     },
     UNKNOWN: {
       bg: '#6b7280',
@@ -45,9 +50,9 @@ const ApprovalBadge = ({ status = 'UNKNOWN', size = 10 }) => {
   );
 };
 
-ApprovalBadge.propTypes = {
+PaymentStatusBadge.propTypes = {
   status: PropTypes.string,
   size: PropTypes.number,
 };
 
-export default ApprovalBadge;
+export default PaymentStatusBadge;

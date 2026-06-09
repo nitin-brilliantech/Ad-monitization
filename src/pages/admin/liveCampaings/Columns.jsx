@@ -48,9 +48,9 @@ const getColumns = (handleActivate, switchLoading) => [
         onChange={() => handleActivate(row.id, row.isActive)}
         size="small"
         sx={{
-          "& .MuiSwitch-switchBase.Mui-checked": { color: "#445C91" },
+          "& .MuiSwitch-switchBase.Mui-checked": { color: "#4684ff" },
           "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-            backgroundColor: "#445C91",
+            backgroundColor: "#4684ff",
           },
         }}
       />

@@ -9,30 +9,41 @@ const StatusBadge = ({ isActive, isExpired = false, size = 10 }) => {
 
   const colorMap = {
     ACTIVE: {
-      badgeClass: "bg-green-100 text-green-600",
-      indicatorColor: "green",
+      bg: '#10b981',
+      text: '#ffffff',
+      indicatorColor: 'white',
+      shadow: 'rgba(16, 185, 129, 0.2)',
     },
     INACTIVE: {
-      badgeClass: "bg-red-100 text-red-600",
-      indicatorColor: "red",
+      bg: '#ef4444',
+      text: '#ffffff',
+      indicatorColor: 'white',
+      shadow: 'rgba(239, 68, 68, 0.2)',
     },
     EXPIRED: {
-      badgeClass: "bg-gray-200 text-gray-600",
-      indicatorColor: "gray",
+      bg: '#6b7280',
+      text: '#ffffff',
+      indicatorColor: 'white',
+      shadow: 'rgba(107, 114, 128, 0.2)',
     },
   };
 
-  const { badgeClass, indicatorColor } = colorMap[status];
+  const colors = colorMap[status];
 
   return (
     <div
-      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full font-medium ${badgeClass}`}
+      className="inline-flex items-center gap-1 px-3 py-2 rounded-full font-semibold"
+      style={{
+        backgroundColor: colors.bg,
+        color: colors.text,
+        boxShadow: `0 2px 4px ${colors.shadow}`,
+      }}
     >
       <StatusIndicator
         isActive={status === "ACTIVE"}
         size={size}
-        activeColor={indicatorColor}
-        inactiveColor={indicatorColor}
+        activeColor={colors.indicatorColor}
+        inactiveColor={colors.indicatorColor}
         useInlineColor={true}
       />
       <span style={{ fontSize: `${size + 1}px`, lineHeight: 1 }}>{status}</span>

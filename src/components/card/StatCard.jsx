@@ -12,7 +12,7 @@ const StatCard = ({
 }) => {
   return (
     <div
-      className={`flex flex-col justify-between w-full h-[140px] rounded-[16px] border-l-4 border-[#5B7FE5] bg-white p-4 shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
+      className={`flex flex-col justify-between w-full h-[180px] rounded-[16px] border-l-4 border-[#5B7FE5] bg-white p-4 shadow-md hover:shadow-xl hover:scale-101 hover:border-l-[6px] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer ${className}`}
     >
       <div className="flex justify-between items-start">
         <p className="text-sm font-medium text-gray-600">{title}</p>

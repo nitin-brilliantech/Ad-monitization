@@ -4,8 +4,8 @@ import StatCard from "../../../components/card/StatCard";
 import ReusableTable from "../../../components/table/ReusableTable";
 import TicketDetailsModal from "./TicketDetailsModal";
 import { ticketCounts, ticketRows } from "./ticketData";
-import COLORS from "../../../constants/Colors";
 import Toast from "../../../components/ui/toast/Toast";
+import TicketStatusBadge from "../../../components/ui/badges/TicketStatusBadge";
 
 const TicketSystem = () => {
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -114,25 +114,7 @@ const TicketSystem = () => {
     {
       id: "status",
       label: "Status",
-      render: (row) => {
-        const styles = {
-          "OPEN": "bg-orange-100 text-orange-700",
-          "INPROGRESS": "bg-yellow-100 text-yellow-700",
-          "RESOLVED": "bg-blue-100 text-blue-700",
-          "REOPEN": "bg-red-100 text-red-700",
-          "CLOSED": "bg-green-100 text-green-700",
-        };
-
-        return (
-          <span
-            className={`px-3 py-1 rounded text-sm ${
-              styles[row.status] || "bg-gray-100 text-gray-700"
-            }`}
-          >
-            {row.status}
-          </span>
-        );
-      },
+      render: (row) => <TicketStatusBadge status={row.status} size={11} />,
     },
     {
       id: "role",
@@ -142,12 +124,12 @@ const TicketSystem = () => {
           label={row.role}
           size="small"
           sx={{
-            backgroundColor:
-              row.role === "Retailer" ? COLORS.gold : COLORS.primary,
+            backgroundColor: row.role === "Retailer" ? "#10b981" : "#5B7FE5",
             color: "white",
             fontWeight: 600,
             px: 1.5,
-            borderRadius: 2,
+            borderRadius: 10,
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           }}
         />
       ),

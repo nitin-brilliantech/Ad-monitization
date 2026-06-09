@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import ReusableTable from "../../../components/table/ReusableTable";
 import { useDispatch } from "react-redux";
 import {fetchCampaigns} from "../../../redux/slices/admin/campaignSlice"
+import ApprovalBadge from "../../../components/ui/badges/ApprovalBadge";
 
 const BidReview = () => {
   const { campaigns, loading } = useSelector((state) => state.adminCampaign);
@@ -44,19 +45,7 @@ const BidReview = () => {
     {
       id: "status",
       label: "Status",
-      render: (row) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            row.isApproved === "APPROVED"
-              ? "bg-green-100 text-green-700"
-              : row.isApproved === "PENDING"
-              ? "bg-yellow-100 text-yellow-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {row.isApproved}
-        </span>
-      ),
+      render: (row) => <ApprovalBadge status={row.isApproved} size={11} />,
     },
     {
       id: "slotDetails",

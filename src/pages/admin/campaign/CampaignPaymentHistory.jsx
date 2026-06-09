@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReusableTable from "../../../components/table/ReusableTable";
-// import Modal from "../../../components/modal/Modal";
 import { fetchCampaignPayments } from "../../../redux/slices/admin/campaignSlice"; 
 import { Modal } from "../../../components/ui/modal/Modal";
+import PaymentStatusBadge from "../../../components/ui/badges/PaymentStatusBadge";
 
 const CampaignPaymentHistory = () => {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
@@ -38,11 +38,7 @@ const CampaignPaymentHistory = () => {
     {
       id: "status",
       label: "Status",
-      render: (row) => (
-        <span className={getStatusBadge(row.status)}>
-          {row.status}
-        </span>
-      ),
+      render: (row) => <PaymentStatusBadge status={row.status} size={11} />,
     },
   ];
 
@@ -53,20 +49,6 @@ const CampaignPaymentHistory = () => {
 
   const handleRefresh = () => {
     dispatch(fetchCampaignPayments());
-  };
-
-  const getStatusBadge = (status) => {
-    const baseClass = "px-3 py-1 text-xs font-semibold rounded-full w-fit ";
-    switch (status) {
-      case "Paid":
-        return baseClass + "bg-green-100 text-green-700";
-      case "Pending":
-        return baseClass + "bg-yellow-100 text-yellow-700";
-      case "Overdue":
-        return baseClass + "bg-red-100 text-red-700";
-      default:
-        return baseClass + "bg-gray-100 text-gray-700";
-    }
   };
 
   return (
@@ -114,9 +96,7 @@ const CampaignPaymentHistory = () => {
               </p>
               <p>
                 <span className="font-semibold">Status:</span>{" "}
-                <span className={getStatusBadge(selectedCampaign.status)}>
-                  {selectedCampaign.status}
-                </span>
+                <PaymentStatusBadge status={selectedCampaign.status} size={11} />
               </p>
             </div>
           </div>

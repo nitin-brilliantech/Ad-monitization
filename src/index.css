@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
-/* ── Custom animations ─────────────────────────────────────── */
+/* ── react-toastify reset — our Toast.jsx owns all styling ─── */
+.Toastify__toast {
+  padding: 0 !important;
+  min-height: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.Toastify__toast-body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.Toastify__progress-bar {
+  height: 2px !important;
+  border-radius: 0 0 12px 12px !important;
+}
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.85); }
   to   { opacity: 1; transform: scale(1); }

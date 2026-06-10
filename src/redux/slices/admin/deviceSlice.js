@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import Toast from "../../../components/ui/toast/Toast";
 import {
   getDevicesAPI,
   createDeviceAPI,
@@ -16,7 +16,7 @@ export const fetchDevices = createAsyncThunk(
       const res = await getDevicesAPI(); // { message, data: [...] }
       return res.data; // only return the array
     } catch (err) {
-      toast.error("Failed to fetch devices");
+      Toast.error("Failed to fetch devices");
       return rejectWithValue(err.response?.data || "Fetch failed");
     }
   }
@@ -28,10 +28,10 @@ export const createDevice = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await createDeviceAPI(payload); // { message, data: {...} }
-      toast.success("Device added successfully");
+      Toast.success("Device added successfully");
       return res.data; // return only the new device object
     } catch (err) {
-      toast.error("Failed to add device");
+      Toast.error("Failed to add device");
       return rejectWithValue(err.response?.data || "Create failed");
     }
   }
@@ -43,10 +43,10 @@ export const updateDevice = createAsyncThunk(
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await updateDeviceAPI(id, data); // { message, data: {...} }
-      toast.success("Device updated successfully");
+      Toast.success("Device updated successfully");
       return res.data;
     } catch (err) {
-      toast.error("Failed to update device");
+      Toast.error("Failed to update device");
       return rejectWithValue(err.response?.data || "Update failed");
     }
   }
@@ -58,10 +58,10 @@ export const deleteDevice = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await deleteDeviceAPI(id);
-      toast.success("Device deleted successfully");
-      return id; // return only the id
+      Toast.success("Device deleted successfully");
+      return id;
     } catch (err) {
-      toast.error("Failed to delete device");
+      Toast.error("Failed to delete device");
       return rejectWithValue(err.response?.data || "Delete failed");
     }
   }
@@ -75,7 +75,7 @@ export const getDeviceByIdOrName = createAsyncThunk(
       const res = await getDeviceByIdOrNameAPI(identifier); // { message, data: {...} }
       return res.data;
     } catch (err) {
-      toast.error("Device not found");
+      Toast.error("Device not found");
       return rejectWithValue(err.response?.data || "Fetch failed");
     }
   }

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import Toast from "../../../components/ui/toast/Toast";
 import {
   createCampaignAPI,
   getCampaignsAPI,
@@ -16,10 +16,10 @@ export const createCampaign = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await createCampaignAPI(data);
-      toast.success("Campaign created successfully!");
+      Toast.success("Campaign created successfully!");
       return response;
     } catch (error) {
-      toast.error(
+      Toast.error(
         error.response?.data?.errors?.[0]?.message ||
           error.response?.data?.message ||
           "An error occurred while creating the campaign."
@@ -37,7 +37,7 @@ export const fetchCampaigns = createAsyncThunk(
       const response = await getCampaignsAPI();
       return response.data;
     } catch (error) {
-      toast.error("Failed to fetch campaigns.");
+      Toast.error("Failed to fetch campaigns.");
       return rejectWithValue(error.response?.data);
     }
   }
@@ -49,10 +49,10 @@ export const updateCampaign = createAsyncThunk(
   async ({ id, data, oldImages = [], oldVideos = [] }, { rejectWithValue }) => {
     try {
       const response = await updateUserCampaign(id, data, oldImages, oldVideos);
-      toast.success("Campaign updated successfully!");
+      Toast.success("Campaign updated successfully!");
       return response;
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to update campaign");
+      Toast.error(err.response?.data?.message || "Failed to update campaign");
       return rejectWithValue(err.response?.data);
     }
   }
@@ -64,10 +64,10 @@ export const deleteCampaign = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await deleteCampaignAPI(id);
-      toast.success("Campaign deleted successfully!");
+      Toast.success("Campaign deleted successfully!");
       return id;
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to delete campaign");
+      Toast.error(err.response?.data?.message || "Failed to delete campaign");
       return rejectWithValue(err.response?.data);
     }
   }

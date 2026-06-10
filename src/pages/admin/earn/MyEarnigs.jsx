@@ -72,7 +72,7 @@ const AdminMyEarnings = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
+    <div className="w-full">
       <header className="max-w-7xl mx-auto mb-8">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
           Revenue
@@ -164,7 +164,7 @@ const AdminMyEarnings = () => {
           </div>
         )}
       </Modal>
-    </main>
+    </div>
   );
 };
 

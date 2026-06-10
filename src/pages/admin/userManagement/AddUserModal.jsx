@@ -61,7 +61,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
             {/* Name + Role */}
             <div className="flex">
               <div className="flex-1 mr-4 gap-2">
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Full Name</label>
                 <Input
                   type="text"
                   placeholder="Enter full name"
@@ -74,7 +74,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Role</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Role</label>
                 <div className="flex gap-2">
                   {["Retailer", "Ad-Agency"].map((role) => (
                     <Button
@@ -97,7 +97,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
 
             {/* ✅ Business Name */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Business Name</label>
+              <label className="block font-semibold text-md text-gray-900 mb-1">Business Name</label>
               <Input
                 type="text"
                 placeholder="Legal Name as per Tax Certificate"
@@ -112,7 +112,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
             {/* Email + Phone */}
             <div className="flex items-center space-x-4">
               <div className="flex-1">
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Email</label>
                 <Input
                   type="email"
                   placeholder="Enter email address"
@@ -123,7 +123,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
                 )}
               </div>
               <div className="flex-1">
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Phone Number</label>
                 <Input
                   type="text"
                   placeholder="Enter phone number"

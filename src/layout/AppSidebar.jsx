@@ -68,13 +68,16 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`fixed md:static top-0 left-0 h-full z-40 bg-white w-70 flex flex-col transition-transform duration-300 ease-in-out shadow-lg border-r border-gray-100 ${
+      className={`fixed md:static top-0 left-0 h-full z-40 bg-white w-75 flex flex-col transition-transform duration-300 ease-in-out shadow-lg border-r border-gray-100 ${
         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       }`}
     >
       {/* Logo Header */}
-      <div className="flex items-center justify-between p-5 mb-2 border-b border-gray-300 shadow-md">
-        <img src="/images/logo/bts-short-logo.png" alt="logo" className="h-10" />
+      <div className="flex items-center justify-between px-3 py-5 mb-2 border-b border-gray-300 shadow-md">
+        <div className="flex gap-2 justify-center items-center">
+        <img src="/images/logo/logo.png" alt="logo" className="h-10" />
+        <h1 className="text-2xl font-semibold text-gray-500">AD MONETIZATION</h1>
+        </div>
         <button 
           className="md:hidden text-gray-500 hover:text-gray-700 transition-colors p-1" 
           onClick={toggleSidebar}

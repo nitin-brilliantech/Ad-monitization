@@ -16,7 +16,7 @@ const RejectCampaignModal = ({
         </div>
         <div className="space-y-4 pt-2">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Reason for Rejection <span className="text-red-500">*</span></label>
+            <label className="block font-semibold text-md text-gray-900 mb-1">Reason for Rejection <span className="text-red-500">*</span></label>
             <textarea value={remark} onChange={(e) => setRemark(e.target.value)} placeholder="Provide a clear reason for rejection..."
               className="w-full h-28 p-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-400 resize-none" />
           </div>

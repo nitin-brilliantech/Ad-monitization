@@ -24,15 +24,15 @@ import LocationFields from "../../components/LocationsDropdown/LocationFields";
 
 const ROLE_STYLE = {
   SUPERADMIN: "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md",
-  ADMIN:      "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md",
-  Retailer:   "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md",
-  "Ad-Agency":"bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md",
+  ADMIN: "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md",
+  Retailer: "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md",
+  "Ad-Agency": "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md",
 };
 const ROLE_LABEL = {
   SUPERADMIN: "Super Admin",
-  ADMIN:      "Admin",
-  Retailer:   "Retailer",
-  "Ad-Agency":"Ad Agency",
+  ADMIN: "Admin",
+  Retailer: "Retailer",
+  "Ad-Agency": "Ad Agency",
 };
 
 // Single info row used in the info cards
@@ -70,14 +70,14 @@ const SectionCard = ({ title, icon, action, children }) => (
 /* ── main component ───────────────────────────────────────── */
 const UserDetails = () => {
   const dispatch = useDispatch();
-  const user     = useCurrentUser();
+  const user = useCurrentUser();
 
   const [editMode, setEditMode] = useState({
-    profile:       false,
+    profile: false,
     passwordModal: false,
   });
-  const [updating,       setUpdating]       = useState(false);
-  const [passwordLoading,setPasswordLoading]= useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
   const {
     register: registerProfile,
@@ -96,17 +96,17 @@ const UserDetails = () => {
   } = useForm();
 
   const isAdminOrSuperAdmin = ["SUPERADMIN", "ADMIN"].includes(user?.role);
-  const isAdmin             = user?.role === "ADMIN";
+  const isAdmin = user?.role === "ADMIN";
 
   useEffect(() => {
     if (user) {
       resetProfile({
         fullName: user?.fullName || user?.name || "",
-        phone:    user?.phone    || "",
-        country:  user?.country  || "",
-        state:    user?.state    || "",
-        city:     user?.city     || "",
-        address:  user?.address  || "",
+        phone: user?.phone || "",
+        country: user?.country || "",
+        state: user?.state || "",
+        city: user?.city || "",
+        address: user?.address || "",
       });
     }
   }, [user, resetProfile]);
@@ -141,7 +141,7 @@ const UserDetails = () => {
     const { currentPassword, newPassword } = data;
     setPasswordLoading(true);
     try {
-      const thunk    = isAdminOrSuperAdmin ? resetAdminPassword : resetUserPassword;
+      const thunk = isAdminOrSuperAdmin ? resetAdminPassword : resetUserPassword;
       const response = await dispatch(thunk({ currentPassword, newPassword })).unwrap();
       cancelEdit("passwordModal");
       Toast.success(response?.message || "Password updated!");
@@ -159,9 +159,9 @@ const UserDetails = () => {
     resetPassword();
   };
 
-  const name     = user?.fullName || user?.name || "User";
+  const name = user?.fullName || user?.name || "User";
   const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase();
-  const avatar   = user?.avatar || user?.profile_url || user?.profilePic;
+  const avatar = user?.avatar || user?.profile_url || user?.profilePic;
 
   return (
     <div className="relative w-full mx-auto py-6">
@@ -179,7 +179,7 @@ const UserDetails = () => {
           <div className="h-28 bg-gradient-to-r from-[#4684ff] via-[#3a6fe6] to-[#2d5acc] relative">
             {/* subtle pattern */}
             <div className="absolute inset-0 opacity-10"
-              style={{backgroundImage:"radial-gradient(circle at 20% 50%,#fff 1px,transparent 1px),radial-gradient(circle at 80% 20%,#fff 1px,transparent 1px)",backgroundSize:"40px 40px"}}
+              style={{ backgroundImage: "radial-gradient(circle at 20% 50%,#fff 1px,transparent 1px),radial-gradient(circle at 80% 20%,#fff 1px,transparent 1px)", backgroundSize: "40px 40px" }}
             />
           </div>
 
@@ -242,13 +242,13 @@ const UserDetails = () => {
           }
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <InfoRow icon={<User size={16} />}     label="Full Name"      value={user?.fullName || user?.name} />
-            <InfoRow icon={<Phone size={16} />}    label="Mobile Number"  value={user?.phone} />
-            <InfoRow icon={<Mail size={16} />}     label="Email"          value={user?.email} />
-            <InfoRow icon={<MapPin size={16} />}   label="City"           value={user?.city} />
-            <InfoRow icon={<MapPin size={16} />}   label="State"          value={user?.state} />
-            <InfoRow icon={<MapPin size={16} />}   label="Country"        value={user?.country} />
-            <InfoRow icon={<MapPin size={16} />}   label="Address"        value={user?.address} />
+            <InfoRow icon={<User size={16} />} label="Full Name" value={user?.fullName || user?.name} />
+            <InfoRow icon={<Phone size={16} />} label="Mobile Number" value={user?.phone} />
+            <InfoRow icon={<Mail size={16} />} label="Email" value={user?.email} />
+            <InfoRow icon={<MapPin size={16} />} label="City" value={user?.city} />
+            <InfoRow icon={<MapPin size={16} />} label="State" value={user?.state} />
+            <InfoRow icon={<MapPin size={16} />} label="Country" value={user?.country} />
+            <InfoRow icon={<MapPin size={16} />} label="Address" value={user?.address} />
             {!isAdminOrSuperAdmin && (
               <InfoRow icon={<Calendar size={16} />} label="Member Since" value={formatDate(user?.createdAt)} />
             )}
@@ -259,12 +259,12 @@ const UserDetails = () => {
         {!isAdminOrSuperAdmin && (
           <SectionCard title="Organisation Details" icon={<Building size={16} />}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <InfoRow icon={<Building size={16} />} label="Business Name"         value={user?.businessName} />
-              <InfoRow icon={<Building size={16} />} label="Business Type"         value={user?.businessType} />
-              <InfoRow icon={<Building size={16} />} label="GST Number"            value={user?.gstNumber} />
-              <InfoRow icon={<Mail size={16} />}     label="Organisation Email"    value={user?.orgEmail || user?.email} />
-              <InfoRow icon={<Phone size={16} />}    label="Organisation Phone"    value={user?.orgPhone || user?.phone} />
-              <InfoRow icon={<Calendar size={16} />} label="Registered On"         value={formatDate(user?.createdAt)} />
+              <InfoRow icon={<Building size={16} />} label="Business Name" value={user?.businessName} />
+              <InfoRow icon={<Building size={16} />} label="Business Type" value={user?.businessType} />
+              <InfoRow icon={<Building size={16} />} label="GST Number" value={user?.gstNumber} />
+              <InfoRow icon={<Mail size={16} />} label="Organisation Email" value={user?.orgEmail || user?.email} />
+              <InfoRow icon={<Phone size={16} />} label="Organisation Phone" value={user?.orgPhone || user?.phone} />
+              <InfoRow icon={<Calendar size={16} />} label="Registered On" value={formatDate(user?.createdAt)} />
             </div>
           </SectionCard>
         )}
@@ -276,13 +276,16 @@ const UserDetails = () => {
         <Modal isOpen={editMode.profile} onClose={() => cancelEdit("profile")} size="md">
           {/* Full-bleed header */}
           <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
-            <div>
-              <h2 className="text-2xl font-bold text-white">Edit Profile</h2>
-              <p className="text-sm text-white/70 mt-0.5">Update your personal information</p>
+            <div className="flex gap-4">
+              <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Edit className="w-7 h-7 text-white" />
+              </div>
+              <div className="">
+                <h2 className="text-2xl font-bold text-white">Edit Profile</h2>
+                <p className="text-sm text-white/70 mt-0.5">Update your personal information</p>
+              </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Edit className="w-5 h-5 text-white" />
-            </div>
+
           </div>
           <form onSubmit={handleProfileSubmitForm(handleProfileSubmit)} className="space-y-4 mt-6" autoComplete="off">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -336,13 +339,16 @@ const UserDetails = () => {
       <Modal isOpen={editMode.passwordModal} onClose={() => cancelEdit("passwordModal")}>
         {/* Full-bleed header */}
         <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+          <div className="flex gap-4">
+            <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <Lock className="w-7 h-7 text-white" />
+          </div>
           <div>
             <h2 className="text-2xl font-bold text-white">Change Password</h2>
             <p className="text-sm text-white/70 mt-0.5">Keep your account secure</p>
+            </div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-            <Lock className="w-5 h-5 text-white" />
-          </div>
+          
         </div>
         <form onSubmit={handlePasswordSubmitForm(handlePasswordSubmit)} className="flex flex-col gap-4 mt-6">
           <Input

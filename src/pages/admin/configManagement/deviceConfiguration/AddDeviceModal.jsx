@@ -66,7 +66,7 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
           <div className="space-y-4 pt-2">
             {/* Device Type */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Device Type</label>
+              <label className="block font-semibold text-md text-gray-900 mb-1">Device Type</label>
               <Controller control={control} name="name" rules={{ required: "Device type is required" }}
                 render={({ field }) => (
                   <Select {...field} options={deviceOptions} placeholder="Select device type"
@@ -81,13 +81,13 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
             {/* Resolution */}
             <div className="flex space-x-4">
               <div className="w-full">
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Height</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Height</label>
                 <input type="number" {...register("height", { required: "Height is required", valueAsNumber: true })} placeholder="Height"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff]/30 focus:border-[#4684ff]" />
                 {errors.height && <p className="text-red-500 text-sm mt-1">{errors.height.message}</p>}
               </div>
               <div className="w-full">
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Width</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Width</label>
                 <input type="number" {...register("width", { required: "Width is required", valueAsNumber: true })} placeholder="Width"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff]/30 focus:border-[#4684ff]" />
                 {errors.width && <p className="text-red-500 text-sm mt-1">{errors.width.message}</p>}
@@ -97,7 +97,7 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
             {/* Orientation + Price */}
             <div className="flex w-full items-center justify-between">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Orientation</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Orientation</label>
                 <div className="flex gap-2">
                   {["Horizontal", "Vertical"].map((opt) => (
                     <Button key={opt} type="button" isIcon={false} variant="custom" onClick={() => setOrientation(opt)}
@@ -108,7 +108,7 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Custom Price (₹)</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Custom Price (₹)</label>
                 <input type="number" step="0.01" {...register("price", { valueAsNumber: true })} placeholder="Enter price"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff]/30 focus:border-[#4684ff]" />
                 {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}

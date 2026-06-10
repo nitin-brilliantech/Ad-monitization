@@ -87,7 +87,7 @@ const EditDeviceModal = ({
           <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
             <h2 className="text-2xl font-bold text-white">Edit Device</h2>
           </div>
-          <div className="space-y-4 pt-2">
+          <div className="space-y-4 pt-6">
             {/* Device Type */}
             <Controller control={control} name="name" rules={{ required: "Device type is required" }}
               render={({ field }) => (
@@ -117,7 +117,7 @@ const EditDeviceModal = ({
             {/* Orientation + Price */}
             <div className="flex w-full items-center justify-between">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Orientation</label>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Orientation</label>
                 <div className="flex gap-2">
                   {["Horizontal", "Vertical"].map((opt) => (
                     <Button key={opt} type="button" isIcon={false} variant="custom" onClick={() => setOrientation(opt)}

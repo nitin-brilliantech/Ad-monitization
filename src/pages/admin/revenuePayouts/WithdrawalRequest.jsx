@@ -113,107 +113,85 @@ const WithdrawalRequest = () => {
       />
 
       {/* Main Details Modal */}
-      <Modal isOpen={modalOpen} onClose={handleCloseModal} size="md">
+      <Modal isOpen={modalOpen} onClose={handleCloseModal} size="md" showCloseButton={true}>
         {selectedRow && (
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">
-              Withdrawal Request
-            </h2>
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+              <div className="flex gap-4">
+                <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-7 h-7">
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white">Withdrawal Request</h2>
+                  <p className="text-md text-white/70 mt-0.5">Request details and status</p>
+                </div>
+              </div>
+              <ApprovalBadge status={selectedRow.isApproved} size={12} />
+            </div>
 
             {/* Content */}
-
-            <div className="divide-y divide-gray-100 text-sm">
-              {/* Request Code */}
-              <div className="flex items-center justify-between py-2">
-                <span className="text-gray-500 text-xs uppercase tracking-wide">
-                  Request Code
-                </span>
-                <span className="text-gray-800 font-medium">
-                  {selectedRow.withdrawalRequestCode}
-                </span>
+            <div className="space-y-4 pt-2">
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Request Code</span>
+                <span className="text-sm text-gray-700">{selectedRow.withdrawalRequestCode}</span>
               </div>
 
-              {/* Name */}
-              <div className="flex items-center justify-between py-2">
-                <span className="text-gray-500 text-xs uppercase tracking-wide">
-                  Name
-                </span>
-                <span className="text-gray-800">{selectedRow.name}</span>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Name</span>
+                <span className="text-sm text-gray-700">{selectedRow.name}</span>
               </div>
 
-              {/* Amount */}
-              <div className="flex items-center justify-between py-2">
-                <span className="text-gray-500 text-xs uppercase tracking-wide">
-                  Amount
-                </span>
-                <span className="text-gray-900 font-semibold text-base">
-                  ₹{selectedRow.amount}
-                </span>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Amount</span>
+                <span className="text-sm text-gray-900 font-bold">₹{selectedRow.amount}</span>
               </div>
 
-              {/* Payment Method */}
-              <div className="flex items-center justify-between py-2">
-                <span className="text-gray-500 text-xs uppercase tracking-wide">
-                  Payment Method
-                </span>
-                <span className="text-gray-800 uppercase">
-                  {selectedRow.paymentMethod}
-                </span>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Payment Method</span>
+                <span className="text-sm text-gray-700 uppercase">{selectedRow.paymentMethod}</span>
               </div>
 
-              {/* UPI ID */}
               {selectedRow?.upiId && (
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-500 text-xs uppercase tracking-wide">
-                    UPI ID
-                  </span>
-                  <span className="text-gray-800">{selectedRow.upiId}</span>
+                <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                  <span className="font-semibold text-md text-gray-900">UPI ID</span>
+                  <span className="text-sm text-gray-700">{selectedRow.upiId}</span>
                 </div>
               )}
 
-              {/* Status */}
-              <div className="flex items-center justify-between py-2">
-                <span className="text-gray-500 text-xs uppercase tracking-wide">
-                  Status
-                </span>
-                <ApprovalBadge status={selectedRow.isApproved} size={12} />
-              </div>
-
-              {/* Date */}
-              <div className="flex items-center justify-between py-2">
-                <span className="text-gray-500 text-xs uppercase tracking-wide">
-                  Date
-                </span>
-                <span className="text-gray-800">
-                  {moment(selectedRow.createdAt).format("DD/MM/YYYY")}
-                </span>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Date</span>
+                <span className="text-sm text-gray-700">{moment(selectedRow.createdAt).format("DD/MM/YYYY")}</span>
               </div>
 
               {/* Show rejection remark if rejected */}
               {selectedRow.isApproved === "REJECTED" && selectedRow.remark && (
-                <div className="flex flex-col">
-                  <span className="text-gray-500">Remark</span>
-                  <span className="mt-1 px-1 py-2 bg-gray-100 rounded">
-                    {selectedRow.remark || " "}
-                  </span>
+                <div className="pb-3 border-b border-gray-100">
+                  <span className="font-semibold text-md text-gray-900 block mb-2">Rejection Remark</span>
+                  <div className="px-3 py-2 bg-red-50 rounded-md text-sm text-gray-700">
+                    {selectedRow.remark}
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Action Buttons (only when pending) */}
             {selectedRow.isApproved === "PENDING" && (
-              <div className="flex gap-3 mt-8 justify-end">
+              <div className="flex gap-3 pt-4 border-t border-blue-100 justify-end">
                 <button
                   onClick={() => setIsRejectModalOpen(true)}
-                  className="px-4 py-2 cursor-pointer rounded-md bg-red-100 hover:bg-red-200 text-red-700 transition duration-150 "
+                  className="px-5 py-2 cursor-pointer rounded-full bg-red-100 hover:bg-red-200 text-red-700 transition duration-150 text-sm font-medium"
                 >
-                  REJECT
+                  Reject
                 </button>
                 <button
                   onClick={() => handleStatusUpdate(selectedRow.id, "APPROVED")}
-                  className="px-5 py-2 rounded-md bg-green-100 text-green-600 hover:bg-green-200 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  className="px-5 py-2 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition text-sm font-medium cursor-pointer"
                 >
-                  APPROVE
+                  Approve
                 </button>
               </div>
             )}

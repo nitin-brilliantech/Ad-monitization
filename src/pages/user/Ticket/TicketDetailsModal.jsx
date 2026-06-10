@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal } from "../../../components/ui/modal/Modal";
-import { toast } from "react-hot-toast";
+import Toast from "../../../components/ui/toast/Toast";
 
 const TicketDetailsModal = ({ isOpen, onClose, ticket }) => {
   const [userRemark, setUserRemark] = useState("");
@@ -118,7 +118,7 @@ const TicketDetailsModal = ({ isOpen, onClose, ticket }) => {
       userRemark
     });
 
-    toast.success(`Ticket ${ticket.ticketID} status updated to ${status}`);
+    Toast.success("Ticket Updated", `Ticket ${ticket.ticketID} status updated to ${status}`);
     onClose();
   };
 

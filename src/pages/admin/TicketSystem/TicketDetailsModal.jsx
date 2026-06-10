@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "../../../components/ui/modal/Modal";
-import { toast } from "react-hot-toast";
+import Toast from "../../../components/ui/toast/Toast";
 import MediaCarousel from "../../../components/ui/carousel/MediaCarousel";
 
 const TicketDetailsModal = ({
@@ -159,7 +159,7 @@ const TicketDetailsModal = ({
     onSubmitChanges(ticketToSubmit);
     onClose();
 
-    toast.success(
+    Toast.success(
       `Status for ticket ${localTicket.ticketNumber} has been changed by Admin from ${previousStatus} to ${pendingStatus || localTicket.status}`
     );
   };

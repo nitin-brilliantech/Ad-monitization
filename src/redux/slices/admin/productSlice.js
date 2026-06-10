@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import Toast from "../../../components/ui/toast/Toast";
 import {
   getAllProductAPI,
   createProductAPI,
@@ -15,7 +15,7 @@ export const fetchProducts = createAsyncThunk(
       const res = await getAllProductAPI(); // returns { success, data }
       return res;
     } catch (err) {
-      toast.error("Failed to fetch products");
+      Toast.error("Failed to fetch products");
       return rejectWithValue(err.response?.data || "Fetch failed");
     }
   }
@@ -27,10 +27,10 @@ export const createProduct = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await createProductAPI(payload); // returns { success, data }
-      toast.success("Product added successfully");
+      Toast.success("Product added successfully");
       return res;
     } catch (err) {
-      toast.error("Failed to add product");
+      Toast.error("Failed to add product");
       return rejectWithValue(err.response?.data || "Create failed");
     }
   }
@@ -42,10 +42,10 @@ export const updateProduct = createAsyncThunk(
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await updateProductAPI(data, id); // returns { success, data }
-      toast.success("Product updated successfully");
+      Toast.success("Product updated successfully");
       return res;
     } catch (err) {
-      toast.error("Failed to update product");
+      Toast.error("Failed to update product");
       return rejectWithValue(err.response?.data || "Update failed");
     }
   }
@@ -57,10 +57,10 @@ export const deleteProduct = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await deleteProductAPI(id); // returns { success, message }
-      toast.success("Product deleted successfully");
-      return id; // return id for removing from state
+      Toast.success("Product deleted successfully");
+      return id;
     } catch (err) {
-      toast.error("Failed to delete product");
+      Toast.error("Failed to delete product");
       return rejectWithValue(err.response?.data || "Delete failed");
     }
   }

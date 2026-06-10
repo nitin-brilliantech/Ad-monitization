@@ -8,7 +8,6 @@ import { Modal } from "../../../components/ui/modal/Modal";
 import FormBuilder from "../../../components/form/FromBuilder";
 import Swal from "sweetalert2";
 import TicketDetailsModal from "./TicketDetailsModal";
-import { Toaster } from "react-hot-toast";
 
 const TicketRaise = () => {
     const dispatch = useDispatch();
@@ -172,7 +171,6 @@ const TicketRaise = () => {
 
     return (
         <div className="p-4">
-            <Toaster position="bottom-right" />
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-800">Tickets history</h2>
             </div>

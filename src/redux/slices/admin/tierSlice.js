@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import Toast from "../../../components/ui/toast/Toast";
 import {
   getAllTierAPI,
   createTierAPI,
@@ -15,7 +15,7 @@ export const fetchTier = createAsyncThunk(
       const res = await getAllTierAPI(); // returns { success, data }
       return res;
     } catch (err) {
-      toast.error("Failed to fetch tiers");
+      Toast.error("Failed to fetch tiers");
       return rejectWithValue(err.response?.data || "Fetch failed");
     }
   }
@@ -27,10 +27,10 @@ export const createTier = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await createTierAPI(payload); // returns { success, data }
-      toast.success("Tier added successfully");
+      Toast.success("Tier added successfully");
       return res;
     } catch (err) {
-      toast.error("Failed to add tier");
+      Toast.error("Failed to add tier");
       return rejectWithValue(err.response?.data || "Create failed");
     }
   }
@@ -42,10 +42,10 @@ export const updateTier = createAsyncThunk(
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await updateTierAPI(data, id); // returns { success, data }
-      toast.success("Tier updated successfully");
+      Toast.success("Tier updated successfully");
       return res;
     } catch (err) {
-      toast.error("Failed to update tier");
+      Toast.error("Failed to update tier");
       return rejectWithValue(err.response?.data || "Update failed");
     }
   }
@@ -57,10 +57,10 @@ export const deleteTier = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await deleteTierAPI(id); // returns { success, message }
-      toast.success("Tier deleted successfully");
+      Toast.success("Tier deleted successfully");
       return id;
     } catch (err) {
-      toast.error("Failed to delete tier");
+      Toast.error("Failed to delete tier");
       return rejectWithValue(err.response?.data || "Delete failed");
     }
   }

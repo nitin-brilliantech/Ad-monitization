@@ -184,7 +184,7 @@ const Navbar = ({ toggleSidebar }) => {
 
       {/* Right: Lang + Profile */}
       <div className="flex items-center gap-4">
-        {/* <select
+        <select
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
           className="text-sm border border-gray-200 rounded-lg px-2.5 py-1.5 bg-white text-gray-600 focus:outline-none focus:border-[#4684ff] transition-colors cursor-pointer"
@@ -192,12 +192,12 @@ const Navbar = ({ toggleSidebar }) => {
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>{lang.label}</option>
           ))}
-        </select> */}
+        </select>
 
         <div className="relative" ref={profileRef}>
           <div
             onClick={() => setShowProfile((prev) => !prev)}
-            className="cursor-pointer flex items-center gap-2.5 px-3 py-2 bg-gradient-to-r from-[#4684ff] to-[#3a6fe6] rounded-xl hover:from-[#3a6fe6] hover:to-[#2d5acc] hover:shadow-lg transition-all duration-200"
+            className="cursor-pointer flex items-center gap-2.5 px-3 py-2 bg-gradient-to-r from-[#578bf2] to-[#497df6] rounded-xl hover:from-[#3a6fe6] hover:to-[#2d5acc] hover:shadow-lg transition-all duration-200"
           >
             <img
               src={user?.avatar || user?.profile_url || "logo.svg"}

@@ -13,7 +13,7 @@ export const Modal = ({
   containerSx = {},
   modalSx = {},
   disableBackdropClick = false,
-  formLoading =false
+  formLoading = false
 }) => {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
@@ -84,12 +84,12 @@ export const Modal = ({
             onClick={onClose}
             className="!absolute right-4 top-4 text-gray-400 hover:text-blue-600 z-10 transition-colors"
           >
-            <CloseIcon />
+            <CloseIcon className="text-white" />
           </IconButton>
         )}
         {formLoading && (
-  <LoaderEmpt size="large" />)}
-{children}
+          <LoaderEmpt size="large" />)}
+        {children}
 
 
 

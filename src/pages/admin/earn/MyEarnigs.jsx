@@ -122,26 +122,44 @@ const AdminMyEarnings = () => {
         isOpen={!!selectedTransaction}
         onClose={() => setSelectedTransaction(null)}
         size="md"
+        showCloseButton={true}
       >
         {selectedTransaction && (
-          <div>
-            <h3 className="text-xl font-bold mb-4 text-gray-800">
-              Transaction Details
-            </h3>
-            <div className="space-y-2 text-gray-700">
-              <p>
-                <strong>Date:</strong> {new Date(selectedTransaction.createdAt).toLocaleString()}
-              </p>
-              <p>
-                <strong>Campaign:</strong>{" "}
-                {selectedTransaction.campaignName} ({selectedTransaction.campaignCode})
-              </p>
-              <p>
-                <strong>Amount:</strong> ₹{selectedTransaction.amount}
-              </p>
-              <p>
-                <strong>Business:</strong> {selectedTransaction.businessName}
-              </p>  
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+              <div className="flex gap-4">
+                <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-7 h-7">
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white">Transaction Details</h2>
+                  <p className="text-md text-white/70 mt-0.5">Revenue transaction information</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="space-y-4 pt-2">
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Date</span>
+                <span className="text-sm text-gray-700">{new Date(selectedTransaction.createdAt).toLocaleDateString()}</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Campaign</span>
+                <span className="text-sm text-gray-700">{selectedTransaction.campaignName} ({selectedTransaction.campaignCode})</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Amount</span>
+                <span className="text-sm text-gray-900 font-bold">₹{selectedTransaction.amount}</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Business</span>
+                <span className="text-sm text-gray-700">{selectedTransaction.businessName}</span>
+              </div>
             </div>
           </div>
         )}

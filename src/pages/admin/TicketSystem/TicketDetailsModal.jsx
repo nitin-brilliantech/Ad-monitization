@@ -286,7 +286,7 @@ const TicketDetailsModal = ({
             <InfoBox label="Email" value={localTicket.email} />
             <InfoBox label="Category" value={localTicket.category} />
             <div>
-              <label className="text-sm text-gray-600">Status</label>
+              <label className="font-semibold text-md text-gray-900">Status</label>
               <div className={`mt-1 w-full px-3 py-2 ${getStatusColor(pendingStatus || localTicket.status).bg
                 } ${getStatusColor(pendingStatus || localTicket.status).text
                 } ${getStatusColor(pendingStatus || localTicket.status).border
@@ -299,7 +299,7 @@ const TicketDetailsModal = ({
 
           {/* Description */}
           <div>
-            <label className="text-sm text-gray-600">Description</label>
+            <label className="font-semibold text-md text-gray-900">Description</label>
             <div className="mt-1 w-full px-3 py-2 text-gray-800 bg-white border border-gray-200 rounded-md shadow-sm text-sm min-h-[80px]">
               {localTicket.description}
             </div>
@@ -308,7 +308,7 @@ const TicketDetailsModal = ({
           {/* Media Preview Grid */}
           {localTicket.media?.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-sm font-semibold text-gray-600 mb-2">Media Submitted by User</h3>
+              <h3 className="font-semibold text-md text-gray-900 mb-2">Media Submitted by User</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {localTicket.media.map((url, index) => renderMediaPreview(url, index))}
               </div>
@@ -331,7 +331,7 @@ const TicketDetailsModal = ({
           {/* Status Select */}
           {isEditable && (
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-              <label className="text-sm font-medium text-gray-600">Update Status:</label>
+              <label className="font-semibold text-md text-gray-900">Update Status:</label>
               <select
                 className="w-60 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2"
                 value={pendingStatus || localTicket.status}
@@ -346,7 +346,7 @@ const TicketDetailsModal = ({
 
           {/* Admin Remark */}
           <div>
-            <label className="text-sm text-gray-600">
+            <label className="font-semibold text-md text-gray-900">
               Admin Remark <span className="text-red-500">*</span>
             </label>
             {isClosed ? (
@@ -432,7 +432,7 @@ const TicketDetailsModal = ({
 
 const InfoBox = ({ label, value }) => (
   <div>
-    <label className="text-sm text-gray-600">{label}</label>
+    <label className="font-semibold text-md text-gray-900">{label}</label>
     <div className="mt-1 w-full px-3 py-2 text-gray-800 bg-white border border-gray-200 rounded-md shadow-sm text-sm">
       {value || "—"}
     </div>

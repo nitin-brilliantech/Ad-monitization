@@ -6,7 +6,7 @@ import { Modal } from "../../../components/ui/modal/Modal";
 import Input from "../../../components/ui/input/Input";
 import Button from "../../../components/ui/button/Button";
 import { createUser } from "../../../redux/slices/admin/userManagementSlice";
-import { Switch } from "@mui/material";
+import LiquidToggle from "../../../components/ui/toggle/LiquidToggle";
 import Toast from "../../../components/ui/toast/Toast";
 import LocationFields from "../../../components/LocationsDropdown/LocationFields";
 
@@ -52,17 +52,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
             <h2 className="text-2xl font-bold text-white">Add New User</h2>
             <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-lg">
               <span className="text-sm font-medium text-white">Status</span>
-              <Switch
-                checked
-                disabled
-                size="small"
-                sx={{
-                  "& .MuiSwitch-switchBase.Mui-checked": { color: "white" },
-                  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                    backgroundColor: "white",
-                  },
-                }}
-              />
+              <LiquidToggle checked={true} disabled variant="white" size="sm" />
             </div>
           </div>
 

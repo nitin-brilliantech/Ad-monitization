@@ -1,8 +1,8 @@
 
-import { Chip, Switch } from "@mui/material";
-import Loader from "../../../components/loader/Loader"
-import COLORS from "../../../constants/Colors";
-export const columns = (handleStatusChange,switchLoading) => [
+import { Chip } from "@mui/material";
+import LiquidToggle from "../../../components/ui/toggle/LiquidToggle";
+
+export const columns = (handleStatusChange, switchLoading) => [
   { id: "fullName", label: "Full Name" },
   { id: "email", label: "Email" },
   { id: "phone", label: "Phone Number" },
@@ -27,27 +27,12 @@ export const columns = (handleStatusChange,switchLoading) => [
   {
     id: "status",
     label: "Status",
-   render: (row) => {
-  if (switchLoading?.[row.id]) {
-    return (
-      <Loader size="small" />
-    );
-  } else {
-    return (
-      <Switch
+    render: (row) => (
+      <LiquidToggle
         checked={row.status === "ACTIVE"}
         onChange={() => handleStatusChange(row.id, row.status)}
-        size="small"
-        sx={{
-          "& .MuiSwitch-switchBase.Mui-checked": { color: COLORS.newBlue },
-          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-            backgroundColor: COLORS.newBlue,
-          },
-        }}
+        size="sm"
       />
-    );
-  }
-}
-
+    ),
   },
 ];

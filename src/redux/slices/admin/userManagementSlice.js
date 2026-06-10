@@ -31,7 +31,7 @@ export const createUser = createAsyncThunk(
   }
 );
 
-// Toggle status (ACTIVE/REJECTED)
+// Toggle status (ACTIVE/INACTIVE) — optimistic update in slice
 export const toggleUserStatus = createAsyncThunk(
   "user/toggleUserStatus",
   async ({ id, status }, { rejectWithValue }) => {
@@ -39,7 +39,7 @@ export const toggleUserStatus = createAsyncThunk(
       await toggleUserStatusAPI(id, status);
       return { id, status };
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Status update failed");
+      return rejectWithValue({ id, error: error.response?.data || "Status update failed" });
     }
   }
 );
@@ -89,11 +89,28 @@ const usersManagementSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Toggle User Status
+      // Toggle User Status — optimistic: flip immediately, revert on failure
+      .addCase(toggleUserStatus.pending, (state, action) => {
+        const { id, status } = action.meta.arg;
+        const index = state.users.findIndex((u) => u.id === id);
+        if (index !== -1) {
+          state.users[index].status = status; // flip instantly
+        }
+      })
       .addCase(toggleUserStatus.fulfilled, (state, action) => {
+        // already flipped in pending — just ensure it's in sync
         const index = state.users.findIndex((u) => u.id === action.payload.id);
         if (index !== -1) {
           state.users[index].status = action.payload.status;
+        }
+      })
+      .addCase(toggleUserStatus.rejected, (state, action) => {
+        // revert — flip back to the previous status
+        const { id, status } = action.meta.arg;
+        const previous = status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+        const index = state.users.findIndex((u) => u.id === id);
+        if (index !== -1) {
+          state.users[index].status = previous;
         }
       });
   },

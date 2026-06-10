@@ -1,6 +1,5 @@
-import { Switch } from "@mui/material";
-import Loader from "../../../components/loader/Loader";
 import StatusBadge from "../../../components/ui/badges/StatusBadge";
+import LiquidToggle from "../../../components/ui/toggle/LiquidToggle";
 
 const getColumns = (handleActivate, switchLoading) => [
   { id: "campaignCode", label: "Campaign ID" },
@@ -37,25 +36,14 @@ const getColumns = (handleActivate, switchLoading) => [
 {
   id: "actions",
   label: "Actions",
-  render: (row) => {
-    if (switchLoading?.[row.id]) {
-      return <Loader className="p-0" size="small" />;
-    }
-    return (
-      <Switch
-        checked={row.isActive}
-        disabled={row?.isExpired}
-        onChange={() => handleActivate(row.id, row.isActive)}
-        size="small"
-        sx={{
-          "& .MuiSwitch-switchBase.Mui-checked": { color: "#4684ff" },
-          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-            backgroundColor: "#4684ff",
-          },
-        }}
-      />
-    );
-  },
+  render: (row) => (
+    <LiquidToggle
+      checked={row.isActive}
+      disabled={row?.isExpired}
+      onChange={() => handleActivate(row.id, row.isActive)}
+      size="sm"
+    />
+  ),
 },
 
 ];

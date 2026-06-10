@@ -2,33 +2,30 @@ import { useState } from "react";
 import Button from "../../../components/ui/button/Button";
 const Reports = () => {
 
-
     const options = ["Campaign Report", "Store Report", "Impressions", "Reports"];
     const [selected, setSelected] = useState("Campaign Report");
 
     return (
-
         <div>
-            <h2 className="text-xl font-semibold">Reports</h2>
-            <div className="flex w-full mt-10 rounded-lg overflow-hidden bg-gray-200">
+            <h2 className="text-xl font-semibold mb-6">Reports</h2>
+            
+            <div className="flex gap-2 mt-6">
                 {options.map((option) => (
                     <Button
                         key={option}
                         label={option}
-                        className={`flex-1 px-4 py-3 text-sm rounded-none transition-all duration-200 text-center ${selected === option
-                                ? "bg-blue-900 text-white !important" 
-                                : "bg-white !text-black hover:!text-white"
-                            }`}
-
-                        onClick={() => setSelected(option)}
                         type="button"
-                        loading={false}
-                        disabled={false}
                         isIcon={false}
+                        variant="custom"
+                        onClick={() => setSelected(option)}
+                        className={`px-6 py-2 rounded-full text-sm font-semibold border-2 transition-all duration-150 ${
+                            selected === option 
+                                ? "bg-[#4684ff] text-white border-[#4684ff] shadow-md" 
+                                : "bg-white text-[#4684ff] border-[#4684ff] hover:bg-blue-50"
+                        }`}
                     />
                 ))}
             </div>
-
         </div>
     )
 };

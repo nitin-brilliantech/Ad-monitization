@@ -138,13 +138,13 @@ const Wallets = () => {
     }));
 
     return (
-        <div className="p-4">
+        <div className="">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Wallets</h2>
             </div>
 
             {/* Balance Card */}
-            <div className="flex justify-between mb-5 items-center bg-gradient-to-l from-blue-100 via-white to-white border-blue-100/50 p-4 rounded">
+            <div className="flex justify-between mb-5 items-center bg-white border-blue-100/50 p-4 rounded-2xl">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <h2 className="text-lg font-semibold">Current Balance</h2>
@@ -155,11 +155,11 @@ const Wallets = () => {
                     </div>
                     <div className="flex items-center gap-2 mb-1">
                         {loading ? (
-                            <p className="text-2xl font-bold text-blue-900">Loading...</p>
+                            <p className="text-2xl font-bold text-[#4684ff]">Loading...</p>
                         ) : error ? (
                             <p className="text-red-500">Error fetching balance</p>
                         ) : (
-                            <p className="text-2xl font-bold text-blue-900">
+                            <p className="text-2xl font-bold text-[#4684ff]">
                                 {balanceVisible ? formatBalance(balance) : '₹ XXXXXX'}
                             </p>
                         )}

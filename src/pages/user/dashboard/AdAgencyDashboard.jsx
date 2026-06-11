@@ -78,7 +78,7 @@ const AdAgencyDashboard = () => {
         showButton
         buttonLabel="Create Campaign"
         onButtonClick={() => navigate("/create-campaign")}
-        subtitleClass="text-[#445E94] font-bold text-xl"
+        subtitleClass="text-[#4684ff] font-bold text-xl"
         buttonClass="cursor-pointer"
       />
 

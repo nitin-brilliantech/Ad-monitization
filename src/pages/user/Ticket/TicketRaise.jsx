@@ -192,16 +192,37 @@ const TicketRaise = () => {
                 isOpen={isTicketModalOpen}
                 onClose={closeTicketModal}
                 size="lg"
-                containerClassName="bg-white rounded-xl w-full max-w-3xl"
+                showCloseButton={true}
             >
-                <FormBuilder
-                    title="Ticket Form"
-                    onSubmit={handleSubmitTicket}
-                    fieldsConfig={ticketFields}
-                    methods={methods}
-                    submitLabel="Submit Ticket"
-                    isPlus={false}
-                />
+                <div className="space-y-6">
+                    {/* Blue Header */}
+                    <div className="flex items-center -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+                        <div className="flex gap-4">
+                            <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-7 h-7">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-bold text-white">Raise Ticket</h2>
+                                <p className="text-md text-white/70 mt-0.5">Submit your issue or concern</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Form Content */}
+                    <div className="pt-2">
+                        <FormBuilder
+                            onSubmit={handleSubmitTicket}
+                            fieldsConfig={ticketFields}
+                            methods={methods}
+                            submitLabel="Submit Ticket"
+                            isPlus={false}
+                            title="" // Empty title since we have custom header
+                        />
+                    </div>
+                </div>
             </Modal>
 
             <TicketDetailsModal

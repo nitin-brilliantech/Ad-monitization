@@ -1,6 +1,7 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
 import Button from "../../../components/ui/button/Button";
 import ReusableAccordion from "../../../components/ReusableAccordion/Accordion";
+import { HelpCircle, Mail, MessageCircle, FileText } from "lucide-react";
 
 const Support = () => {
   const location = useLocation();
@@ -15,7 +16,7 @@ const Support = () => {
     {
       id: 2,
       question: "Why are my ads not visible?",
-      solution: "Check your campaign status (pending/approved). Ensure your budget isn’t exhausted and targeting matches your audience."
+      solution: "Check your campaign status (pending/approved). Ensure your budget isn't exhausted and targeting matches your audience."
     },
     {
       id: 3,
@@ -34,52 +35,131 @@ const Support = () => {
     },
   ];
 
-
-
   return (
-    <div className="">
+    <div className="min-h-screen">
       {isRaiseTicket ? (
         <Outlet />
       ) : (
-        <>
-          {/* Header */}
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Support</h2>
-            <Link to="raise-ticket">
-              <Button
-              isIcon={false}
-                label="Ticket System"
-                type="button"
-              />
-            </Link>
+        <div className=" mx-auto">
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-[#4684ff] to-[#5b96ff] rounded-2xl p-8 mb-8 shadow-lg">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                  <HelpCircle className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-white mb-2">Support Center</h1>
+                  <p className="text-white/90 text-sm">
+                    Find answers to common questions or reach out to our team
+                  </p>
+                </div>
+              </div>
+              <Link to="raise-ticket">
+                <button className="bg-white text-[#4684ff] hover:bg-gray-50 font-semibold shadow-md px-6 py-2.5 rounded-lg transition-colors">
+                  Ticket System
+                </button>
+              </Link>
+            </div>
           </div>
 
           {/* FAQs Section */}
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-gray-700">FAQs</h3>
+          <div className="bg-white rounded-2xl shadow-sm p-8 mb-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-[#4684ff]/10 rounded-lg p-2">
+                <FileText className="w-5 h-5 text-[#4684ff]" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800">Frequently Asked Questions</h2>
+            </div>
+            <p className="text-gray-600 mb-6">Quick answers to questions you may have</p>
             <ReusableAccordion
               items={faqItems}
               sx={{
                 container: { background: "transparent" },
-                summary: { px: 0, py: 1 },
-                details: { px: 0, pb: 2 },
+                accordion: { 
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+                  transition: "all 0.2s",
+                  "&:hover": {
+                    boxShadow: "0 4px 12px rgba(70, 132, 255, 0.15)",
+                  }
+                },
+                summary: { 
+                  px: 3, 
+                  py: 2,
+                  fontWeight: 600,
+                  color: "#1f2937"
+                },
+                details: { 
+                  px: 3, 
+                  pb: 3,
+                  bgcolor: "#f9fafb"
+                },
               }}
             />
           </div>
 
-          {/* Additional Support Options */}
-          <div className="mt-8 border-t pt-6">
-            <h3 className="text-lg font-medium inline mb-3">Still need help? </h3>
-            <div className="flex mt-5 gap-4">
-              <Button
-                label="Email Us"
-                onClick={() => alert("mail us on : abc@gmail.com")}
-                type="button"
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              />
+          {/* Contact Support Section */}
+          <div className="bg-white rounded-2xl shadow-sm p-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Still need help?</h2>
+            <p className="text-gray-600 mb-6">
+              Can't find what you're looking for? Our support team is here to help
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Email Support Card */}
+              <div className="border border-gray-200 rounded-xl p-6 hover:border-[#4684ff] hover:shadow-md transition-all cursor-pointer group">
+                <div className="flex items-start gap-4">
+                  <div className="bg-[#4684ff]/10 rounded-lg p-3 group-hover:bg-[#4684ff] transition-colors">
+                    <Mail className="w-6 h-6 text-[#4684ff] group-hover:text-white transition-colors" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-800 mb-1">Email Support</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Send us an email and we'll respond within 24 hours
+                    </p>
+                    <Button
+                      label="Email Us"
+                      onClick={() => alert("mail us on : abc@gmail.com")}
+                      type="button"
+                      className="bg-[#4684ff] hover:bg-[#3a73ee] text-white text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Live Chat Card */}
+              <div className="border border-gray-200 rounded-xl p-6 hover:border-[#10b981] hover:shadow-md transition-all cursor-pointer group">
+                <div className="flex items-start gap-4">
+                  <div className="bg-[#10b981]/10 rounded-lg p-3 group-hover:bg-[#10b981] transition-colors">
+                    <MessageCircle className="w-6 h-6 text-[#10b981] group-hover:text-white transition-colors" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-800 mb-1">Live Chat</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Chat with our support team for instant assistance
+                    </p>
+                    <Button
+                      label="Start Chat"
+                      onClick={() => alert("Live chat coming soon!")}
+                      type="button"
+                      className="bg-[#10b981] hover:bg-[#059669] text-white text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </>
+
+          {/* Quick Links */}
+          <div className="mt-6 text-center text-sm text-gray-500">
+            <p>
+              Looking for documentation?{" "}
+              <a href="#" className="text-[#4684ff] hover:underline font-medium">
+                Visit our Knowledge Base
+              </a>
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -14,7 +14,7 @@ const HeaderSection = ({
   const showTextBlock = subtitle || title;
 
   return (
-    <div className={containerClass || 'flex items-center justify-between mb-2 w-full'}>
+    <div className={containerClass || 'flex items-center justify-between mb-4 w-full'}>
       {showTextBlock && (
         <div className="flex items-center gap-2">
           {title && (
@@ -23,7 +23,7 @@ const HeaderSection = ({
             </h1>
           )}
           {subtitle && (
-            <h2 className={subtitleClass || 'text-2xl  text-[#445E94]'}>
+            <h2 className={subtitleClass || 'text-2xl  text-[#4684ff]'}>
               {subtitle}
             </h2>
           )}

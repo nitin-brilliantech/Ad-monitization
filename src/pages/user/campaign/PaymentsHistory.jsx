@@ -74,25 +74,43 @@ const PaymentsHistory = () => {
         searchableColumns={["campaignCode", "campaignName", "transactionId","amount"]}
       />
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="md">
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="md" showCloseButton={true}>
         {selectedTransaction ? (
-          <div className="p-6 w-full">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              {selectedTransaction.campaignName}
-            </h2>
-            <div className="space-y-2 text-sm text-gray-700">
-              <p>
-                <span className="font-semibold">Campaign Code:</span>{" "}
-                {selectedTransaction.campaignCode}
-              </p>
-              <p>
-                <span className="font-semibold">Transaction ID:</span>{" "}
-                {selectedTransaction.transactionId}
-              </p>
-              <p>
-                <span className="font-semibold">Status:</span>{" "}
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+              <div className="flex gap-4">
+                <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-7 h-7">
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white">Payment Details</h2>
+                  <p className="text-md text-white/70 mt-0.5">Transaction information</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="space-y-4 pt-2">
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Campaign Name</span>
+                <span className="text-sm text-gray-700">{selectedTransaction.campaignName}</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Campaign Code</span>
+                <span className="text-sm text-gray-700">{selectedTransaction.campaignCode}</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Transaction ID</span>
+                <span className="text-sm text-gray-700">{selectedTransaction.transactionId}</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Status</span>
                 <span
-                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
                     selectedTransaction.status === true
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
@@ -100,16 +118,22 @@ const PaymentsHistory = () => {
                 >
                   {selectedTransaction.status === true ? "Paid" : "Failed"}
                 </span>
-              </p>
-              <p>
-                <span className="font-semibold">Amount:</span>{" "}
-                {selectedTransaction.currency}{" "}
-                {selectedTransaction.amount.toLocaleString()}.00
-              </p>
-              <p>
-                <span className="font-semibold">Payment Date:</span>{" "}
-                {new Date(selectedTransaction.paymentDate).toLocaleDateString()}
-              </p>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Amount</span>
+                <span className="text-sm text-gray-900 font-bold">
+                  {new Intl.NumberFormat("en-IN", {
+                    style: "currency",
+                    currency: selectedTransaction.currency || "INR",
+                  }).format(selectedTransaction.amount)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                <span className="font-semibold text-md text-gray-900">Payment Date</span>
+                <span className="text-sm text-gray-700">
+                  {new Date(selectedTransaction.paymentDate).toLocaleDateString()}
+                </span>
+              </div>
             </div>
           </div>
         ) : (

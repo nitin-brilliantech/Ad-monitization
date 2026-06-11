@@ -197,7 +197,7 @@ const Navbar = ({ toggleSidebar }) => {
         <div className="relative" ref={profileRef}>
           <div
             onClick={() => setShowProfile((prev) => !prev)}
-            className="cursor-pointer flex items-center gap-2.5 px-3 py-2 bg-gradient-to-r from-[#578bf2] to-[#497df6] rounded-xl hover:from-[#3a6fe6] hover:to-[#2d5acc] hover:shadow-lg transition-all duration-200"
+            className="cursor-pointer flex items-center gap-2.5 px-3 py-2 bg-gradient-to-br from-[#4684ff] to-[#3a6fe6] rounded-xl hover:from-[#3a6fe6] hover:to-[#2d5acc] hover:shadow-lg transition-all duration-200"
           >
             <img
               src={user?.avatar || user?.profile_url || "logo.svg"}

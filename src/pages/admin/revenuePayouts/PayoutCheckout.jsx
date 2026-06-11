@@ -90,7 +90,7 @@ Reference: ${referenceId || "-"} | UTR: ${utr || "-"}`
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 md:px-10 pb-8 pt-4">
+    <div className="min-h-screen bg-gray-100  pb-8 pt-4">
       {isLoading && <LoaderEmpt size="large" />}
 
       <header className="mb-8">
@@ -100,7 +100,7 @@ Reference: ${referenceId || "-"} | UTR: ${utr || "-"}`
         </h1>
       </header>
 
-      <div className="bg-white rounded-xl shadow-xl p-6 max-w-4xl mx-auto">
+      <div className="bg-white rounded-xl shadow-xl p-6 mx-auto">
         <div className="space-y-4 text-sm text-gray-700">
           <InfoRow
             label="Request Code"

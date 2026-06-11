@@ -132,7 +132,7 @@ const Devices = () => {
   ];
 
   return (
-    <div className="p-4">
+    <div className="">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Devices</h2>
         <Button

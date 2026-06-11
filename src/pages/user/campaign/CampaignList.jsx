@@ -17,7 +17,7 @@ import LoaderEmpt from "../../../components/loader/LoaderEmpt"
 const CampaignList = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { campaigns, loading, fetched } = useSelector(
+  const { campaigns, loading } = useSelector(
     (state) => state.campaign
   );
   console.log(campaigns);
@@ -29,12 +29,10 @@ const CampaignList = () => {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  // Fetch campaigns on mount
+  // Fetch campaigns on mount — always re-fetch to get latest payment status
   useEffect(() => {
-    if (!fetched && !loading) {
-      dispatch(fetchCampaigns());
-    }
-  }, [fetched, loading, dispatch]);
+    dispatch(fetchCampaigns());
+  }, [dispatch]);
 
   const refreshCampaigns = () => {
     dispatch(fetchCampaigns());

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +40,12 @@ const CreateCampaign = () => {
     pincodeMap: {},
   });
 
+  // Always keep a ref in sync with latest dropdowns so watch subscription never reads stale maps
+  const dropdownsRef = useRef(dropdowns);
+  useEffect(() => {
+    dropdownsRef.current = dropdowns;
+  }, [dropdowns]);
+
   // Fetch dropdown data if not available
   useEffect(() => {
     if (!dropdownData) {
@@ -58,13 +64,16 @@ const CreateCampaign = () => {
 
     dropdownData.locations.forEach((loc) => {
       if (loc.name) regionOptions.push({ label: loc.name, value: loc.name });
-      if (loc.postcode)
-        pincodeOptions.push({ label: loc.postcode, value: loc.postcode });
 
       regionMap[loc.name] = regionMap[loc.name] || [];
-      if (loc.postcode) regionMap[loc.name].push(loc.postcode);
 
-      if (loc.postcode) pincodeMap[loc.postcode] = loc.name;
+      (loc.regions || []).forEach((region) => {
+        if (region.postcode) {
+          pincodeOptions.push({ label: region.postcode, value: region.postcode });
+          regionMap[loc.name].push(region.postcode);
+          pincodeMap[region.postcode] = loc.name;
+        }
+      });
     });
 
     const productOptions = dropdownData.products.map((p) => ({
@@ -89,44 +98,31 @@ const CreateCampaign = () => {
   // Sync regions ↔ pincodes selections
   useEffect(() => {
     const subscription = watch((values, { name: changedField }) => {
+      const { regionMap, pincodeMap } = dropdownsRef.current;
       const selectedRegions = values.regions || [];
       const selectedPincodes = values.pincode || [];
 
-      if (!dropdowns.regionMap || !dropdowns.pincodeMap) return;
+      if (!regionMap || !pincodeMap) return;
 
       if (changedField === "regions") {
         const derivedPincodes = [
-          ...new Set(
-            selectedRegions.flatMap(
-              (region) => dropdowns.regionMap[region] || []
-            )
-          ),
+          ...new Set(selectedRegions.flatMap((region) => regionMap[region] || [])),
         ];
-        if (
-          JSON.stringify(selectedPincodes.sort()) !==
-          JSON.stringify(derivedPincodes.sort())
-        ) {
+        if (JSON.stringify([...selectedPincodes].sort()) !== JSON.stringify([...derivedPincodes].sort())) {
           setValue("pincode", derivedPincodes, { shouldValidate: false });
         }
       } else if (changedField === "pincode") {
         const derivedRegions = [
-          ...new Set(
-            selectedPincodes
-              .map((pin) => dropdowns.pincodeMap[pin])
-              .filter(Boolean)
-          ),
+          ...new Set(selectedPincodes.map((pin) => pincodeMap[pin]).filter(Boolean)),
         ];
-        if (
-          JSON.stringify(selectedRegions.sort()) !==
-          JSON.stringify(derivedRegions.sort())
-        ) {
+        if (JSON.stringify([...selectedRegions].sort()) !== JSON.stringify([...derivedRegions].sort())) {
           setValue("regions", derivedRegions, { shouldValidate: false });
         }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, dropdowns, setValue]);
+  }, [watch, setValue]);
 
   // Submit handler
   const handleSubmit = async (formData) => {

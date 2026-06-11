@@ -133,7 +133,7 @@ const AdminLogin = () => {
         </div>
 
         {/* Right Side - Login Form */}
-        <div className="w-full bg-gradient-to-br from-blue-600 to-blue-300 lg:w-1/2 flex items-center justify-center p-6 sm:p-10 md:p-16 lg:p-20 xl:p-24 relative">
+        <div className="w-full bg-gradient-to-br from-[#4684ff] via-[#3a6fe6] to-[#2d5acc] lg:w-1/2 flex items-center justify-center p-6 sm:p-10 md:p-16 lg:p-20 xl:p-24 relative">
           <Link to="/" className="absolute right-6 top-6">
             <button className="px-6 cursor-pointer py-2 bg-white/10 backdrop-blur-sm text-white text-sm font-medium rounded-full border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-200 hover:shadow-lg">
               User Login

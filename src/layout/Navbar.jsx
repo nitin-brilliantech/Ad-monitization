@@ -102,7 +102,7 @@ const Navbar = ({ toggleSidebar }) => {
   return (
     <div className="h-20 bg-white shadow-sm flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       {/* Left: Sidebar toggle + Global Search */}
-      <div className="flex items-center gap-3 w-full max-w-md">
+      <div className="flex items-center gap-3 w-full  max-w-3xl">
         <button className="md:hidden text-xl text-gray-500 hover:text-gray-800 transition-colors" onClick={toggleSidebar}>
           ☰
         </button>
@@ -184,7 +184,7 @@ const Navbar = ({ toggleSidebar }) => {
 
       {/* Right: Lang + Profile */}
       <div className="flex items-center gap-4">
-        <select
+        {/* <select
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
           className="text-sm border border-gray-200 rounded-lg px-2.5 py-1.5 bg-white text-gray-600 focus:outline-none focus:border-[#4684ff] transition-colors cursor-pointer"
@@ -192,7 +192,7 @@ const Navbar = ({ toggleSidebar }) => {
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>{lang.label}</option>
           ))}
-        </select>
+        </select> */}
 
         <div className="relative" ref={profileRef}>
           <div

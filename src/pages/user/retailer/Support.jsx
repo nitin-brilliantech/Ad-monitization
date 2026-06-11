@@ -45,7 +45,7 @@ const Support = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800">Support</h2>
             <Link to="raise-ticket">
-              <button className="bg-[#4684ff] text-white hover:bg-[#3a73ee] font-semibold shadow-md px-6 py-2.5 rounded-lg transition-colors">
+              <button className="bg-[#4684ff] text-white hover:bg-[#3a73ee] font-semibold shadow-md px-6 py-2.5 rounded-full transition-colors cursor-pointer">
                 Ticket System
               </button>
             </Link>
@@ -67,19 +67,20 @@ const Support = () => {
                 accordion: { 
                   boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
                   transition: "all 0.2s",
+                  borderRadius: "16px",
                   "&:hover": {
                     boxShadow: "0 4px 12px rgba(70, 132, 255, 0.15)",
                   }
                 },
                 summary: { 
-                  px: 3, 
-                  py: 2,
+                  px: 2, 
+                  py: 1.5,
                   fontWeight: 600,
                   color: "#1f2937"
                 },
                 details: { 
-                  px: 3, 
-                  pb: 3,
+                  px: 2, 
+                  pb: 2,
                   bgcolor: "#f9fafb"
                 },
               }}

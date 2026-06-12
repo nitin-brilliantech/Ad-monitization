@@ -38,7 +38,7 @@ const ICONS = { success: <CheckIcon/>, error: <XCircleIcon/>, warning: <WarnIcon
 
 /* ── Toast body ───────────────────────────────────────────────── */
 const ToastBody = ({ title, text, type }) => (
-  <div style={{ display:"flex", alignItems:"flex-start", gap:"10px", padding:"2px 0" }}>
+  <div style={{ display:"flex", alignItems:"flex-start", gap:"10px", padding:"2px 0", paddingRight:"24px" }}>
     <span style={{ marginTop:"1px", flexShrink:0 }}>{ICONS[type]}</span>
     <div style={{ flex:1, minWidth:0 }}>
       {title && (
@@ -69,8 +69,8 @@ const makeOptions = (type, timer) => ({
       onClick={closeToast}
       style={{
         background:"none", border:"none", cursor:"pointer",
-        padding:"2px", color:"#9ca3af", lineHeight:1,
-        alignSelf:"flex-start", marginTop:"2px",
+        padding:"4px", color:"#9ca3af", lineHeight:1,
+        position:"absolute", top:"12px", right:"12px",
       }}
     >
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -89,6 +89,7 @@ const makeOptions = (type, timer) => ({
     border:       `1px solid #f1f5f9`,
     borderLeftWidth: "3px",
     borderLeftColor: ACCENT[type],
+    position:     "relative",
   },
   progressStyle: { background: ACCENT[type], height:"2px" },
 });

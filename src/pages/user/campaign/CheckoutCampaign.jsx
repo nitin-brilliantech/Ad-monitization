@@ -83,27 +83,26 @@ const CheckoutCampaign = () => {
         attempts++;
         try {
           const statusRes = await checkCashfreePaymentStatus(sessionId);
-          if (statusRes?.success && statusRes?.data?.status === "PAID") {
+          const payStatus = statusRes?.data?.status;
+
+          if (statusRes?.success && payStatus === "PAID") {
             clearInterval(poll);
-          Toast.success(
-            "Payment Successful",
-            "Your campaign will be activated soon!",
-            10000
-          );
-
+            Toast.success(
+              "Payment Successful",
+              "Your campaign will be activated soon!",
+              10000
+            );
+            await dispatch(fetchCampaigns({ force: true }));
             navigate("/campaigns-list");
-
-            dispatch(fetchCampaigns());
           } else if (attempts >= maxAttempts) {
             clearInterval(poll);
             Toast.warning("Timeout",
-              "Payment verification timed out. Please check status later.")
+              "Payment verification timed out. Please check status later.");
           }
         } catch (err) {
           clearInterval(poll);
           console.error("Polling error:", err);
-          Toast.error(   "Error",
-            "Something went wrong while verifying payment.")
+          Toast.error("Error", "Something went wrong while verifying payment.");
         }
       }, interval);
     } catch (err) {

@@ -16,7 +16,6 @@ export const createCampaign = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await createCampaignAPI(data);
-      Toast.success("Campaign created successfully!");
       return response;
     } catch (error) {
       Toast.error(
@@ -32,12 +31,11 @@ export const createCampaign = createAsyncThunk(
 // Fetch Campaigns
 export const fetchCampaigns = createAsyncThunk(
   "campaign/fetchCampaigns",
-  async (_, { rejectWithValue }) => {
+  async (options, { rejectWithValue }) => {
     try {
       const response = await getCampaignsAPI();
       return response.data;
     } catch (error) {
-      Toast.error("Failed to fetch campaigns.");
       return rejectWithValue(error.response?.data);
     }
   }

@@ -1,7 +1,7 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
 import Button from "../../../components/ui/button/Button";
 import ReusableAccordion from "../../../components/ReusableAccordion/Accordion";
-import { HelpCircle, Mail, MessageCircle, FileText } from "lucide-react";
+import { Mail, MessageCircle, FileText } from "lucide-react";
 
 const Support = () => {
   const location = useLocation();
@@ -36,31 +36,19 @@ const Support = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="">
       {isRaiseTicket ? (
         <Outlet />
       ) : (
-        <div className=" mx-auto">
-          {/* Header Section */}
-          <div className="bg-gradient-to-r from-[#4684ff] to-[#5b96ff] rounded-2xl p-8 mb-8 shadow-lg">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <HelpCircle className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-white mb-2">Support Center</h1>
-                  <p className="text-white/90 text-sm">
-                    Find answers to common questions or reach out to our team
-                  </p>
-                </div>
-              </div>
-              <Link to="raise-ticket">
-                <button className="bg-white text-[#4684ff] hover:bg-gray-50 font-semibold shadow-md px-6 py-2.5 rounded-lg transition-colors">
-                  Ticket System
-                </button>
-              </Link>
-            </div>
+        <>
+          {/* Simple Header */}
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">Support</h2>
+            <Link to="raise-ticket">
+              <button className="bg-[#4684ff] text-white hover:bg-[#3a73ee] font-semibold shadow-md px-6 py-2.5 rounded-full transition-colors cursor-pointer">
+                Ticket System
+              </button>
+            </Link>
           </div>
 
           {/* FAQs Section */}
@@ -79,19 +67,20 @@ const Support = () => {
                 accordion: { 
                   boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
                   transition: "all 0.2s",
+                  borderRadius: "16px",
                   "&:hover": {
                     boxShadow: "0 4px 12px rgba(70, 132, 255, 0.15)",
                   }
                 },
                 summary: { 
-                  px: 3, 
-                  py: 2,
+                  px: 2, 
+                  py: 1.5,
                   fontWeight: 600,
                   color: "#1f2937"
                 },
                 details: { 
-                  px: 3, 
-                  pb: 3,
+                  px: 2, 
+                  pb: 2,
                   bgcolor: "#f9fafb"
                 },
               }}
@@ -159,7 +148,7 @@ const Support = () => {
               </a>
             </p>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

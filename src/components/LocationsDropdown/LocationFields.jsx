@@ -3,7 +3,53 @@ import axios from 'axios';
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 
-const LocationFields = ({ control, setValue, watch, errors, isPincode = true ,customStyles}) => {
+const selectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "44px",
+    height: "44px",
+    borderRadius: "10px",
+    borderWidth: "1.5px",
+    borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+    boxShadow: state.isFocused
+      ? "0 0 0 4px rgba(70,132,255,0.13), 0 6px 16px rgba(15,23,42,0.08)"
+      : "none",
+    transform: state.isFocused ? "translateY(-2px)" : "none",
+    backgroundColor: "#ffffff",
+    transition: "border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease",
+    "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+    cursor: "pointer",
+  }),
+  valueContainer: (base) => ({ ...base, padding: "0 12px", height: "44px" }),
+  input: (base) => ({ ...base, margin: 0, padding: 0, fontSize: "14px" }),
+  singleValue: (base) => ({ ...base, fontSize: "14px", color: "#0f172a" }),
+  placeholder: (base) => ({ ...base, fontSize: "14px", color: "#9ca3af" }),
+  indicatorsContainer: (base) => ({ ...base, height: "44px" }),
+  indicatorSeparator: () => ({ display: "none" }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: "12px",
+    boxShadow: "0 20px 40px rgba(15,23,42,0.12), 0 4px 12px rgba(15,23,42,0.06)",
+    border: "1.5px solid #e5e7eb",
+    overflow: "hidden",
+    marginTop: "6px",
+  }),
+  menuList: (base) => ({ ...base, padding: "4px", maxHeight: "220px" }),
+  option: (base, state) => ({
+    ...base,
+    fontSize: "14px",
+    borderRadius: "8px",
+    margin: "1px 0",
+    padding: "8px 12px",
+    backgroundColor: state.isSelected ? "#4684ff" : state.isFocused ? "rgba(70,132,255,0.08)" : "transparent",
+    color: state.isSelected ? "#fff" : "#0f172a",
+    cursor: "pointer",
+    transition: "background-color 120ms ease",
+  }),
+};
+
+const LocationFields = ({ control, setValue, watch, errors, isPincode = true, customStyles, isRequired = false, labelClassName = "block text-sm" }) => {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -121,7 +167,7 @@ const LocationFields = ({ control, setValue, watch, errors, isPincode = true ,cu
                   field.onChange(e.target.value);
                   handlePincodeChange(e.target.value);
                 }}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full rounded-[10px] border-[1.5px] border-gray-300 px-3 py-2 text-sm"
               />
               {errors.pincode && <p className="text-red-500 text-sm">{errors.pincode.message}</p>}
             </div>
@@ -136,7 +182,9 @@ const LocationFields = ({ control, setValue, watch, errors, isPincode = true ,cu
         rules={{ required: 'Country is required' }}
         render={({ field }) => (
           <div className="space-y-1">
-            <label className="block text-sm">Country</label>
+              <label className={labelClassName}>
+                Country {isRequired && <span className="text-red-500">*</span>}
+              </label>
             <div className={customStyles}>
 
             <Select
@@ -148,6 +196,10 @@ const LocationFields = ({ control, setValue, watch, errors, isPincode = true ,cu
               }}
               value={countries.find(c => c.value === field.value) || null}
               placeholder="Select Country"
+              styles={selectStyles}
+              menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+              menuPosition="fixed"
+              classNames={{ menu: () => "bts-menu-animated" }}
             />
             </div>
             {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
@@ -162,11 +214,12 @@ const LocationFields = ({ control, setValue, watch, errors, isPincode = true ,cu
         rules={{ required: 'State is required' }}
         render={({ field }) => (
           <div className="space-y-1">
-            <label className="block text-sm">State</label>
+              <label className={labelClassName}>
+                State {isRequired && <span className="text-red-500">*</span>}
+              </label>
             <div className={customStyles}>
 
             <Select
-
               {...field}
               options={states}
               isDisabled={!states.length}
@@ -176,6 +229,10 @@ const LocationFields = ({ control, setValue, watch, errors, isPincode = true ,cu
               }}
               value={states.find(s => s.value === field.value) || null}
               placeholder="Select State"
+              styles={selectStyles}
+              menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+              menuPosition="fixed"
+              classNames={{ menu: () => "bts-menu-animated" }}
             />
             </div>
             {errors.state && <p className="text-red-500 text-sm">{errors.state.message}</p>}
@@ -202,6 +259,10 @@ const LocationFields = ({ control, setValue, watch, errors, isPincode = true ,cu
               }}
               value={cities.find(c => c.value === field.value) || null}
               placeholder="Select City"
+              styles={selectStyles}
+              menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+              menuPosition="fixed"
+              classNames={{ menu: () => "bts-menu-animated" }}
             />
             </div>
             {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}

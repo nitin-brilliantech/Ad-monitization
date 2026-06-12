@@ -67,7 +67,7 @@ const SearchBar = ({
         autoComplete="off"
         {...inputProps}
         className={`
-          flex-grow bg-transparent border-none outline-none
+          bts-input-inner flex-grow bg-transparent border-none outline-none
           text-gray-800 placeholder-gray-400 text-sm font-normal
           transition-all duration-200
           ${inputProps.className ?? ""}

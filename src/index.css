@@ -35,6 +35,127 @@
 .animate-slideDown { animation: var(--animate-slideDown); }
 
 
+/* ══════════════════════════════════════════════════════════
+   Global Input Focus Animations
+   Effect: Soft Border Glow + Subtle Background Lift
+   Speed : 180ms ease — crisp, never flashy
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Shared token ── */
+:root {
+  --input-brand:        #4684ff;
+  --input-glow:         rgba(70, 132, 255, 0.13);
+  --input-lift-shadow:  0 6px 16px rgba(15, 23, 42, 0.08),
+                        0 2px 4px  rgba(15, 23, 42, 0.04);
+  --input-bg-lift:      #ffffff;
+  --input-radius:       10px;
+  --input-border-idle:  #d1d5db;
+  --input-height:       44px;
+  --input-transition:   border-color 180ms ease,
+                        box-shadow   180ms ease,
+                        background   180ms ease,
+                        transform    180ms ease;
+}
+
+/* ── Uniform base for ALL standalone raw inputs / selects / textareas ──
+   .bts-input-inner = inside Input.jsx wrapper
+   [class*="bts__"] = react-select internal inputs (classNamePrefix="bts")
+   [readonly]        = react-select dummy inputs
+   ── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.bts-input-inner):not([class*="bts__"]):not([readonly]),
+select,
+textarea {
+  height: var(--input-height);
+  padding: 0 14px;
+  border: 1.5px solid var(--input-border-idle);
+  border-radius: var(--input-radius);
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: var(--input-transition);
+}
+
+textarea {
+  height: auto;
+  padding: 10px 14px;
+}
+
+/* ── Focus state: lift + glow ── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.bts-input-inner):not([class*="bts__"]):not([readonly]):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--input-brand);
+  box-shadow:
+    0 0 0 4px var(--input-glow),
+    var(--input-lift-shadow);
+  background: var(--input-bg-lift);
+  transform: translateY(-2px);
+}
+
+/* ── Shared Input component wrapper (bts-input-wrapper) ── */
+.bts-input-wrapper {
+  transition: var(--input-transition);
+  border: 1.5px solid var(--input-border-idle) !important;
+  border-radius: var(--input-radius) !important;
+  height: var(--input-height) !important;
+}
+
+.bts-input-wrapper:focus-within {
+  border-color: var(--input-brand) !important;
+  box-shadow:
+    0 0 0 4px var(--input-glow),
+    var(--input-lift-shadow) !important;
+  background: var(--input-bg-lift) !important;
+  transform: translateY(-2px);
+}
+
+/* ── Error state ── */
+.bts-input-wrapper.border-red-500 {
+  border-color: #ef4444 !important;
+}
+.bts-input-wrapper.border-red-500:focus-within {
+  border-color: #ef4444 !important;
+  box-shadow:
+    0 0 0 4px rgba(239, 68, 68, 0.12),
+    var(--input-lift-shadow) !important;
+}
+
+/* ── react-select wrapper — no border here, react-select control owns its own ── */
+.bts-select-wrapper {
+  position: relative;
+}
+
+/* ── Inner input inside bts-input-wrapper — strip all global styles ── */
+.bts-input-inner,
+.bts-input-inner:focus {
+  height: auto !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  padding: 0 !important;
+  outline: none !important;
+}
+
+/* ── react-select internal hidden input — prevent global border/shadow ── */
+.bts__input input,
+.bts__input input:focus,
+input[class*="bts__"],
+input[class*="bts__"]:focus {
+  height: auto !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  padding: 0 !important;
+  outline: none !important;
+  min-height: unset !important;
+}
+
 /* Default scrollbar for all elements */
 *::-webkit-scrollbar {
   width: 8px;

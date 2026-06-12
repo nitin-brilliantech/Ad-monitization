@@ -58,9 +58,10 @@ const RangeDatePicker = ({
         <button
           type="button"
           onClick={() => setShowPicker(!showPicker)}
-          className={`w-full text-left rounded-md border ${
-            error ? "border-red-500" : "border-gray-300"
-          } bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150`}
+          className={`bts-input-wrapper w-full text-left px-3 text-sm bg-white flex items-center ${
+            error ? "border-red-500" : ""
+          }`}
+          style={{ height: "44px" }}
         >
           <span
             className={`${
@@ -101,7 +102,7 @@ const RangeDatePicker = ({
                   onChange={(e) => handleDateChange("start", e.target.value)}
                   min={minDate || today}
                   max={value.end || maxDate}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-[10px] border-[1.5px] border-gray-300 px-3 py-2 text-sm"
                   {...inputProps}
                 />
               </div>
@@ -123,7 +124,7 @@ const RangeDatePicker = ({
                   onChange={(e) => handleDateChange("end", e.target.value)}
                   min={value.start || minDate || today}
                   max={maxDate}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-[10px] border-[1.5px] border-gray-300 px-3 py-2 text-sm"
                   {...inputProps}
                 />
               </div>

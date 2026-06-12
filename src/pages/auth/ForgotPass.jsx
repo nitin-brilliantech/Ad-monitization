@@ -139,18 +139,20 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
               <label className="text-sm font-medium block mb-1">
                 Email Address
               </label>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                {...registerOtp("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Enter a valid email",
-                  },
-                })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff] focus:border-transparent transition-all duration-200 bg-white"
-              />
+              <div className="bts-input-wrapper flex items-center w-full bg-white px-4">
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  {...registerOtp("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Enter a valid email",
+                    },
+                  })}
+                  className="bts-input-inner flex-grow bg-transparent text-gray-900 placeholder-gray-400 outline-none"
+                />
+              </div>
               {errorsOtp.email && (
                 <p className="text-sm text-red-500 mt-1">
                   {errorsOtp.email.message}
@@ -187,35 +189,41 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
               )}
             </p>
 
-            <input
-              type="email"
-              value={email}
-              disabled
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-            />
+            <div className="bts-input-wrapper flex items-center w-full bg-gray-100 px-4 opacity-70 cursor-not-allowed">
+              <input
+                type="email"
+                value={email}
+                disabled
+                className="bts-input-inner flex-grow bg-transparent text-gray-500 outline-none cursor-not-allowed"
+              />
+            </div>
 
-            <input
-              type="text"
-              placeholder="Enter OTP"
-              {...register("otp", { required: "OTP is required" })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff] focus:border-transparent transition-all duration-200 bg-white"
-            />
+            <div className="bts-input-wrapper flex items-center w-full bg-white px-4">
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                {...register("otp", { required: "OTP is required" })}
+                className="bts-input-inner flex-grow bg-transparent text-gray-900 placeholder-gray-400 outline-none"
+              />
+            </div>
             {errors.otp && (
               <p className="text-sm text-red-500">{errors.otp.message}</p>
             )}
 
-            <input
-              type="password"
-              placeholder="New Password"
-              {...register("newPassword", {
-                required: "New password is required",
-                minLength: {
-                  value: 6,
-                  message: "Minimum 6 characters required",
-                },
-              })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4684ff] focus:border-transparent transition-all duration-200 bg-white"
-            />
+            <div className="bts-input-wrapper flex items-center w-full bg-white px-4">
+              <input
+                type="password"
+                placeholder="New Password"
+                {...register("newPassword", {
+                  required: "New password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Minimum 6 characters required",
+                  },
+                })}
+                className="bts-input-inner flex-grow bg-transparent text-gray-900 placeholder-gray-400 outline-none"
+              />
+            </div>
             {errors.newPassword && (
               <p className="text-sm text-red-500">
                 {errors.newPassword.message}

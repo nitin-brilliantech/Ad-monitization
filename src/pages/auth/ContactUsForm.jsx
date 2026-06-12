@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import Select from "react-select";
 import LocationFields from "../../components/LocationsDropdown/LocationFields";
 import { registerUserApi } from "../../api/user/user/user-api";
 import Toast from "../../components/ui/toast/Toast";
@@ -29,6 +30,54 @@ const ContactUsForm = () => {
   } = useForm();
 
   const selectedRole = watch("role");
+
+  const roleSelectStyles = {
+    control: (base, state) => ({
+      ...base,
+      minHeight: "46px",
+      height: "46px",
+      borderRadius: "8px",
+      borderWidth: "1px",
+      borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+      boxShadow: state.isFocused ? "0 0 0 2px rgba(70,132,255,0.25)" : "none",
+      backgroundColor: "#ffffff",
+      transition: "border-color 200ms ease, box-shadow 200ms ease",
+      "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+      cursor: "pointer",
+    }),
+    valueContainer: (base) => ({ ...base, padding: "0 14px", height: "46px" }),
+    input: (base) => ({ ...base, margin: 0, padding: 0, fontSize: "14px" }),
+    singleValue: (base) => ({ ...base, fontSize: "14px", color: "#111827" }),
+    placeholder: (base) => ({ ...base, fontSize: "14px", color: "#6b7280" }),
+    indicatorsContainer: (base) => ({ ...base, height: "46px" }),
+    indicatorSeparator: () => ({ display: "none" }),
+    dropdownIndicator: (base) => ({ ...base, color: "#6b7280", paddingRight: "10px" }),
+    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+    menu: (base) => ({
+      ...base,
+      borderRadius: "8px",
+      boxShadow: "0 10px 25px rgba(15,23,42,0.12), 0 4px 10px rgba(15,23,42,0.06)",
+      border: "1px solid #e5e7eb",
+      overflow: "hidden",
+      marginTop: "4px",
+    }),
+    menuList: (base) => ({ ...base, padding: "4px", maxHeight: "220px" }),
+    option: (base, state) => ({
+      ...base,
+      fontSize: "14px",
+      borderRadius: "6px",
+      margin: "1px 0",
+      padding: "9px 12px",
+      backgroundColor: state.isSelected
+        ? "#4684ff"
+        : state.isFocused
+        ? "rgba(70,132,255,0.08)"
+        : "transparent",
+      color: state.isSelected ? "#fff" : "#111827",
+      cursor: "pointer",
+      transition: "background-color 120ms ease",
+    }),
+  };
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

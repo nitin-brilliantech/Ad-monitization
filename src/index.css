@@ -155,6 +155,113 @@ input[class*="bts__"]:focus {
   outline: none !important;
   min-height: unset !important;
 }
+/* ── Remove all possible outlines from react-select inputs ── */
+[class*="react-select"] input,
+[class*="react-select"] input:focus,
+div[class*="__input"] input,
+div[class*="__input"] input:focus,
+div[class*="-Input"] input,
+div[class*="-Input"] input:focus,
+div[class*="__input"] input[type="text"],
+div[class*="__input"] input[type="text"]:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+
+/* Target react-select input wrapper specifically */
+div[class*="__input"],
+div[class*="__input"]:focus-within {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Nuclear option - remove outline from ALL inputs inside react-select control */
+div[class*="__control"] input,
+div[class*="__control"] input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Specific react-select class names */
+.css-1dimb5e-singleValue,
+.css-qbdosj-Input input,
+input[class*="Input"],
+input[class*="input"]:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ultimate fallback - any input that's a descendant of a select control */
+[class*="select"] input,
+[class*="select"] input:focus,
+[class*="Select"] input,
+[class*="Select"] input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Device select specific */
+.device-select__input input,
+.device-select__input input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Role select specific */
+.role-select__input input,
+.role-select__input input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ticket status select specific */
+.ticket-status-select__input input,
+.ticket-status-select__input input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* SUPER AGGRESSIVE - Remove outline from ALL inputs everywhere */
+input:focus {
+  outline: none !important;
+}
+
+/* More specific for inputs with outline visible */
+input[style*="outline"] {
+  outline: none !important;
+}
+
+/* Remove browser autocomplete/autofill outline and styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border: none !important;
+}
+
+/* Remove focus ring from all inputs globally */
+*:focus {
+  outline: none !important;
+}
+
+/* Specifically target contenteditable elements (sometimes used by react-select) */
+[contenteditable]:focus {
+  outline: none !important;
+}
 
 /* Default scrollbar for all elements */
 *::-webkit-scrollbar {

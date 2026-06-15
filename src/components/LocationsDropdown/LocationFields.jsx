@@ -21,7 +21,19 @@ const selectStyles = {
     cursor: "pointer",
   }),
   valueContainer: (base) => ({ ...base, padding: "0 12px", height: "44px" }),
-  input: (base) => ({ ...base, margin: 0, padding: 0, fontSize: "14px" }),
+  input: (base) => ({ 
+    ...base, 
+    margin: 0, 
+    padding: 0, 
+    fontSize: "14px",
+    outline: "none !important",
+    border: "none !important",
+    boxShadow: "none !important",
+    '& input': {
+      outline: 'none !important',
+      boxShadow: 'none !important',
+    }
+  }),
   singleValue: (base) => ({ ...base, fontSize: "14px", color: "#0f172a" }),
   placeholder: (base) => ({ ...base, fontSize: "14px", color: "#9ca3af" }),
   indicatorsContainer: (base) => ({ ...base, height: "44px" }),

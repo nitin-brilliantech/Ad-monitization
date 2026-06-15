@@ -75,7 +75,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
       {/* Logo Header */}
       <div className="flex items-center justify-between px-3 py-5 mb-2 border-b border-gray-300 shadow-md">
         <div className="flex gap-2 justify-center items-center">
-        <img src="/images/logo/logo.png" alt="logo" className="h-10" />
+        <img src="/images/logo/logo.png" alt="logo" className="h-10 cursor-pointer" />
         <h1 className="text-2xl font-semibold text-gray-500">AD MONETIZATION</h1>
         </div>
         <button 

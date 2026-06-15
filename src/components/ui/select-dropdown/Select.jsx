@@ -91,6 +91,13 @@ const makeStyles = (error) => ({
     padding: 0,
     fontSize: "14px",
     color: "#0f172a",
+    outline: "none !important",
+    border: "none !important",
+    boxShadow: "none !important",
+    '& input': {
+      outline: 'none !important',
+      boxShadow: 'none !important',
+    }
   }),
   singleValue: (base) => ({
     ...base,

@@ -43,11 +43,8 @@ const EditProductModal = ({ isOpen, onClose, initialData }) => {
     dispatch(updateProduct({ id: initialData.id, data: formattedData })).then(
       (res) => {
         if (!res.error) {
-          Toast.success("Product updated successfully!");
           reset();
           onClose();
-        } else {
-          Toast.error(res?.error?.message || "Failed to update product!");
         }
       }
     );

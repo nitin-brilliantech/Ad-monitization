@@ -20,6 +20,38 @@ const deviceOptions = [
   { label: "Ipad", value: "Ipad" },
 ];
 
+const selectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "44px",
+    borderRadius: "10px",
+    borderWidth: "1.5px",
+    borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 4px rgba(70,132,255,0.13)" : "none",
+    "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+  }),
+  input: (base) => ({
+    ...base,
+    outline: 0,
+    border: 0,
+    boxShadow: "none",
+    "& input": {
+      outline: "0 !important",
+      border: "0 !important",
+      boxShadow: "none !important",
+    },
+    "& input:focus": {
+      outline: "0 !important",
+      border: "0 !important", 
+      boxShadow: "none !important",
+    }
+  }),
+  valueContainer: (base) => ({
+    ...base,
+    padding: "0 12px",
+  }),
+};
+
 const EditDeviceModal = ({
   isOpen,
   onClose,
@@ -71,9 +103,6 @@ const EditDeviceModal = ({
         if (!res.error) {
           reset();
           onClose();
-          Toast.success("Device update successfully!");
-        } else {
-          Toast.error(res?.error?.message || "Failed to update device!");
         }
       }
     );
@@ -94,6 +123,8 @@ const EditDeviceModal = ({
                 <Select {...field} options={deviceOptions} placeholder="Select device type"
                   value={deviceOptions.find((opt) => opt.value === field.value) || null}
                   onChange={(selected) => field.onChange(selected?.value)}
+                  styles={selectStyles}
+                  classNamePrefix="device-select"
                 />
               )}
             />

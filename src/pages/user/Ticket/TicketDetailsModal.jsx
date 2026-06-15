@@ -1,6 +1,68 @@
 import React, { useState } from "react";
 import { Modal } from "../../../components/ui/modal/Modal";
 import Toast from "../../../components/ui/toast/Toast";
+import Select from "react-select";
+
+const selectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "44px",
+    borderRadius: "8px",
+    borderWidth: "1px",
+    borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 3px rgba(70,132,255,0.1)" : "none",
+    backgroundColor: "#ffffff",
+    transition: "border-color 200ms ease, box-shadow 200ms ease",
+    "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+    cursor: "pointer",
+  }),
+  valueContainer: (base) => ({ ...base, padding: "0 12px" }),
+  input: (base) => ({ 
+    ...base, 
+    margin: 0, 
+    padding: 0,
+    outline: 0,
+    border: 0,
+    boxShadow: "none",
+    "& input": {
+      outline: "0 !important",
+      border: "0 !important",
+      boxShadow: "none !important",
+    },
+    "& input:focus": {
+      outline: "0 !important",
+      border: "0 !important", 
+      boxShadow: "none !important",
+    }
+  }),
+  singleValue: (base) => ({ ...base, fontSize: "14px", color: "#111827" }),
+  placeholder: (base) => ({ ...base, fontSize: "14px", color: "#9ca3af" }),
+  indicatorSeparator: () => ({ display: "none" }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: "8px",
+    boxShadow: "0 10px 25px rgba(15,23,42,0.12)",
+    border: "1px solid #e5e7eb",
+    overflow: "hidden",
+    marginTop: "4px",
+  }),
+  menuList: (base) => ({ ...base, padding: "4px" }),
+  option: (base, state) => ({
+    ...base,
+    fontSize: "14px",
+    borderRadius: "6px",
+    margin: "1px 0",
+    padding: "8px 12px",
+    backgroundColor: state.isSelected
+      ? "#4684ff"
+      : state.isFocused
+      ? "rgba(70,132,255,0.08)"
+      : "transparent",
+    color: state.isSelected ? "#fff" : "#111827",
+    cursor: "pointer",
+  }),
+};
 
 const TicketDetailsModal = ({ isOpen, onClose, ticket }) => {
   const [userRemark, setUserRemark] = useState("");
@@ -173,14 +235,20 @@ const TicketDetailsModal = ({ isOpen, onClose, ticket }) => {
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-gray-600">Update Status</label>
-            <select
-              className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              value={status}
-              onChange={handleStatusChange}
-            >
-              <option value="RESOLVED">RESOLVED</option>
-              <option value="REOPEN">REOPEN</option>
-            </select>
+            <div className="mt-1">
+              <Select
+                options={[
+                  { label: "RESOLVED", value: "RESOLVED" },
+                  { label: "REOPEN", value: "REOPEN" },
+                ]}
+                value={{ label: status, value: status }}
+                onChange={(selected) => handleStatusChange({ target: { value: selected.value } })}
+                styles={selectStyles}
+                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                menuPosition="fixed"
+                classNamePrefix="ticket-status-select"
+              />
+            </div>
           </div>
 
           <div>

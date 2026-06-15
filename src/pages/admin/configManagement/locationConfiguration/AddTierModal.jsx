@@ -31,11 +31,8 @@ const AddTierModal = ({ isOpen, onClose }) => {
 
     dispatch(createTier(finalData)).then((res) => {
        if (!res.error) {
-    Toast.success("Tier added successfully!");
     reset();
     onClose();
-  } else {
-    Toast.error(res?.error?.message || "Failed to add tier!");
   }
     });
   };

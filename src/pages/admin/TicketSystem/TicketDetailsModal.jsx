@@ -2,6 +2,68 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "../../../components/ui/modal/Modal";
 import Toast from "../../../components/ui/toast/Toast";
 import MediaCarousel from "../../../components/ui/carousel/MediaCarousel";
+import Select from "react-select";
+
+const selectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "44px",
+    borderRadius: "10px",
+    borderWidth: "1px",
+    borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 3px rgba(70,132,255,0.1)" : "none",
+    backgroundColor: "#ffffff",
+    transition: "border-color 200ms ease, box-shadow 200ms ease",
+    "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+    cursor: "pointer",
+  }),
+  valueContainer: (base) => ({ ...base, padding: "0 12px" }),
+  input: (base) => ({ 
+    ...base, 
+    margin: 0, 
+    padding: 0,
+    outline: 0,
+    border: 0,
+    boxShadow: "none",
+    "& input": {
+      outline: "0 !important",
+      border: "0 !important",
+      boxShadow: "none !important",
+    },
+    "& input:focus": {
+      outline: "0 !important",
+      border: "0 !important", 
+      boxShadow: "none !important",
+    }
+  }),
+  singleValue: (base) => ({ ...base, fontSize: "14px", color: "#111827" }),
+  placeholder: (base) => ({ ...base, fontSize: "14px", color: "#9ca3af" }),
+  indicatorSeparator: () => ({ display: "none" }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: "10px",
+    boxShadow: "0 10px 25px rgba(15,23,42,0.12)",
+    border: "1px solid #e5e7eb",
+    overflow: "hidden",
+    marginTop: "4px",
+  }),
+  menuList: (base) => ({ ...base, padding: "4px" }),
+  option: (base, state) => ({
+    ...base,
+    fontSize: "14px",
+    borderRadius: "8px",
+    margin: "1px 0",
+    padding: "8px 12px",
+    backgroundColor: state.isSelected
+      ? "#4684ff"
+      : state.isFocused
+      ? "rgba(70,132,255,0.08)"
+      : "transparent",
+    color: state.isSelected ? "#fff" : "#111827",
+    cursor: "pointer",
+  }),
+};
 
 const TicketDetailsModal = ({
   isOpen,
@@ -332,15 +394,23 @@ const TicketDetailsModal = ({
           {isEditable && (
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               <label className="font-semibold text-md text-gray-900">Update Status:</label>
-              <select
-                className="w-60 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2"
-                value={pendingStatus || localTicket.status}
-                onChange={(e) => handleStatusChangeWithConfirmation(e.target.value)}
-              >
-
-                <option value="INPROGRESS">INPROGRESS</option>
-                <option value="CLOSED">CLOSED</option>
-              </select>
+              <div className="w-60">
+                <Select
+                  options={[
+                    { label: "INPROGRESS", value: "INPROGRESS" },
+                    { label: "CLOSED", value: "CLOSED" },
+                  ]}
+                  value={{
+                    label: pendingStatus || localTicket.status,
+                    value: pendingStatus || localTicket.status,
+                  }}
+                  onChange={(selected) => handleStatusChangeWithConfirmation(selected.value)}
+                  styles={selectStyles}
+                  menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                  menuPosition="fixed"
+                  classNamePrefix="ticket-status-select"
+                />
+              </div>
             </div>
           )}
 

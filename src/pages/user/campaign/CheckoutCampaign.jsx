@@ -83,9 +83,9 @@ const CheckoutCampaign = () => {
         attempts++;
         try {
           const statusRes = await checkCashfreePaymentStatus(sessionId);
-          const payStatus = statusRes?.data?.status;
+          const payStatus = statusRes?.data?.status?.status || statusRes?.data?.status;
 
-          if (statusRes?.success && payStatus === "PAID") {
+          if (payStatus === "PAID") {
             clearInterval(poll);
             Toast.success(
               "Payment Successful",
@@ -93,7 +93,7 @@ const CheckoutCampaign = () => {
               10000
             );
             await dispatch(fetchCampaigns({ force: true }));
-            navigate("/campaigns-list");
+            navigate("/active-ads");
           } else if (attempts >= maxAttempts) {
             clearInterval(poll);
             Toast.warning("Timeout",

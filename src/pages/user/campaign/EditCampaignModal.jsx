@@ -15,6 +15,24 @@ import { fields } from "../../../util/Form-menu/campaign-fields";
 import { customizePayload } from "../../../util/validation/campaignValidationSchema";
 import LoaderEmpt from "../../../components/loader/LoaderEmpt"
 
+const selectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "44px",
+    borderRadius: "10px",
+    borderWidth: "1.5px",
+    borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 4px rgba(70,132,255,0.13)" : "none",
+    "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+  }),
+  input: (base) => ({
+    ...base,
+    outline: "none !important",
+    border: "none !important",
+    boxShadow: "none !important",
+  }),
+};
+
 const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
   const dispatch = useDispatch();
   const { formLoading } = useSelector((state) => state.campaign);
@@ -281,6 +299,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
           value={
             dropdowns.product.find((opt) => opt.value === field.value) || null
           }
+          styles={selectStyles}
         />
       )}
     />
@@ -302,6 +321,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
             (opt) =>
               Array.isArray(field.value) && field.value.includes(opt.value)
           )}
+          styles={selectStyles}
         />
       )}
     />

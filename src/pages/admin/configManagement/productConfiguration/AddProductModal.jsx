@@ -40,11 +40,8 @@ const AddProductModal = ({ isOpen, onClose }) => {
 
     dispatch(createProduct(formattedData)).then((res) => {
       if (!res.error) {
-        Toast.success("Product added successfully!");
         reset();
         onClose();
-      } else {
-        Toast.error(res?.error?.message || "Failed to add product!");
       }
     });
   };

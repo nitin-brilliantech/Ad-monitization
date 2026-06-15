@@ -43,11 +43,8 @@ const EditTierModal = ({ isOpen, onClose, initialData }) => {
     dispatch(updateTier({ id: initialData.id, data: finalData })).then(
       (res) => {
         if (!res.error) {
-          Toast.success("Tier updated successfully!");
           reset();
           onClose();
-        } else {
-          Toast.error(res?.error?.message || "Failed to update tier!");
         }
       }
     );

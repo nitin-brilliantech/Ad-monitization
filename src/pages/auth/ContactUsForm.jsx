@@ -34,8 +34,8 @@ const ContactUsForm = () => {
   const roleSelectStyles = {
     control: (base, state) => ({
       ...base,
-      minHeight: "46px",
-      height: "46px",
+      minHeight: "44px",
+      height: "44px",
       borderRadius: "8px",
       borderWidth: "1px",
       borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
@@ -45,11 +45,29 @@ const ContactUsForm = () => {
       "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
       cursor: "pointer",
     }),
-    valueContainer: (base) => ({ ...base, padding: "0 14px", height: "46px" }),
-    input: (base) => ({ ...base, margin: 0, padding: 0, fontSize: "14px" }),
+    valueContainer: (base) => ({ ...base, padding: "0 14px", height: "44px" }),
+    input: (base) => ({ 
+      ...base, 
+      margin: 0, 
+      padding: 0, 
+      fontSize: "14px",
+      outline: 0,
+      border: 0,
+      boxShadow: "none",
+      "& input": {
+        outline: "0 !important",
+        border: "0 !important",
+        boxShadow: "none !important",
+      },
+      "& input:focus": {
+        outline: "0 !important",
+        border: "0 !important", 
+        boxShadow: "none !important",
+      }
+    }),
     singleValue: (base) => ({ ...base, fontSize: "14px", color: "#111827" }),
     placeholder: (base) => ({ ...base, fontSize: "14px", color: "#6b7280" }),
-    indicatorsContainer: (base) => ({ ...base, height: "46px" }),
+    indicatorsContainer: (base) => ({ ...base, height: "44px" }),
     indicatorSeparator: () => ({ display: "none" }),
     dropdownIndicator: (base) => ({ ...base, color: "#6b7280", paddingRight: "10px" }),
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
@@ -262,14 +280,31 @@ const ContactUsForm = () => {
                     <label className={labelClass}>
                       Role <span className="text-red-500">*</span>
                     </label>
-                    <select
-                      {...register("role", { required: "Role is required" })}
-                      className={inputClass}
-                    >
-                      <option value="">Select Role</option>
-                      <option value="Ad-Agency">Ad-Agency</option>
-                      <option value="Retailer">Retailer</option>
-                    </select>
+                    <Controller
+                      name="role"
+                      control={control}
+                      rules={{ required: "Role is required" }}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          options={[
+                            { label: "Ad-Agency", value: "Ad-Agency" },
+                            { label: "Retailer", value: "Retailer" },
+                          ]}
+                          placeholder="Select Role"
+                          value={
+                            field.value
+                              ? { label: field.value, value: field.value }
+                              : null
+                          }
+                          onChange={(selected) => field.onChange(selected?.value || "")}
+                          styles={roleSelectStyles}
+                          menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                          menuPosition="fixed"
+                          classNamePrefix="role-select"
+                        />
+                      )}
+                    />
                     {errors.role && errorMsg(errors.role.message)}
                   </div>
 

@@ -13,7 +13,6 @@ import { fetchDropdownData } from "../../../redux/slices/user/cityProductDeviceS
 
 import { fields } from "../../../util/Form-menu/campaign-fields";
 import { customizePayload } from "../../../util/validation/campaignValidationSchema";
-import LoaderEmpt from "../../../components/loader/LoaderEmpt"
 
 const selectStyles = {
   control: (base, state) => ({
@@ -49,22 +48,13 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
     pincodeMap: {},
   });
 
-  const methods = useForm({
-    defaultValues: {},
-  });
+  const methods = useForm({ defaultValues: {} });
 
-  // Fetch dropdown data if not present
   useEffect(() => {
-    if (!dropdownData) {
-      dispatch(fetchDropdownData());
-    }
+    if (!dropdownData) dispatch(fetchDropdownData());
   }, [dispatch, dropdownData]);
 
-  const refreshCampaigns = () => {
-    dispatch(fetchCampaigns());
-  };
-
-  // Prepare dropdown options with NAMES as values
+  // Build dropdown options from locations data
   useEffect(() => {
     if (!dropdownData) return;
 
@@ -75,31 +65,21 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
 
     dropdownData.locations.forEach((loc) => {
       if (loc.name) regionOptions.push({ label: loc.name, value: loc.name });
-      if (loc.postcode)
-        pincodeOptions.push({ label: loc.postcode, value: loc.postcode });
 
-      if (regionMap[loc.name]) {
-        if (loc.postcode) regionMap[loc.name].push(loc.postcode);
-      } else {
-        regionMap[loc.name] = loc.postcode ? [loc.postcode] : [];
-      }
+      regionMap[loc.name] = regionMap[loc.name] || [];
 
-      if (loc.postcode) pincodeMap[loc.postcode] = loc.name;
+      (loc.regions || []).forEach((region) => {
+        if (region.postcode) {
+          pincodeOptions.push({ label: region.postcode, value: region.postcode });
+          regionMap[loc.name].push(region.postcode);
+          pincodeMap[region.postcode] = loc.name;
+        }
+      });
     });
 
-    const productOptions = dropdownData.products.map((p) => ({
-      label: p.name,
-      value: p.name,
-    }));
-
-    const deviceOptions = dropdownData.devices.map((d) => ({
-      label: d.name,
-      value: d.name,
-    }));
-
     setDropdowns({
-      product: productOptions,
-      targetDevices: deviceOptions,
+      product: dropdownData.products.map((p) => ({ label: p.name, value: p.name })),
+      targetDevices: dropdownData.devices.map((d) => ({ label: d.name, value: d.name })),
       regions: regionOptions,
       pincodes: pincodeOptions,
       regionMap,
@@ -107,185 +87,132 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
     });
   }, [dropdownData]);
 
-  // Reset form values when campaignData or dropdowns.regionMap changes
+  // Populate form when campaignData and regionMap are ready
   useEffect(() => {
-    if (campaignData && Object.keys(dropdowns.regionMap).length > 0) {
-      const selectedRegions = [
-        ...new Set(campaignData.cityPostcodes?.map((item) => item.city) || []),
-      ];
-      const selectedPincodes = [
-        ...new Set(
-          campaignData.cityPostcodes?.map((item) => item.postcode) || []
-        ),
-      ];
+    if (!campaignData || Object.keys(dropdowns.regionMap).length === 0) return;
 
-      // Map devices and product to their NAMES (not IDs)
-      const selectedTargetDeviceNames =
-        campaignData.devices?.map((d) => d.name) || [];
-      const selectedProductName =
-        campaignData.product?.name || campaignData.product || "";
+    console.log("=== EDIT CAMPAIGN DEBUG ===");
+    console.log("1. Raw campaignData:", campaignData);
+    console.log("2. cityPostcodes from API:", campaignData.cityPostcodes);
+    console.log("3. regionMap built from dropdown:", dropdowns.regionMap);
+    console.log("4. pincodeMap built from dropdown:", dropdowns.pincodeMap);
 
-      methods.reset({
-        ...campaignData,
-        product: selectedProductName,
-        targetDevices: selectedTargetDeviceNames,
-        regions: selectedRegions,
-        pincode: selectedPincodes,
-        productFiles: campaignData.productFiles || [],
-        timings: campaignData.timings || "",
-        startDate: campaignData.startDate,
-        endDate: campaignData.endDate,
-        startTime: campaignData.startTime,
-        endTime: campaignData.endTime,
-      });
-    }
+    const cityPostcodes = campaignData.cityPostcodes || [];
+    console.log("5. cityPostcodes array length:", cityPostcodes.length);
+
+    let selectedRegions = [];
+    let selectedPincodes = [];
+
+    cityPostcodes.forEach((item) => {
+      console.log("6. Processing item:", item);
+      if (item.city) selectedRegions.push(item.city);
+      if (item.regions && Array.isArray(item.regions)) {
+        item.regions.forEach((r) => { if (r.postcode) selectedPincodes.push(r.postcode); });
+      } else if (item.postcode) {
+        selectedPincodes.push(item.postcode);
+      }
+    });
+
+    selectedRegions = [...new Set(selectedRegions)];
+    selectedPincodes = [...new Set(selectedPincodes)];
+
+    console.log("7. Final selectedRegions:", selectedRegions);
+    console.log("8. Final selectedPincodes:", selectedPincodes);
+    console.log("9. Do regions exist in regionMap?", selectedRegions.map(r => ({ region: r, exists: !!dropdowns.regionMap[r] })));
+
+    methods.reset({
+      ...campaignData,
+      product: campaignData.product?.name || campaignData.product || "",
+      targetDevices: campaignData.devices?.map((d) => d.name) || [],
+      regions: selectedRegions,
+      pincode: selectedPincodes,
+      productFiles: campaignData.productFiles || [],
+      timings: campaignData.timings || "",
+      startDate: campaignData.startDate,
+      endDate: campaignData.endDate,
+      startTime: campaignData.startTime,
+      endTime: campaignData.endTime,
+    });
   }, [campaignData, dropdowns.regionMap, methods]);
 
-  // Keep regions and pincodes in sync when changed
+  // Sync regions ↔ pincodes
   useEffect(() => {
     const subscription = methods.watch((values, { name }) => {
       const selectedRegions = values.regions || [];
       const selectedPincodes = values.pincode || [];
-
       if (!dropdowns.regionMap || !dropdowns.pincodeMap) return;
 
       if (name === "regions") {
-        const derivedPincodes = [
-          ...new Set(
-            selectedRegions.flatMap(
-              (region) => dropdowns.regionMap[region] || []
-            )
-          ),
-        ];
-
-        const currentSorted = [...selectedPincodes].sort();
-        const derivedSorted = [...derivedPincodes].sort();
-
-        if (JSON.stringify(currentSorted) !== JSON.stringify(derivedSorted)) {
-          methods.setValue("pincode", derivedPincodes, {
-            shouldValidate: false,
-          });
+        const derived = [...new Set(selectedRegions.flatMap((r) => dropdowns.regionMap[r] || []))];
+        if (JSON.stringify([...selectedPincodes].sort()) !== JSON.stringify([...derived].sort())) {
+          methods.setValue("pincode", derived, { shouldValidate: false });
         }
       }
 
       if (name === "pincode") {
-        const derivedRegions = [
-          ...new Set(
-            selectedPincodes
-              .map((pin) => dropdowns.pincodeMap[pin])
-              .filter(Boolean)
-          ),
-        ];
-
-        const currentSorted = [...selectedRegions].sort();
-        const derivedSorted = [...derivedRegions].sort();
-
-        if (JSON.stringify(currentSorted) !== JSON.stringify(derivedSorted)) {
-          methods.setValue("regions", derivedRegions, {
-            shouldValidate: false,
-          });
+        const derived = [...new Set(selectedPincodes.map((p) => dropdowns.pincodeMap[p]).filter(Boolean))];
+        if (JSON.stringify([...selectedRegions].sort()) !== JSON.stringify([...derived].sort())) {
+          methods.setValue("regions", derived, { shouldValidate: false });
         }
       }
     });
-
     return () => subscription.unsubscribe();
   }, [methods, dropdowns.regionMap, dropdowns.pincodeMap]);
 
-  // Handle campaign update submit
   const handleUpdate = async (formData) => {
     const allFiles = formData.productFiles || [];
     const oldImages = allFiles.filter((item) => typeof item === "string");
     const newFiles = allFiles.filter((item) => item instanceof File);
 
     const cityPostcodes = [
-      ...new Set(
+      ...new Map(
         (formData.regions || [])
-          .flatMap((r) =>
-            (dropdowns.regionMap[r] || []).map((p) => ({
-              city: r,
-              postcode: p,
-            }))
-          )
-          .concat(
-            (formData.pincode || []).map((p) => ({
-              city: dropdowns.pincodeMap[p],
-              postcode: p,
-            }))
-          )
-      ),
+          .flatMap((r) => (dropdowns.regionMap[r] || []).map((p) => ({ city: r, postcode: p })))
+          .concat((formData.pincode || []).map((p) => ({ city: dropdowns.pincodeMap[p], postcode: p })))
+          .map((item) => [`${item.city}-${item.postcode}`, item])
+      ).values(),
     ];
 
-    if (!cityPostcodes.length)
-      return Toast.error("Select at least one city/postcode.")
+    if (!cityPostcodes.length) return Toast.error("Select at least one city/postcode.");
 
-    const payload = customizePayload({
-      ...formData,
-      productFiles: newFiles,
-      cityPostcodes,
-      targetDevices: formData.targetDevices,
-      product: formData.product,
-    });
+    const payload = customizePayload({ ...formData, productFiles: newFiles, cityPostcodes });
 
     try {
-      await dispatch(
-        updateCampaign({ id: campaignData.id, data: payload, oldImages })
-      ).unwrap();
-      await refreshCampaigns();
-      await onSuccess?.();
+      await dispatch(updateCampaign({ id: campaignData.id, data: payload, oldImages })).unwrap();
+      dispatch(fetchCampaigns());
+      onSuccess?.();
       onClose?.();
-      Toast.success("Campaign Updated Successfully!")
-
     } catch (err) {
-      Toast.error(err?.message || "Failed to update campaign",)
+      Toast.error(err?.message || "Failed to update campaign");
     }
   };
 
-  // Prepare payload for estimate API: send arrays of names and cityPostcodes
-  const prepareEstimatePayload = (formData) => {
-    const productNames = formData.product ? [formData.product] : [];
-    const deviceNames = formData.targetDevices || [];
-
-    const cityPostcodes = (formData.regions || []).flatMap((region) =>
-      (dropdowns.regionMap[region] || []).map((postcode) => ({
-        city: region,
-        postcode,
-      }))
-    );
-
-    return { productNames, deviceNames, cityPostcodes };
-  };
+  const prepareEstimatePayload = (formData) => ({
+    productNames: formData.product ? [formData.product] : [],
+    deviceNames: formData.targetDevices || [],
+    cityPostcodes: (formData.regions || []).flatMap((region) =>
+      (dropdowns.regionMap[region] || []).map((postcode) => ({ city: region, postcode }))
+    ),
+  });
 
   if (dropdownLoading || !dropdownData) {
     return (
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
-        <div className="flex items-center justify-center h-48">
-          <Loader />
-        </div>
+        <div className="flex items-center justify-center h-48"><Loader /></div>
       </Modal>
     );
   }
 
-  // Deep map fields for dropdowns injection
   const deepFieldsConfig = fields.map((row) =>
     row.map((field) => {
-      if (field.name === "product") {
-        return { ...field, options: dropdowns.product };
-      }
-      if (field.name === "targetDevices") {
-        return { ...field, options: dropdowns.targetDevices };
-      }
-      if (field.name === "regions") {
-        return { ...field, options: dropdowns.regions };
-      }
-      if (field.name === "pincode") {
-        return { ...field, options: dropdowns.pincodes };
-      }
+      if (field.name === "product") return { ...field, options: dropdowns.product };
+      if (field.name === "targetDevices") return { ...field, options: dropdowns.targetDevices };
+      if (field.name === "regions") return { ...field, options: dropdowns.regions };
+      if (field.name === "pincode") return { ...field, options: dropdowns.pincodes };
       return field;
     })
   );
 
-  // Example custom field rendering for select fields
-  // Use this pattern in your FormBuilder for product and targetDevices
   const renderProductSelect = (
     <Controller
       name="product"
@@ -296,9 +223,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
           options={dropdowns.product}
           isClearable
           onChange={(opt) => field.onChange(opt ? opt.value : "")}
-          value={
-            dropdowns.product.find((opt) => opt.value === field.value) || null
-          }
+          value={dropdowns.product.find((opt) => opt.value === field.value) || null}
           styles={selectStyles}
         />
       )}
@@ -314,94 +239,72 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
           {...field}
           options={dropdowns.targetDevices}
           isMulti
-          onChange={(opts) =>
-            field.onChange(opts ? opts.map((opt) => opt.value) : [])
-          }
+          onChange={(opts) => field.onChange(opts ? opts.map((opt) => opt.value) : [])}
           value={dropdowns.targetDevices.filter(
-            (opt) =>
-              Array.isArray(field.value) && field.value.includes(opt.value)
+            (opt) => Array.isArray(field.value) && field.value.includes(opt.value)
           )}
           styles={selectStyles}
         />
       )}
     />
   );
-  // if(formLoading) return  <LoaderEmpt size="large" />
-
 
   return (
-       <>
     <Modal isOpen={isOpen} onClose={onClose} size="lg" showCloseButton={false}>
       <FormProvider {...methods}>
-        {/* <div className="bg-white rounded-lg overflow-hidden"> */}
-          {/* Blue Header */}
-          <div className="bg-[#4684ff] px-6 py-4 rounded-t-2xl">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                  Update Campaign
-                </h2>
-                {campaignData.remark && (
-                  <div className="flex items-center mt-2 text-sm">
-                    <span className="relative flex size-2 mr-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-300 opacity-75"></span>
-                      <span className="relative inline-flex size-2 rounded-full bg-red-400"></span>
-                    </span>
-                    <span className="text-red-100 font-medium">
-                      Remark: {campaignData.remark}
-                    </span>
-                  </div>
-                )}
-              </div>
-              <button
-                onClick={onClose}
-                className="text-white hover:bg-blue-800 rounded-full p-2 transition-colors"
-                disabled={formLoading}
-              >
+        {/* Blue Header */}
+        <div className="bg-[#4684ff] px-6 py-4 rounded-t-2xl">
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
-              </button>
+                Update Campaign
+              </h2>
+              {campaignData.remark && (
+                <div className="flex items-center mt-2 text-sm">
+                  <span className="relative flex size-2 mr-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-300 opacity-75"></span>
+                    <span className="relative inline-flex size-2 rounded-full bg-red-400"></span>
+                  </span>
+                  <span className="text-red-100 font-medium">Remark: {campaignData.remark}</span>
+                </div>
+              )}
             </div>
+            <button
+              onClick={onClose}
+              className="text-white hover:bg-blue-800 rounded-full p-2 transition-colors"
+              disabled={formLoading}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
+        </div>
 
-          {/* Form Content */}
-          <div className="max-h-[70vh] overflow-y-auto">
-            <FormBuilder
-              onSubmit={handleUpdate}
-              fieldsConfig={deepFieldsConfig}
-              dropdowns={{
-                ...dropdowns,
-                pincode: dropdowns.pincodes,
-              }}
-              methods={methods}
-              isEdit={true}
-              loading={formLoading}
-              estimateApi={estimatePrice}
-              estimateWatchFields={[
-                "product",
-                "regions",
-                "targetDevices",
-                "pincode",
-              ]}
-              estimateSetField="baseBid"
-              estimatePayloadFn={prepareEstimatePayload}
-              isPlus={false}
-              submitLabel="Update Campaign"
-              customSelectRenderers={{
-                product: renderProductSelect,
-                targetDevices: renderTargetDevicesSelect,
-              }}
-              title=""
-            />
-          </div>
-        {/* </div> */}
+        {/* Form */}
+        <div className="max-h-[70vh] overflow-y-auto">
+          <FormBuilder
+            onSubmit={handleUpdate}
+            fieldsConfig={deepFieldsConfig}
+            dropdowns={{ ...dropdowns, pincode: dropdowns.pincodes }}
+            methods={methods}
+            isEdit={true}
+            loading={formLoading}
+            estimateApi={estimatePrice}
+            estimateWatchFields={["product", "regions", "targetDevices", "pincode"]}
+            estimateSetField="baseBid"
+            estimatePayloadFn={prepareEstimatePayload}
+            isPlus={false}
+            submitLabel="Update Campaign"
+            customSelectRenderers={{ product: renderProductSelect, targetDevices: renderTargetDevicesSelect }}
+            title=""
+          />
+        </div>
       </FormProvider>
     </Modal>
-       </>
   );
 };
 

@@ -62,7 +62,6 @@ export const deleteCampaign = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await deleteCampaignAPI(id);
-      Toast.success("Campaign deleted successfully!");
       return id;
     } catch (err) {
       Toast.error(err.response?.data?.message || "Failed to delete campaign");

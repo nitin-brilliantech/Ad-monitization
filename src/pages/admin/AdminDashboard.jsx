@@ -4,6 +4,7 @@ import ReusableTable from "../../components/table/ReusableTable";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCampaigns } from "../../redux/slices/admin/campaignSlice";
 import { fetchAdminProfile } from "../../redux/slices/admin/adminSlice";
+import ApprovalBadge from "../../components/ui/badges/ApprovalBadge";
 
 const AdminDashboard  = () => {
   const dispatch = useDispatch();
@@ -86,17 +87,7 @@ const AdminDashboard  = () => {
     {
       id: "isApproved",
       label: "Approval",
-      render: (row) => (
-        <span
-          className={`px-3 py-1 rounded text-sm ${
-            row.isApproved === "APPROVED"
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
-          }`}
-        >
-          {row.isApproved}
-        </span>
-      ),
+      render: (row) => <ApprovalBadge status={row.isApproved} size={11} />,
     },
   ];
 
@@ -108,6 +99,7 @@ const AdminDashboard  = () => {
       currency: true,
       changeColor: "text-green-600",
       bgGradient: "bg-gradient-to-br from-white via-red-50 to-pink-100",
+      description: "Total number of bids awaiting approval from retailers",
     },
     {
       title: "Open Requests",
@@ -116,6 +108,7 @@ const AdminDashboard  = () => {
       currency: false,
       changeColor: "text-green-700",
       bgGradient: "bg-gradient-to-br from-white via-yellow-50 to-yellow-100",
+      description: "Active campaign requests pending review",
     },
     {
       title: "Total Revenue",
@@ -124,6 +117,7 @@ const AdminDashboard  = () => {
       currency: true,
       changeColor: "text-green-600",
       bgGradient: "bg-gradient-to-br from-white via-slate-50 to-blue-100",
+      description: "Cumulative revenue from approved campaigns",
     },
   ];
 

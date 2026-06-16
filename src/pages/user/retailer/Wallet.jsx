@@ -138,13 +138,13 @@ const Wallets = () => {
     }));
 
     return (
-        <div className="p-4">
+        <div className="">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Wallets</h2>
             </div>
 
             {/* Balance Card */}
-            <div className="flex justify-between mb-5 items-center bg-gradient-to-l from-blue-100 via-white to-white border-blue-100/50 p-4 rounded">
+            <div className="flex justify-between mb-5 items-center bg-white border-blue-100/50 p-4 rounded-2xl">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <h2 className="text-lg font-semibold">Current Balance</h2>
@@ -155,11 +155,11 @@ const Wallets = () => {
                     </div>
                     <div className="flex items-center gap-2 mb-1">
                         {loading ? (
-                            <p className="text-2xl font-bold text-blue-900">Loading...</p>
+                            <p className="text-2xl font-bold text-[#4684ff]">Loading...</p>
                         ) : error ? (
                             <p className="text-red-500">Error fetching balance</p>
                         ) : (
-                            <p className="text-2xl font-bold text-blue-900">
+                            <p className="text-2xl font-bold text-[#4684ff]">
                                 {balanceVisible ? formatBalance(balance) : '₹ XXXXXX'}
                             </p>
                         )}
@@ -195,25 +195,63 @@ const Wallets = () => {
             </Modal>
 
             {/* Details Modal */}
-            <Modal isOpen={modalOpen} onClose={handleCloseModal} size="md">
+            <Modal isOpen={modalOpen} onClose={handleCloseModal} size="md" showCloseButton={true}>
                 {selectedRow && (
-                    <div>
-                        <h2 className="text-xl font-semibold mb-4">Withdrawal Request Details</h2>
-                        <div className="space-y-3">
-                            <p><strong>Request Code:</strong> {selectedRow.requestCode}</p>
-                            <p><strong>Amount:</strong> {selectedRow.amount}</p>
-                            <p><strong>Payment Method:</strong> {selectedRow.paymentMethod}</p>
-                            <p><strong>Request Date:</strong> {selectedRow.reqDate}</p>
+                    <div className="space-y-6">
+                        {/* Header */}
+                        <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+                            <div className="flex gap-4">
+                                <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-7 h-7">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 className="text-2xl font-bold text-white">Withdrawal Request</h2>
+                                    <p className="text-md text-white/70 mt-0.5">Request details and status</p>
+                                </div>
+                            </div>
+                            <ApprovalBadge status={selectedRow.status} size={12} />
+                        </div>
+
+                        {/* Content */}
+                        <div className="space-y-4 pt-2">
+                            <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                                <span className="font-semibold text-md text-gray-900">Request Code</span>
+                                <span className="text-sm text-gray-700">{selectedRow.requestCode}</span>
+                            </div>
+
+                            <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                                <span className="font-semibold text-md text-gray-900">Amount</span>
+                                <span className="text-sm text-gray-900 font-bold">₹{selectedRow.amount}</span>
+                            </div>
+
+                            <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                                <span className="font-semibold text-md text-gray-900">Payment Method</span>
+                                <span className="text-sm text-gray-700 uppercase">{selectedRow.paymentMethod}</span>
+                            </div>
+
+                            <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                                <span className="font-semibold text-md text-gray-900">Request Date</span>
+                                <span className="text-sm text-gray-700">{selectedRow.reqDate}</span>
+                            </div>
+
                             {selectedRow.status === "REJECTED" && selectedRow.cancelReqDate && (
-                                <div><strong>Canceled at :</strong> {selectedRow.cancelReqDate}</div>
-                                
+                                <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                                    <span className="font-semibold text-md text-gray-900">Canceled At</span>
+                                    <span className="text-sm text-gray-700">{selectedRow.cancelReqDate}</span>
+                                </div>
                             )}
-                            <div><strong>Status:</strong> <ApprovalBadge status={selectedRow.status} size={12} /></div>
+
                             {selectedRow.status === "REJECTED" && selectedRow.adminRemark && (
-                                <div><strong>Admin Remark:</strong> {selectedRow.adminRemark}</div>
-                                
+                                <div className="pb-3 border-b border-gray-100">
+                                    <span className="font-semibold text-md text-gray-900 block mb-2">Admin Remark</span>
+                                    <div className="px-3 py-2 bg-red-50 rounded-md text-sm text-gray-700">
+                                        {selectedRow.adminRemark}
+                                    </div>
+                                </div>
                             )}
-                            
                         </div>
                     </div>
                 )}

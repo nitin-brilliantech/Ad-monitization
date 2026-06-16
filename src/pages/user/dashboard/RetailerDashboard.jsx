@@ -96,7 +96,7 @@ const RetailerDashboard = () => {
       <div className="mb-3 flex justify-between items-center">
         <h1 className="text-2xl font-bold">
           Welcome,
-          <span className="text-[#445E94] font-bold text-xl ml-2">
+          <span className="text-[#4684ff] font-bold text-xl ml-2">
             {name || "Retailer"}
           </span>
         </h1>

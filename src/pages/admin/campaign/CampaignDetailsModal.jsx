@@ -40,27 +40,35 @@ const CampaignDetailsModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg" showCloseButton={true}>
-      <div className="p-6 space-y-6">
-        <div className="flex justify-between items-center">
-          {/* Title */}
-          <h2 className="text-2xl font-semibold">
-            {campaign?.name || campaign?.campaignName || "Campaign Details"}
-          </h2>
-
-          {/* Payment Pending Badge */}
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+          <div className="flex gap-4">
+            <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} className="w-7 h-7">
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white">
+                {campaign?.name || campaign?.campaignName || "Campaign Details"}
+              </h2>
+              <p className="text-md text-white/70 mt-0.5">Review campaign information and media</p>
+            </div>
+          </div>
           {showPaymentPendingBadge && (
-            <div className="inline-flex items-center bg-yellow-100 text-yellow-600 text-xs px-3 py-1 rounded-full">
+            <div className="inline-flex items-center bg-white/20 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg font-medium">
               PAYMENT PENDING
             </div>
           )}
         </div>
 
-
         {/* Campaign Info in Grid Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm pt-6">
           {infoItems.map(({ label, value }, index) => (
             <div key={index}>
-              <label className="text-sm text-gray-600 flex items-center gap-2">
+              <label className="font-semibold text-md text-gray-900 flex items-center gap-2">
                 {label}
               </label>
               <div className="mt-1 w-full px-3 py-2 text-gray-800 bg-white border border-gray-200 rounded-md shadow-sm text-sm">
@@ -73,7 +81,7 @@ const CampaignDetailsModal = ({
         {/* Product Media Section */}
         {campaign?.productFiles && (
           <div className="mt-4">
-            <h3 className="text-sm font-semibold text-gray-600 mb-2">
+            <h3 className="font-semibold text-md text-gray-900 mb-2">
               Product Media
             </h3>
             <MediaCarousels
@@ -85,26 +93,21 @@ const CampaignDetailsModal = ({
 
         {/* Action Buttons */}
         {campaign.isApproved === "PENDING" && (
-          <div className="flex justify-end gap-4 mt-4">
-            <button
-              className="px-5 py-2 rounded-md bg-red-100 text-red-600 hover:bg-red-200 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              onClick={openRejectModal}
-            >
+          <div className="flex justify-end gap-3 pt-4 border-t border-blue-100">
+            <button onClick={openRejectModal}
+              className="px-5 py-2 text-sm font-medium rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition cursor-pointer">
               Reject
             </button>
-            <button
-              className="px-5 py-2 rounded-md bg-green-100 text-green-600 hover:bg-green-200 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              onClick={() => onApprove("APPROVE")}
-            >
+            <button onClick={() => onApprove("APPROVE")}
+              className="px-5 py-2 text-sm font-medium rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition cursor-pointer">
               Approve
             </button>
           </div>
         )}
 
-        {/* Remark (if campaign is rejected) */}
         {campaign.isApproved === "REJECTED" && campaign.remark && (
           <div>
-            <label className="text-sm text-gray-600">Rejection Remark</label>
+            <label className="font-semibold text-md text-gray-900">Rejection Remark</label>
             <div className="mt-1 w-full px-3 py-2 text-gray-800 bg-white border border-gray-200 rounded-md shadow-sm text-sm">
               {campaign.remark}
             </div>

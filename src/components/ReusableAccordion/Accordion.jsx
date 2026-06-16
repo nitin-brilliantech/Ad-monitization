@@ -30,9 +30,16 @@ const ReusableAccordion = ({
           elevation={0}
           sx={{
             mb: 2,
-            borderRadius: 2,
+            borderRadius: sx.accordion?.borderRadius || 2,
             border: "1px solid #e0e0e0",
+            overflow: "hidden",
             "&:before": { display: "none" },
+            "&:first-of-type": {
+              borderRadius: sx.accordion?.borderRadius || 2,
+            },
+            "&:last-of-type": {
+              borderRadius: sx.accordion?.borderRadius || 2,
+            },
             ...sx.accordion,
           }}
         >
@@ -42,6 +49,7 @@ const ReusableAccordion = ({
                 paddingRight:"10px",
               bgcolor: expandedId === item.id ? "#f5f5f5" : "transparent",
               "&:hover": { bgcolor: "#f5f5f5" },
+              borderRadius: "inherit",
               ...sx.summary,
             }}
           >
@@ -54,7 +62,8 @@ const ReusableAccordion = ({
 
           <AccordionDetails 
             sx={{ 
-              bgcolor: "#fafafa", 
+              bgcolor: "#fafafa",
+              borderRadius: "inherit",
               ...sx.details 
             }}
           >

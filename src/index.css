@@ -1,27 +1,308 @@
 @import "tailwindcss";
 
+/* ── react-toastify reset — our Toast.jsx owns all styling ─── */
+.Toastify__toast {
+  padding: 0 !important;
+  min-height: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.Toastify__toast-body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.Toastify__progress-bar {
+  height: 2px !important;
+  border-radius: 0 0 12px 12px !important;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
 
-/* For WebKit browsers (Chrome, Edge, Safari) */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@theme {
+  --animate-fadeIn: fadeIn 0.15s ease-out forwards;
+  --animate-slideDown: slideDown 0.2s ease-out forwards;
+}
+
+.animate-fadeIn   { animation: var(--animate-fadeIn); }
+.animate-slideDown { animation: var(--animate-slideDown); }
+
+
+/* ══════════════════════════════════════════════════════════
+   Global Input Focus Animations
+   Effect: Soft Border Glow + Subtle Background Lift
+   Speed : 180ms ease — crisp, never flashy
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Shared token ── */
+:root {
+  --input-brand:        #4684ff;
+  --input-glow:         rgba(70, 132, 255, 0.13);
+  --input-lift-shadow:  0 6px 16px rgba(15, 23, 42, 0.08),
+                        0 2px 4px  rgba(15, 23, 42, 0.04);
+  --input-bg-lift:      #ffffff;
+  --input-radius:       10px;
+  --input-border-idle:  #d1d5db;
+  --input-height:       44px;
+  --input-transition:   border-color 180ms ease,
+                        box-shadow   180ms ease,
+                        background   180ms ease,
+                        transform    180ms ease;
+}
+
+/* ── Uniform base for ALL standalone raw inputs / selects / textareas ──
+   .bts-input-inner = inside Input.jsx wrapper
+   [class*="bts__"] = react-select internal inputs (classNamePrefix="bts")
+   [readonly]        = react-select dummy inputs
+   ── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.bts-input-inner):not([class*="bts__"]):not([readonly]),
+select,
+textarea {
+  height: var(--input-height);
+  padding: 0 14px;
+  border: 1.5px solid var(--input-border-idle);
+  border-radius: var(--input-radius);
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: var(--input-transition);
+}
+
+textarea {
+  height: auto;
+  padding: 10px 14px;
+}
+
+/* ── Focus state: lift + glow ── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.bts-input-inner):not([class*="bts__"]):not([readonly]):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--input-brand);
+  box-shadow:
+    0 0 0 4px var(--input-glow),
+    var(--input-lift-shadow);
+  background: var(--input-bg-lift);
+  transform: translateY(-2px);
+}
+
+/* ── Shared Input component wrapper (bts-input-wrapper) ── */
+.bts-input-wrapper {
+  transition: var(--input-transition);
+  border: 1.5px solid var(--input-border-idle) !important;
+  border-radius: var(--input-radius) !important;
+  height: var(--input-height) !important;
+}
+
+.bts-input-wrapper:focus-within {
+  border-color: var(--input-brand) !important;
+  box-shadow:
+    0 0 0 4px var(--input-glow),
+    var(--input-lift-shadow) !important;
+  background: var(--input-bg-lift) !important;
+  transform: translateY(-2px);
+}
+
+/* ── Error state ── */
+.bts-input-wrapper.border-red-500 {
+  border-color: #ef4444 !important;
+}
+.bts-input-wrapper.border-red-500:focus-within {
+  border-color: #ef4444 !important;
+  box-shadow:
+    0 0 0 4px rgba(239, 68, 68, 0.12),
+    var(--input-lift-shadow) !important;
+}
+
+/* ── react-select wrapper — no border here, react-select control owns its own ── */
+.bts-select-wrapper {
+  position: relative;
+}
+
+/* ── Inner input inside bts-input-wrapper — strip all global styles ── */
+.bts-input-inner,
+.bts-input-inner:focus {
+  height: auto !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  padding: 0 !important;
+  outline: none !important;
+}
+
+/* ── react-select internal hidden input — prevent global border/shadow ── */
+.bts__input input,
+.bts__input input:focus,
+input[class*="bts__"],
+input[class*="bts__"]:focus {
+  height: auto !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  padding: 0 !important;
+  outline: none !important;
+  min-height: unset !important;
+}
+/* ── Remove all possible outlines from react-select inputs ── */
+[class*="react-select"] input,
+[class*="react-select"] input:focus,
+div[class*="__input"] input,
+div[class*="__input"] input:focus,
+div[class*="-Input"] input,
+div[class*="-Input"] input:focus,
+div[class*="__input"] input[type="text"],
+div[class*="__input"] input[type="text"]:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+
+/* Target react-select input wrapper specifically */
+div[class*="__input"],
+div[class*="__input"]:focus-within {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Nuclear option - remove outline from ALL inputs inside react-select control */
+div[class*="__control"] input,
+div[class*="__control"] input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Specific react-select class names */
+.css-1dimb5e-singleValue,
+.css-qbdosj-Input input,
+input[class*="Input"],
+input[class*="input"]:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ultimate fallback - any input that's a descendant of a select control */
+[class*="select"] input,
+[class*="select"] input:focus,
+[class*="Select"] input,
+[class*="Select"] input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Device select specific */
+.device-select__input input,
+.device-select__input input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Role select specific */
+.role-select__input input,
+.role-select__input input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ticket status select specific */
+.ticket-status-select__input input,
+.ticket-status-select__input input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* SUPER AGGRESSIVE - Remove outline from ALL inputs everywhere */
+input:focus {
+  outline: none !important;
+}
+
+/* More specific for inputs with outline visible */
+input[style*="outline"] {
+  outline: none !important;
+}
+
+/* Remove browser autocomplete/autofill outline and styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border: none !important;
+}
+
+/* Remove focus ring from all inputs globally */
+*:focus {
+  outline: none !important;
+}
+
+/* Specifically target contenteditable elements (sometimes used by react-select) */
+[contenteditable]:focus {
+  outline: none !important;
+}
+
+/* Default scrollbar for all elements */
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-/* 
+
 *::-webkit-scrollbar-track {
   background: transparent;
-} */
+}
 
 *::-webkit-scrollbar-thumb {
-  background-color: #6B7A99; 
-  border-radius: 4px;
+  background-color: #9ca3af; 
+  border-radius: 10px;
 } 
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #5B6A87; 
+  background-color: #6b7280; 
 }
 
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #445E94 transparent;
+  scrollbar-color: #6b7280 #ffffff;
+}
+
+/* Custom Sidebar Scrollbar - Gray theme */
+nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+nav::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+nav::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 10px;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
 }

@@ -198,11 +198,27 @@ const campaignSlice = createSlice({
         state.fetched = true;
       })
 
+      // optimistic: flip isActive immediately, revert on failure
+      .addCase(toggleCampaignStatus.pending, (state, action) => {
+        const { id, status } = action.meta.arg;
+        const index = state.campaigns.findIndex((c) => c.id === id);
+        if (index !== -1) {
+          state.campaigns[index].isActive = !status; // flip to new value instantly
+        }
+      })
       .addCase(toggleCampaignStatus.fulfilled, (state, action) => {
         const { id, status } = action.payload;
         const index = state.campaigns.findIndex((c) => c.id === id);
         if (index !== -1) {
           state.campaigns[index].isActive = Boolean(status);
+        }
+      })
+      .addCase(toggleCampaignStatus.rejected, (state, action) => {
+        // revert back to original value
+        const { id, status } = action.meta.arg;
+        const index = state.campaigns.findIndex((c) => c.id === id);
+        if (index !== -1) {
+          state.campaigns[index].isActive = Boolean(status); // restore original
         }
       })
 

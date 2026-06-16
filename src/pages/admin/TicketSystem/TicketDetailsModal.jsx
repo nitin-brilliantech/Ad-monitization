@@ -1,7 +1,69 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "../../../components/ui/modal/Modal";
-import { toast } from "react-hot-toast";
+import Toast from "../../../components/ui/toast/Toast";
 import MediaCarousel from "../../../components/ui/carousel/MediaCarousel";
+import Select from "react-select";
+
+const selectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "44px",
+    borderRadius: "10px",
+    borderWidth: "1px",
+    borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 3px rgba(70,132,255,0.1)" : "none",
+    backgroundColor: "#ffffff",
+    transition: "border-color 200ms ease, box-shadow 200ms ease",
+    "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+    cursor: "pointer",
+  }),
+  valueContainer: (base) => ({ ...base, padding: "0 12px" }),
+  input: (base) => ({ 
+    ...base, 
+    margin: 0, 
+    padding: 0,
+    outline: 0,
+    border: 0,
+    boxShadow: "none",
+    "& input": {
+      outline: "0 !important",
+      border: "0 !important",
+      boxShadow: "none !important",
+    },
+    "& input:focus": {
+      outline: "0 !important",
+      border: "0 !important", 
+      boxShadow: "none !important",
+    }
+  }),
+  singleValue: (base) => ({ ...base, fontSize: "14px", color: "#111827" }),
+  placeholder: (base) => ({ ...base, fontSize: "14px", color: "#9ca3af" }),
+  indicatorSeparator: () => ({ display: "none" }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: "10px",
+    boxShadow: "0 10px 25px rgba(15,23,42,0.12)",
+    border: "1px solid #e5e7eb",
+    overflow: "hidden",
+    marginTop: "4px",
+  }),
+  menuList: (base) => ({ ...base, padding: "4px" }),
+  option: (base, state) => ({
+    ...base,
+    fontSize: "14px",
+    borderRadius: "8px",
+    margin: "1px 0",
+    padding: "8px 12px",
+    backgroundColor: state.isSelected
+      ? "#4684ff"
+      : state.isFocused
+      ? "rgba(70,132,255,0.08)"
+      : "transparent",
+    color: state.isSelected ? "#fff" : "#111827",
+    cursor: "pointer",
+  }),
+};
 
 const TicketDetailsModal = ({
   isOpen,
@@ -159,7 +221,7 @@ const TicketDetailsModal = ({
     onSubmitChanges(ticketToSubmit);
     onClose();
 
-    toast.success(
+    Toast.success(
       `Status for ticket ${localTicket.ticketNumber} has been changed by Admin from ${previousStatus} to ${pendingStatus || localTicket.status}`
     );
   };
@@ -264,18 +326,17 @@ const TicketDetailsModal = ({
     <div>
       {/* Main Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="lg" showCloseButton={true}>
-        <div className="p-6 space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold">{localTicket?.subject}</h2>
-            <span
-              className={`px-3 py-1 rounded-md text-sm font-medium flex items-center gap-2 ${getPriorityColor(localTicket.priority).bg
-                } ${getPriorityColor(localTicket.priority).text} ${getPriorityColor(localTicket.priority).border
-                }`}
-            >
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+            <h2 className="text-2xl font-bold text-white truncate pr-4">{localTicket?.subject}</h2>
+            <span className={`shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white`}>
               {localTicket.priority}
               <PriorityPulseDot priority={localTicket.priority} />
             </span>
           </div>
+
+          <div className="space-y-5 pt-2">
 
           {/* Info */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
@@ -287,7 +348,7 @@ const TicketDetailsModal = ({
             <InfoBox label="Email" value={localTicket.email} />
             <InfoBox label="Category" value={localTicket.category} />
             <div>
-              <label className="text-sm text-gray-600">Status</label>
+              <label className="font-semibold text-md text-gray-900">Status</label>
               <div className={`mt-1 w-full px-3 py-2 ${getStatusColor(pendingStatus || localTicket.status).bg
                 } ${getStatusColor(pendingStatus || localTicket.status).text
                 } ${getStatusColor(pendingStatus || localTicket.status).border
@@ -300,7 +361,7 @@ const TicketDetailsModal = ({
 
           {/* Description */}
           <div>
-            <label className="text-sm text-gray-600">Description</label>
+            <label className="font-semibold text-md text-gray-900">Description</label>
             <div className="mt-1 w-full px-3 py-2 text-gray-800 bg-white border border-gray-200 rounded-md shadow-sm text-sm min-h-[80px]">
               {localTicket.description}
             </div>
@@ -309,7 +370,7 @@ const TicketDetailsModal = ({
           {/* Media Preview Grid */}
           {localTicket.media?.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-sm font-semibold text-gray-600 mb-2">Media Submitted by User</h3>
+              <h3 className="font-semibold text-md text-gray-900 mb-2">Media Submitted by User</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {localTicket.media.map((url, index) => renderMediaPreview(url, index))}
               </div>
@@ -332,22 +393,30 @@ const TicketDetailsModal = ({
           {/* Status Select */}
           {isEditable && (
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-              <label className="text-sm font-medium text-gray-600">Update Status:</label>
-              <select
-                className="w-60 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2"
-                value={pendingStatus || localTicket.status}
-                onChange={(e) => handleStatusChangeWithConfirmation(e.target.value)}
-              >
-
-                <option value="INPROGRESS">INPROGRESS</option>
-                <option value="CLOSED">CLOSED</option>
-              </select>
+              <label className="font-semibold text-md text-gray-900">Update Status:</label>
+              <div className="w-60">
+                <Select
+                  options={[
+                    { label: "INPROGRESS", value: "INPROGRESS" },
+                    { label: "CLOSED", value: "CLOSED" },
+                  ]}
+                  value={{
+                    label: pendingStatus || localTicket.status,
+                    value: pendingStatus || localTicket.status,
+                  }}
+                  onChange={(selected) => handleStatusChangeWithConfirmation(selected.value)}
+                  styles={selectStyles}
+                  menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                  menuPosition="fixed"
+                  classNamePrefix="ticket-status-select"
+                />
+              </div>
             </div>
           )}
 
           {/* Admin Remark */}
           <div>
-            <label className="text-sm text-gray-600">
+            <label className="font-semibold text-md text-gray-900">
               Admin Remark <span className="text-red-500">*</span>
             </label>
             {isClosed ? (
@@ -374,17 +443,15 @@ const TicketDetailsModal = ({
 
           {/* Submit Button */}
           {isEditable && (
-            <div className="flex justify-end">
-              <button
-                className="px-5 py-2 rounded-md bg-blue-100 text-blue-600 hover:bg-blue-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={handleSubmit}
-                disabled={!localTicket.adminRemark?.trim()}
-              >
+            <div className="flex justify-end pt-2 border-t border-blue-100">
+              <button onClick={handleSubmit} disabled={!localTicket.adminRemark?.trim()}
+                className="px-5 py-2 rounded-full bg-[#4684ff] text-white text-sm font-medium hover:bg-[#3a6fe6] transition disabled:opacity-50 disabled:cursor-not-allowed">
                 Update Status
               </button>
             </div>
           )}
-        </div>
+          </div>{/* end space-y-5 */}
+        </div>{/* end space-y-6 */}
       </Modal>
 
       {/* Media Carousel Modal */}
@@ -406,29 +473,26 @@ const TicketDetailsModal = ({
       {/* Confirm Modal */}
       {showConfirmation && (
         <Modal isOpen={true} onClose={handleCancelClose} size="md" showCloseButton={false}>
-          <div className="p-6 space-y-4">
-            <h3 className="text-lg font-semibold">Confirm Ticket Closure</h3>
-            <p>Are you sure you want to close this ticket?</p>
-            <div className="flex justify-end gap-4">
-              <button
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                onClick={handleCancelClose}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={handleConfirmClose}
-                disabled={!localTicket.adminRemark?.trim()}
-              >
-                Confirm Close
-              </button>
+          <div className="space-y-6">
+            <div className="flex items-center -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+              <h3 className="text-2xl font-bold text-white">Confirm Ticket Closure</h3>
             </div>
-            {!localTicket.adminRemark?.trim() && (
-              <p className="text-red-500 text-sm">
-                Please enter an admin remark before closing
-              </p>
-            )}
+            <div className="space-y-4 pt-2">
+              <p className="text-sm text-gray-600">Are you sure you want to close this ticket?</p>
+              {!localTicket.adminRemark?.trim() && (
+                <p className="text-red-500 text-sm">Please enter an admin remark before closing.</p>
+              )}
+              <div className="flex justify-end gap-3 pt-2 border-t border-blue-100">
+                <button onClick={handleCancelClose}
+                  className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full transition cursor-pointer">
+                  Cancel
+                </button>
+                <button onClick={handleConfirmClose} disabled={!localTicket.adminRemark?.trim()}
+                  className="px-5 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+                  Confirm Close
+                </button>
+              </div>
+            </div>
           </div>
         </Modal>
       )}
@@ -438,7 +502,7 @@ const TicketDetailsModal = ({
 
 const InfoBox = ({ label, value }) => (
   <div>
-    <label className="text-sm text-gray-600">{label}</label>
+    <label className="font-semibold text-md text-gray-900">{label}</label>
     <div className="mt-1 w-full px-3 py-2 text-gray-800 bg-white border border-gray-200 rounded-md shadow-sm text-sm">
       {value || "—"}
     </div>

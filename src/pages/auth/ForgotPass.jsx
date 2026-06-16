@@ -13,6 +13,7 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const [expirationTime, setExpirationTime] = useState(600);
   const [isExpired, setIsExpired] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -113,8 +114,8 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
   const btnClass = (isBusy) =>
     `w-full py-2 text-white font-medium transition rounded-full ${
       isBusy
-        ? "bg-[#849fb7] cursor-not-allowed"
-        : "bg-[#5F7C95] hover:bg-[#476279]"
+        ? "bg-[#4684ff] opacity-80 cursor-not-allowed"
+        : "bg-[#4684ff] hover:bg-[#3a6fe6] hover:shadow-lg"
     }`;
 
   return (
@@ -139,18 +140,20 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
               <label className="text-sm font-medium block mb-1">
                 Email Address
               </label>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                {...registerOtp("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Enter a valid email",
-                  },
-                })}
-                className="w-full px-4 py-2 border rounded-lg"
-              />
+              <div className="bts-input-wrapper flex items-center w-full bg-white px-4">
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  {...registerOtp("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Enter a valid email",
+                    },
+                  })}
+                  className="bts-input-inner flex-grow bg-transparent text-gray-900 placeholder-gray-400 outline-none"
+                />
+              </div>
               {errorsOtp.email && (
                 <p className="text-sm text-red-500 mt-1">
                   {errorsOtp.email.message}
@@ -187,35 +190,57 @@ const ForgotPass = ({ isForgotOpen, onClose }) => {
               )}
             </p>
 
-            <input
-              type="email"
-              value={email}
-              disabled
-              className="w-full px-4 py-2 border rounded-lg bg-gray-100"
-            />
+            <div className="bts-input-wrapper flex items-center w-full bg-gray-100 px-4 opacity-70 cursor-not-allowed">
+              <input
+                type="email"
+                value={email}
+                disabled
+                className="bts-input-inner flex-grow bg-transparent text-gray-500 outline-none cursor-not-allowed"
+              />
+            </div>
 
-            <input
-              type="text"
-              placeholder="Enter OTP"
-              {...register("otp", { required: "OTP is required" })}
-              className="w-full px-4 py-2 border rounded-lg"
-            />
+            <div className="bts-input-wrapper flex items-center w-full bg-white px-4">
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                {...register("otp", { required: "OTP is required" })}
+                className="bts-input-inner flex-grow bg-transparent text-gray-900 placeholder-gray-400 outline-none"
+              />
+            </div>
             {errors.otp && (
               <p className="text-sm text-red-500">{errors.otp.message}</p>
             )}
 
-            <input
-              type="password"
-              placeholder="New Password"
-              {...register("newPassword", {
-                required: "New password is required",
-                minLength: {
-                  value: 6,
-                  message: "Minimum 6 characters required",
-                },
-              })}
-              className="w-full px-4 py-2 border rounded-lg"
-            />
+            <div className="bts-input-wrapper flex items-center w-full bg-white px-4 gap-3">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="New Password"
+                {...register("newPassword", {
+                  required: "New password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Minimum 6 characters required",
+                  },
+                })}
+                className="bts-input-inner flex-grow bg-transparent text-gray-900 placeholder-gray-400 outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                {showPassword ? (
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                  </svg>
+                ) : (
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                )}
+              </button>
+            </div>
             {errors.newPassword && (
               <p className="text-sm text-red-500">
                 {errors.newPassword.message}

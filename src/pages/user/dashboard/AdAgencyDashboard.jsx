@@ -19,14 +19,20 @@ const AdAgencyDashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useCurrentUser();
-  const { campaigns, loading } = useSelector((state) => state.campaign);
+  const { campaigns, loading, fetched } = useSelector((state) => state.campaign);
+  const { data: dropdownData } = useSelector((state) => state.cityProductDevice);
 
   const [baseBidSums, setBaseBidSums] = useState({});
   const [maxBidCapSums, setMaxBidCapSums] = useState({});
 
   useEffect(() => {
+    if (!fetched && !loading) dispatch(fetchCampaigns());
+  }, [dispatch, fetched, loading]);
+
+  useEffect(() => {
+    if (dropdownData) return;
     dispatch(fetchDropdownData());
-  }, [dispatch]);
+  }, [dispatch, dropdownData]);
 
   const filter_camp = campaigns?.filter((c) => c.isPayment === false);
 
@@ -78,7 +84,7 @@ const AdAgencyDashboard = () => {
         showButton
         buttonLabel="Create Campaign"
         onButtonClick={() => navigate("/create-campaign")}
-        subtitleClass="text-[#445E94] font-bold text-xl"
+        subtitleClass="text-[#4684ff] font-bold text-xl"
         buttonClass="cursor-pointer"
       />
 

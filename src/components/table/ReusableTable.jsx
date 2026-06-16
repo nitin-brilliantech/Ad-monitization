@@ -13,8 +13,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import { FiFilter, FiRefreshCw } from "react-icons/fi";
-import Input from "../../components/ui/input/Input";
-import { SearchIcon } from "../../icon/index";
+import SearchBar from "../../components/ui/search-bar/SearchBar";
 import Loader from "../../components/loader/Loader";
 import COLORS from "../../constants/Colors";
 
@@ -131,13 +130,11 @@ const ReusableTable = ({
       {/* Search + Filter */}
       <div className="flex justify-between bg-white rounded-2xl items-center p-3 mb-4">
         <div className="flex w-1/3">
-          <Input
-            name="search"
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
             placeholder="Search..."
-            icon={<SearchIcon />}
-            iconPosition="left"
-            className="mt-2 flex-1"
-            inputProps={{ type: "search", value: searchQuery, onChange: (e) => setSearchQuery(e.target.value) }}
+            className="flex-1"
           />
         </div>
 
@@ -172,21 +169,27 @@ const ReusableTable = ({
         <Paper elevation={0} sx={{ borderRadius: 3, overflow: "hidden" }}>
           <TableContainer>
             <Table sx={{ minWidth: 750 }}>
-              <TableHead sx={{ backgroundColor: COLORS.softBackground }}>
+              <TableHead sx={{ backgroundColor: "#4684ff" }}>
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={selected.length > 0 && selected.length === filteredAndSortedRows.length}
                       indeterminate={selected.length > 0 && selected.length < filteredAndSortedRows.length}
                       onChange={handleSelectAll}
+                      sx={{ color: "white", "&.Mui-checked": { color: "white" } }}
                     />
                   </TableCell>
                   {columns.map((col) => (
-                    <TableCell key={col.id} align={col.numeric ? "center" : "left"} sx={{ fontWeight: 600, color: COLORS.blueGray }}>
+                    <TableCell key={col.id} align={col.numeric ? "center" : "left"} sx={{ fontWeight: 600, color: "white" }}>
                       <TableSortLabel
                         active={orderBy === col.id}
                         direction={orderBy === col.id ? order : "asc"}
                         onClick={(e) => handleSort(e, col.id)}
+                        sx={{
+                          color: "white !important",
+                          "&:hover": { color: "white !important" },
+                          "& .MuiTableSortLabel-icon": { color: "white !important" }
+                        }}
                       >
                         {col.label}
                       </TableSortLabel>
@@ -218,7 +221,7 @@ const ReusableTable = ({
                         selected={isSelected}
                         sx={{
                           cursor: "pointer",
-                          backgroundColor: isSelected ? "#F2F5F9 !important" : "white",
+                          backgroundColor: isSelected ? "#dbeafe !important" : index % 2 === 0 ? "white" : "#f8fafc",
                           "&:hover": { backgroundColor: "#F2F5F9 !important" },
                         }}
                         onClick={() => handleRowClick(row)}

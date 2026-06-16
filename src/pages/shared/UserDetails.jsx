@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { FiEdit } from "react-icons/fi";
+import { User, Phone, MapPin, Building, Edit, Lock, Mail, Calendar } from "lucide-react";
 import Loader from "../../components/loader/Loader";
 import { Modal } from "../../components/ui/modal/Modal";
 import Button from "../../components/ui/button/Button";
 import { formatDate } from "../../util/helper/formatDate";
 import Toast from "../../components/ui/toast/Toast";
-import Input from "../../components/ui/input/Input"
-// Redux slices
+import Input from "../../components/ui/input/Input";
 import {
   fetchUserProfile,
   resetUserPassword,
@@ -18,37 +17,76 @@ import {
   updateAdminProfile,
   resetAdminPassword,
 } from "../../redux/slices/admin/adminSlice";
-
 import { useCurrentUser } from "../../components/ui/user/CurrentUser";
 import LocationFields from "../../components/LocationsDropdown/LocationFields";
 
+/* ── tiny helpers ─────────────────────────────────────────── */
+
+const ROLE_STYLE = {
+  SUPERADMIN: "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md",
+  ADMIN: "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md",
+  Retailer: "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md",
+  "Ad-Agency": "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md",
+};
+const ROLE_LABEL = {
+  SUPERADMIN: "Super Admin",
+  ADMIN: "Admin",
+  Retailer: "Retailer",
+  "Ad-Agency": "Ad Agency",
+};
+
+// Single info row used in the info cards
+const InfoRow = ({ icon, label, value }) => (
+  <div className="flex items-start gap-3">
+    <span className="mt-0.5 w-8 h-8 rounded-lg bg-[#4684ff]/8 text-[#4684ff] flex items-center justify-center shrink-0 text-sm">
+      {icon}
+    </span>
+    <div>
+      <p className="text-xs text-gray-400 font-medium">{label}</p>
+      <p className="text-sm font-semibold text-gray-800 mt-0.5">{value || "—"}</p>
+    </div>
+  </div>
+);
+
+// Section card wrapper
+const SectionCard = ({ title, icon, action, children }) => (
+  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+      <div className="flex items-center gap-2">
+        <span className="text-[#4684ff]">{icon}</span>
+        <h3 className="text-base font-semibold text-gray-800">{title}</h3>
+      </div>
+      {action}
+    </div>
+    <div className="px-6 py-5">{children}</div>
+  </div>
+);
+
+// Modal header shared pattern — kept for potential future use
+// const ModalHeader = ({ icon, title, subtitle }) => ( ... )
+
+
+
+/* ── main component ───────────────────────────────────────── */
 const UserDetails = () => {
   const dispatch = useDispatch();
   const user = useCurrentUser();
 
   const [editMode, setEditMode] = useState({
     profile: false,
-    profilePic: false,
     passwordModal: false,
   });
-
-  const [profilePicFile, setProfilePicFile] = useState(null);
-  const [profilePicPreview, setProfilePicPreview] = useState(null);
   const [updating, setUpdating] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
 
-  // ✅ Separate useForm for profile edit
   const {
     register: registerProfile,
     handleSubmit: handleProfileSubmitForm,
     reset: resetProfile,
-    control,
-    setValue,
-    watch,
+    control, setValue, watch,
     formState: { errors: profileErrors, isSubmitting: isProfileSubmitting },
   } = useForm();
 
-  // ✅ Separate useForm for password reset
   const {
     register: registerPassword,
     handleSubmit: handlePasswordSubmitForm,
@@ -58,10 +96,8 @@ const UserDetails = () => {
   } = useForm();
 
   const isAdminOrSuperAdmin = ["SUPERADMIN", "ADMIN"].includes(user?.role);
-  const isAdmin = user?.role ==='ADMIN';
+  const isAdmin = user?.role === "ADMIN";
 
-
-  // Reset profile form when user data changes
   useEffect(() => {
     if (user) {
       resetProfile({
@@ -75,12 +111,7 @@ const UserDetails = () => {
     }
   }, [user, resetProfile]);
 
-  // ✅ Profile form submit
   const handleProfileSubmit = async (data) => {
-    console.log("Profile Data Submitted:", data);
-    // ✅ Inline diff: only keep changed fields
-
-
     setUpdating(true);
     try {
       if (isAdminOrSuperAdmin) {
@@ -90,17 +121,14 @@ const UserDetails = () => {
         if (!Object.keys(changes).length) {
           Toast.info("No changes to update");
           cancelEdit("profile");
-          setUpdating(false);
           return;
         }
         await dispatch(updateAdminProfile(changes)).unwrap();
         await dispatch(fetchAdminProfile()).unwrap();
         Toast.success("Profile updated successfully!");
       } else {
-        // If later needed for user profile update API
         Toast.info("User profile update API not integrated yet");
       }
-
       cancelEdit("profile");
     } catch (err) {
       Toast.error(err?.message || "Failed to update profile");
@@ -109,19 +137,14 @@ const UserDetails = () => {
     }
   };
 
-
-  // ✅ Password form submit
   const handlePasswordSubmit = async (data) => {
     const { currentPassword, newPassword } = data;
     setPasswordLoading(true);
     try {
       const thunk = isAdminOrSuperAdmin ? resetAdminPassword : resetUserPassword;
-      const response = await dispatch(
-        thunk({ currentPassword, newPassword })
-      ).unwrap();
-
+      const response = await dispatch(thunk({ currentPassword, newPassword })).unwrap();
       cancelEdit("passwordModal");
-      Toast.success(response?.message || "Password Updated!");
+      Toast.success(response?.message || "Password updated!");
       resetPassword();
     } catch (error) {
       Toast.error("Failed!", error || "Something went wrong");
@@ -132,172 +155,155 @@ const UserDetails = () => {
 
   const cancelEdit = (field) => {
     setEditMode((prev) => ({ ...prev, [field]: false }));
-    setProfilePicFile(null);
-    setProfilePicPreview(null);
     resetProfile();
     resetPassword();
   };
 
+  const name = user?.fullName || user?.name || "User";
+  const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase();
+  const avatar = user?.profileUrl || user?.avatar || user?.profile_url || user?.profilePic;
+
   return (
-    <div className="relative w-full mx-auto p-6">
+    <div className="relative w-full mx-auto py-6">
       {!user && (
-        <div className="absolute inset-0 bg-white/80 z-50 flex flex-col items-center justify-center gap-3">
+        <div className="absolute inset-0 bg-white/80 z-50 flex items-center justify-center">
           <Loader />
         </div>
       )}
 
-      {/* Profile Card */}
-      <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-[#445E94] to-[#16122F] p-6 text-white">
-          <h2 className="text-2xl font-bold">Profile</h2>
-          <p className="text-blue-100">{user?.email || "Manage your profile"}</p>
-        </div>
+      <div className="flex flex-col gap-5">
 
-        {/* Body */}
-        <div className="p-6">
-          {/* Profile Picture */}
-          <div className="flex flex-col items-center mb-8">
-            <div className="relative">
-              <img
-                src={profilePicPreview || user?.profilePic || "logo.svg"}
-                alt="Profile"
-                className="w-32 h-32 rounded-full border-4 border-white shadow-md object-cover"
-              />
-            </div>
-            <div className="mt-3 text-gray-700 text-md font-bold">
-              {user?.businessName || user?.role || "User"}
-            </div>
+        {/* ── Hero card ─────────────────────────────────────── */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          {/* Cover banner */}
+          <div className="h-28 bg-gradient-to-r from-[#4684ff] via-[#3a6fe6] to-[#2d5acc] relative">
+            {/* subtle pattern */}
+            <div className="absolute inset-0 opacity-10"
+              style={{ backgroundImage: "radial-gradient(circle at 20% 50%,#fff 1px,transparent 1px),radial-gradient(circle at 80% 20%,#fff 1px,transparent 1px)", backgroundSize: "40px 40px" }}
+            />
           </div>
 
-          {/* Personal Info */}
-          <div className="bg-gray-50 rounded-xl shadow p-6 mb-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-800">
-                Personal Information
-              </h3>
+          {/* Avatar + name row */}
+          <div className="px-6 pb-5">
+            <div className="flex items-end justify-between -mt-12 mb-4">
+              {/* Avatar */}
+              <div className="relative">
+                {avatar ? (
+                  <img src={avatar} alt={name}
+                    className="w-24 h-24 rounded-2xl object-cover border-4 border-white shadow-lg" />
+                ) : (
+                  <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#4684ff] to-[#3a6fe6] border-4 border-white shadow-lg flex items-center justify-center text-white text-2xl font-bold">
+                    {initials}
+                  </div>
+                )}
+                {/* online dot */}
+                <span className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full" />
+              </div>
+
+              {/* Edit profile button */}
               {isAdminOrSuperAdmin && (
                 <button
-                  onClick={() =>
-                    setEditMode((prev) => ({ ...prev, profile: true }))
-                  }
-                  className="text-blue-600 hover:cursor-pointer hover:text-blue-800"
+                  onClick={() => setEditMode((p) => ({ ...p, profile: true }))}
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[#4684ff] border border-[#4684ff]/30 rounded-xl hover:bg-[#4684ff]/6 transition-all duration-150"
                 >
-                  <FiEdit />
+                  <Edit size={16} />
+                  Edit Profile
                 </button>
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm">
-              <Info label="Full Name" value={user?.fullName || user?.name} />
-              <Info label="Mobile Number" value={user?.phone} />
-              <Info label="City" value={user?.city} />
-              <Info label="State" value={user?.state} />
-              <Info label="Country" value={user?.country} />
-              <Info label="Address" value={user?.address} />
-              {!isAdminOrSuperAdmin && (
-                <>
-                  <Info label="Business Name" value={user?.businessName} />
-                  <Info label="On Board" value={formatDate(user?.createdAt)} />
-                </>
+            {/* Name / email / role */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">{name}</h2>
+                <p className="text-sm text-gray-400 mt-0.5">{user?.email}</p>
+              </div>
+              {user?.role && (
+                <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${ROLE_STYLE[user.role] ?? "bg-gray-100 text-gray-600"}`}>
+                  {ROLE_LABEL[user.role] ?? user.role}
+                </span>
               )}
             </div>
-
-            <div className="mt-6">
-              <Button
-                isIcon={false}
-                onClick={() =>
-                  setEditMode((prev) => ({ ...prev, passwordModal: true }))
-                }
-                label="Change Password"
-              />
-            </div>
           </div>
-
-          {/* Org Details for Users */}
-          {!isAdminOrSuperAdmin && (
-            <div className="bg-gray-50 rounded-xl shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Organization Details
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm">
-                <Info label="Business Name" value={user?.businessName} />
-                <Info label="Business Type" value={user?.businessType} />
-                <Info label="GST Number" value={user?.gstNumber} />
-                <Info
-                  label="Registered On"
-                  value={formatDate(user?.createdAt)}
-                />
-                <Info
-                  label="Organization Email"
-                  value={user?.orgEmail || user?.email}
-                />
-                <Info
-                  label="Organization Phone"
-                  value={user?.orgPhone || user?.phone}
-                />
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* ── Personal Information ──────────────────────────── */}
+        <SectionCard
+          title="Personal Information"
+          icon={<User size={16} />}
+          action={
+            <button
+              onClick={() => setEditMode((p) => ({ ...p, passwordModal: true }))}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#4684ff] border border-[#4684ff]/30 rounded-lg hover:bg-[#4684ff]/6 transition-all duration-150"
+            >
+              <Lock size={14} />
+              Change Password
+            </button>
+          }
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <InfoRow icon={<User size={16} />} label="Full Name" value={user?.fullName || user?.name} />
+            <InfoRow icon={<Phone size={16} />} label="Mobile Number" value={user?.phone} />
+            <InfoRow icon={<Mail size={16} />} label="Email" value={user?.email} />
+            <InfoRow icon={<MapPin size={16} />} label="City" value={user?.city} />
+            <InfoRow icon={<MapPin size={16} />} label="State" value={user?.state} />
+            <InfoRow icon={<MapPin size={16} />} label="Country" value={user?.country} />
+            <InfoRow icon={<MapPin size={16} />} label="Address" value={user?.address} />
+            {!isAdminOrSuperAdmin && (
+              <InfoRow icon={<Calendar size={16} />} label="Member Since" value={formatDate(user?.createdAt)} />
+            )}
+          </div>
+        </SectionCard>
+
+        {/* ── Organisation Details (non-admin) ─────────────── */}
+        {!isAdminOrSuperAdmin && (
+          <SectionCard title="Organisation Details" icon={<Building size={16} />}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <InfoRow icon={<Building size={16} />} label="Business Name" value={user?.businessName} />
+              <InfoRow icon={<Building size={16} />} label="Business Type" value={user?.businessType} />
+              <InfoRow icon={<Building size={16} />} label="GST Number" value={user?.gstNumber} />
+              <InfoRow icon={<Mail size={16} />} label="Organisation Email" value={user?.orgEmail || user?.email} />
+              <InfoRow icon={<Phone size={16} />} label="Organisation Phone" value={user?.orgPhone || user?.phone} />
+              <InfoRow icon={<Calendar size={16} />} label="Registered On" value={formatDate(user?.createdAt)} />
+            </div>
+          </SectionCard>
+        )}
+
       </div>
 
-      {/* Admin Edit Modal */}
+      {/* ── Edit Profile Modal ────────────────────────────── */}
       {isAdminOrSuperAdmin && (
-        <Modal
-          isOpen={editMode.profile}
-          onClose={() => cancelEdit("profile")}
-          size="md"
-        >
-          <h2 className="text-center text-gray-800 font-bold mb-4">
-            Edit Profile
-          </h2>
-          <form
-            onSubmit={handleProfileSubmitForm(handleProfileSubmit)}
-            className="space-y-4"
-            autoComplete="off"
-          >
-            <h2 className="text-lg font-semibold">Edit Profile</h2>
+        <Modal isOpen={editMode.profile} onClose={() => cancelEdit("profile")} size="md">
+          {/* Full-bleed header */}
+          <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+            <div className="flex gap-4">
+              <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Edit className="w-7 h-7 text-white" />
+              </div>
+              <div className="">
+                <h2 className="text-2xl font-bold text-white">Edit Profile</h2>
+                <p className="text-sm text-white/70 mt-0.5">Update your personal information</p>
+              </div>
+            </div>
 
+          </div>
+          <form onSubmit={handleProfileSubmitForm(handleProfileSubmit)} className="space-y-4 mt-6" autoComplete="off">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Full Name */}
-              <div>
-                <label className="block text-sm mb-1">
-                  Full Name<span className="text-red-500">*</span>
-                </label>
-                <Input
-                  type="text"
-                  placeholder="John Doe"
-                  {...registerProfile("fullName", {
-                    required: "Full Name is required",
-                  })}
-                  disabled={isAdmin}
-
-                />
-                {profileErrors.fullName && (
-                  <p className="text-sm text-red-500">{profileErrors.fullName.message}</p>
-                )}
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label className="block text-sm mb-1">
-                  Phone<span className="text-red-500">*</span>
-                </label>
-                <Input
-                  type="tel"
-                  placeholder="9876543210"
-                  {...registerProfile("phone", {
-                    required: "Phone is required",
-                  })}
-
-                />
-                {profileErrors.phone && (
-                  <p className="text-sm text-red-500">{profileErrors.phone.message}</p>
-                )}
-              </div>
-
-              {/* Location fields */}
+              <Input
+                label="Full Name"
+                name="fullName"
+                placeholder="John Doe"
+                error={profileErrors.fullName?.message}
+                disabled={isAdmin}
+                {...registerProfile("fullName", { required: "Full Name is required" })}
+              />
+              <Input
+                label="Phone"
+                name="phone"
+                placeholder="9876543210"
+                error={profileErrors.phone?.message}
+                {...registerProfile("phone", { required: "Phone is required" })}
+              />
               <LocationFields
                 control={control}
                 setValue={setValue}
@@ -306,81 +312,81 @@ const UserDetails = () => {
                 isPincode={false}
                 isRequired={true}
               />
-
-              {/* Address */}
               <div className="col-span-1 md:col-span-2">
-                <label className="block text-sm mb-1">Address<span className="text-red-500">*</span></label>
                 <Input
-                  as="textarea"
-                  rows={3}
+                  label="Address"
+                  name="address"
                   placeholder="Enter full address"
-                  {...registerProfile("address", {
-                    required: "Address is required",
-                  })} />
-                {profileErrors.address && (
-                  <p className="text-sm text-red-500">{profileErrors.address.message}</p>
-                )}
+                  error={profileErrors.address?.message}
+                  {...registerProfile("address", { required: "Address is required" })}
+                />
               </div>
             </div>
-
-            {/* Buttons */}
-            <div className="flex justify-end gap-2 pt-4">
-              <Button
-                type="submit"
-                isIcon={false}
-                label={isProfileSubmitting || updating ? "Updating..." : "Update"}
-                loading={isProfileSubmitting || updating}
-              />
+            <div className="flex justify-end gap-3 pt-4 border-t border-blue-100">
+              <button type="button" onClick={() => cancelEdit("profile")}
+                className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full transition-all duration-150 cursor-pointer">
+                Cancel
+              </button>
+              <Button type="submit" isIcon={false}
+                label={isProfileSubmitting || updating ? "Updating..." : "Save Changes"}
+                loading={isProfileSubmitting || updating} />
             </div>
           </form>
-
         </Modal>
       )}
 
-      {/* Password Modal */}
-      <Modal
-        isOpen={editMode.passwordModal}
-        onClose={() => cancelEdit("passwordModal")}
-      >
-        <h2 className="text-xl font-semibold mb-4">Reset Password</h2>
-        <form
-          onSubmit={handlePasswordSubmitForm(handlePasswordSubmit)}
-          className="flex flex-col gap-3"
-        >
+      {/* ── Change Password Modal ─────────────────────────── */}
+      <Modal isOpen={editMode.passwordModal} onClose={() => cancelEdit("passwordModal")}>
+        {/* Full-bleed header */}
+        <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
+          <div className="flex gap-4">
+            <div className="w-15 h-15 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <Lock className="w-7 h-7 text-white" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-white">Change Password</h2>
+            <p className="text-sm text-white/70 mt-0.5">Keep your account secure</p>
+            </div>
+          </div>
+          
+        </div>
+        <form onSubmit={handlePasswordSubmitForm(handlePasswordSubmit)} className="flex flex-col gap-4 mt-6">
           <Input
             type="password"
-            label="Old Password"
-            {...registerPassword("currentPassword", {
-              required: "Old password is required",
-            })}
+            label="Current Password"
+            name="currentPassword"
+            placeholder="Enter current password"
             error={passwordErrors.currentPassword?.message}
+            {...registerPassword("currentPassword", { required: "Current password is required" })}
           />
           <Input
             type="password"
             label="New Password"
+            name="newPassword"
+            placeholder="Min. 6 characters"
+            error={passwordErrors.newPassword?.message}
             {...registerPassword("newPassword", {
               required: "New password is required",
               minLength: { value: 6, message: "Minimum 6 characters" },
             })}
-            error={passwordErrors.newPassword?.message}
           />
           <Input
             type="password"
-            label="Confirm Password"
+            label="Confirm New Password"
+            name="confirmPassword"
+            placeholder="Repeat new password"
+            error={passwordErrors.confirmPassword?.message}
             {...registerPassword("confirmPassword", {
               required: "Please confirm your password",
-              validate: (value) =>
-                value === watchPassword("newPassword") ||
-                "Passwords do not match",
+              validate: (v) => v === watchPassword("newPassword") || "Passwords do not match",
             })}
-            error={passwordErrors.confirmPassword?.message}
           />
-          <div className="flex justify-end mt-4">
-            <Button
-              label="Update Password"
-              type="submit"
-              loading={passwordLoading}
-            />
+          <div className="flex justify-end gap-3 pt-4 border-t border-blue-100">
+            <button type="button" onClick={() => cancelEdit("passwordModal")}
+              className="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full transition-all duration-150 cursor-pointer">
+              Cancel
+            </button>
+            <Button type="submit" isIcon={false} label="Update Password" loading={passwordLoading} />
           </div>
         </form>
       </Modal>
@@ -388,12 +394,4 @@ const UserDetails = () => {
   );
 };
 
-// Small helper components
-const Info = ({ label, value }) => (
-  <div className="flex w-full space-x-2">
-    <span className="text-gray-500">{label}:</span>
-    <div className="font-medium">{value || "N/A"}</div>
-  </div>
-);
 export default UserDetails;
-

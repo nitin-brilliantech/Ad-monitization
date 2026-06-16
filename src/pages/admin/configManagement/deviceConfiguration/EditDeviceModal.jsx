@@ -20,6 +20,38 @@ const deviceOptions = [
   { label: "Ipad", value: "Ipad" },
 ];
 
+const selectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "44px",
+    borderRadius: "10px",
+    borderWidth: "1.5px",
+    borderColor: state.isFocused ? "#4684ff" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 4px rgba(70,132,255,0.13)" : "none",
+    "&:hover": { borderColor: state.isFocused ? "#4684ff" : "#a0aec0" },
+  }),
+  input: (base) => ({
+    ...base,
+    outline: 0,
+    border: 0,
+    boxShadow: "none",
+    "& input": {
+      outline: "0 !important",
+      border: "0 !important",
+      boxShadow: "none !important",
+    },
+    "& input:focus": {
+      outline: "0 !important",
+      border: "0 !important", 
+      boxShadow: "none !important",
+    }
+  }),
+  valueContainer: (base) => ({
+    ...base,
+    padding: "0 12px",
+  }),
+};
+
 const EditDeviceModal = ({
   isOpen,
   onClose,
@@ -71,135 +103,68 @@ const EditDeviceModal = ({
         if (!res.error) {
           reset();
           onClose();
-          Toast.success("Device update successfully!");
-        } else {
-          Toast.error(res?.error?.message || "Failed to update device!");
         }
       }
     );
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md" showCloseButton={true}>
+    <Modal isOpen={isOpen} onClose={onClose} size="md" title="Edit Device">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="p-4 space-y-6">
-          <h2 className="text-xl font-bold">Edit Device</h2>
+        <div className="space-y-4">
+            {/* Device Type */}
+            <Controller control={control} name="name" rules={{ required: "Device type is required" }}
+              render={({ field }) => (
+                <Select {...field} options={deviceOptions} placeholder="Select device type"
+                  value={deviceOptions.find((opt) => opt.value === field.value) || null}
+                  onChange={(selected) => field.onChange(selected?.value)}
+                  styles={selectStyles}
+                  classNamePrefix="device-select"
+                />
+              )}
+            />
 
-          {/* Device Type */}
-          <Controller
-            control={control}
-            name="name"
-            rules={{ required: "Device type is required" }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                options={deviceOptions}
-                placeholder="Select device type"
-                value={
-                  deviceOptions.find((opt) => opt.value === field.value) || null
-                }
-                onChange={(selected) => field.onChange(selected?.value)}
+            {/* Resolution */}
+            <div className="flex space-x-4">
+              <Controller control={control} name="height"
+                rules={{ required: "Height is required", min: { value: 1, message: "Height must be positive" } }}
+                render={({ field }) => (
+                  <Input {...field} value={field.value ?? ""} label="Height" placeholder="Height" inputProps={{ type: "number", min: 1 }} error={errors.height?.message} />
+                )}
               />
-            )}
-          />
-
-          {/* Resolution */}
-          <div className="flex space-x-4">
-            <Controller
-              control={control}
-              name="height"
-              rules={{
-                required: "Height is required",
-                min: { value: 1, message: "Height must be positive" },
-              }}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  value={field.value ?? ""}
-                  label="Height"
-                  placeholder="Height"
-                  inputProps={{ type: "number", min: 1 }}
-                  error={errors.height?.message}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="width"
-              rules={{
-                required: "Width is required",
-                min: { value: 1, message: "Width must be positive" },
-              }}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  value={field.value ?? ""}
-                  label="Width"
-                  placeholder="Width"
-                  inputProps={{ type: "number", min: 1 }}
-                  error={errors.width?.message}
-                />
-              )}
-            />
-          </div>
-
-          {/* Orientation & Price */}
-          <div className="flex w-full items-center justify-between">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Orientation
-              </label>
-              <div className="flex gap-4">
-                {["Horizontal", "Vertical"].map((opt) => (
-                  <Button
-                    key={opt}
-                    type="button"
-                    isIcon={false}
-                    variant="custom"
-                    onClick={() => setOrientation(opt)}
-                    className={`w-[110px] h-[30px] rounded-full text-sm font-semibold border transition-all duration-150 ${
-                      orientation === opt
-                        ? "bg-[#445C91] text-white border-[#445C91]"
-                        : "bg-white text-[#445C91] border-[#445C91]"
-                    }`}
-                    label={opt}
-                  />
-                ))}
-              </div>
+              <Controller control={control} name="width"
+                rules={{ required: "Width is required", min: { value: 1, message: "Width must be positive" } }}
+                render={({ field }) => (
+                  <Input {...field} value={field.value ?? ""} label="Width" placeholder="Width" inputProps={{ type: "number", min: 1 }} error={errors.width?.message} />
+                )}
+              />
             </div>
 
-            <Controller
-              control={control}
-              name="price"
-              rules={{
-                required: "Price is required",
-                min: { value: 0, message: "Price cannot be negative" },
-              }}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  value={field.value ?? ""}
-                  label="Custom Price (₹)"
-                  placeholder="Enter price"
-                  inputProps={{ type: "number", min: 0, step: "0.01" }}
-                  error={errors.price?.message}
-                />
-              )}
-            />
-          </div>
+            {/* Orientation + Price */}
+            <div className="flex w-full items-center justify-between">
+              <div>
+                <label className="block font-semibold text-md text-gray-900 mb-1">Orientation</label>
+                <div className="flex gap-2">
+                  {["Horizontal", "Vertical"].map((opt) => (
+                    <Button key={opt} type="button" isIcon={false} variant="custom" onClick={() => setOrientation(opt)}
+                      className={`w-[110px] h-[30px] rounded-full text-sm font-semibold border-2 transition-all duration-150 ${
+                        orientation === opt ? "bg-[#4684ff] text-white border-[#4684ff] shadow-md" : "bg-white text-[#4684ff] border-[#4684ff] hover:bg-blue-50"
+                      }`} label={opt} />
+                  ))}
+                </div>
+              </div>
+              <Controller control={control} name="price"
+                rules={{ required: "Price is required", min: { value: 0, message: "Price cannot be negative" } }}
+                render={({ field }) => (
+                  <Input {...field} value={field.value ?? ""} label="Custom Price (₹)" placeholder="Enter price" inputProps={{ type: "number", min: 0, step: "0.01" }} error={errors.price?.message} />
+                )}
+              />
+            </div>
 
-          {/* Submit */}
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              variant="primary"
-              label="Update Device"
-              isIcon={false}
-              className="px-6 py-2"
-              loading={formLoading}
-            />
+            <div className="flex justify-end pt-2 border-t border-blue-100">
+              <Button type="submit" variant="primary" label="Update Device" isIcon={false} loading={formLoading} />
+            </div>
           </div>
-        </div>
       </form>
     </Modal>
   );

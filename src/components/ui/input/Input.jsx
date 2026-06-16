@@ -15,18 +15,19 @@ const Input = ({
   onChange,
   onBlur,
   ref,
-  disabled
+  disabled,
+  type,
 }) => {
   return (
     <div className="mb-4 mt-1">
       <Label text={label} htmlFor={name} {...labelProps} />
       <div
-        className={`flex items-center w-full  h-[40px] rounded-lg border ${
-          error ? "border-red-500" : "border-gray-300"
-        } py-2 px-4 gap-2.5 focus-within:ring-2 focus-within:ring-blue-500 bg-white shadow-xs ${className}`}
+        className={`bts-input-wrapper flex items-center w-full bg-white px-4 gap-2.5 ${
+          error ? "border-red-500" : ""
+        } ${className}`}
       >
         {icon && iconPosition === "left" && (
-          <div className="flex items-center text-gray-400 pointer-events-none">
+          <div className="flex items-center text-gray-400 pointer-events-none shrink-0">
             {icon}
           </div>
         )}
@@ -34,6 +35,7 @@ const Input = ({
         <input
           id={name}
           name={name}
+          type={type}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -41,15 +43,15 @@ const Input = ({
           disabled={disabled}
           ref={ref}
           {...inputProps}
-          className={`flex-grow bg-transparent border-none outline-none text-gray-900 placeholder-gray-500 text-base font-normal ${
+          className={`bts-input-inner flex-grow bg-transparent border-none outline-none text-gray-900 placeholder-gray-400 text-sm font-normal h-full ${
             error ? "text-red-700" : ""
-          }`}
+          } ${inputProps?.className ?? ""}`}
           aria-invalid={error ? "true" : "false"}
           aria-describedby={error ? `${name}-error` : undefined}
         />
 
         {icon && iconPosition === "right" && (
-          <div className="flex items-center text-gray-400 pointer-events-none">
+          <div className="flex items-center text-gray-400 pointer-events-none shrink-0">
             {icon}
           </div>
         )}

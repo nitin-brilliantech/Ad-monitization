@@ -200,7 +200,7 @@ const Navbar = ({ toggleSidebar }) => {
             className="cursor-pointer flex items-center gap-2.5 px-3 py-2 bg-gradient-to-br from-[#4684ff] to-[#3a6fe6] rounded-xl hover:from-[#3a6fe6] hover:to-[#2d5acc] hover:shadow-lg transition-all duration-200"
           >
             <img
-              src={user?.avatar || user?.profile_url || "logo.svg"}
+              src={user?.profileUrl || user?.avatar || user?.profile_url || "logo.svg"}
               alt="User"
               className="w-8 h-8 rounded-full border-3 border-white object-cover shadow-sm"
             />

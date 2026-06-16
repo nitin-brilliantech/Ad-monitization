@@ -161,7 +161,7 @@ const UserDetails = () => {
 
   const name = user?.fullName || user?.name || "User";
   const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase();
-  const avatar = user?.avatar || user?.profile_url || user?.profilePic;
+  const avatar = user?.profileUrl || user?.avatar || user?.profile_url || user?.profilePic;
 
   return (
     <div className="relative w-full mx-auto py-6">

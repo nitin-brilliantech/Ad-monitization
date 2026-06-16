@@ -331,58 +331,74 @@ const EditCampaignModal = ({ isOpen, onClose, campaignData, onSuccess }) => {
 
   return (
        <>
-    <Modal isOpen={isOpen} onClose={onClose} size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" showCloseButton={false}>
       <FormProvider {...methods}>
-        <div className="max-h-[80vh] rounded-lg relative">
-          <FormBuilder
-            onSubmit={handleUpdate}
-            fieldsConfig={deepFieldsConfig}
-            dropdowns={{
-              ...dropdowns,
-              pincode: dropdowns.pincodes,
-            }}
-            methods={methods}
-            isEdit={true}
-            loading={formLoading}
-            estimateApi={estimatePrice}
-            estimateWatchFields={[
-              "product",
-              "regions",
-              "targetDevices",
-              "pincode",
-            ]}
-            estimateSetField="baseBid"
-            estimatePayloadFn={prepareEstimatePayload}
-            isPlus={false}
-            submitLabel="Update"
-            customSelectRenderers={{
-              product: renderProductSelect,
-              targetDevices: renderTargetDevicesSelect,
-            }}
-            title={
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full pr-12">
-                <span className="text-xl font-bold text-gray-800">
+        {/* <div className="bg-white rounded-lg overflow-hidden"> */}
+          {/* Blue Header */}
+          <div className="bg-[#4684ff] px-6 py-4 rounded-t-2xl">
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
                   Update Campaign
-                </span>
-
+                </h2>
                 {campaignData.remark && (
-                  <div className="flex items-center mt-1 sm:mt-0 text-sm sm:max-w-xs truncate text-right">
-                    <span className="relative flex size-2 mx-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
-                    </span>{" "}
-                    <span
-                      className="text-red-500 text-md truncate"
-                      title={campaignData.remark}
-                    >
-                      {campaignData.remark}
+                  <div className="flex items-center mt-2 text-sm">
+                    <span className="relative flex size-2 mr-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-300 opacity-75"></span>
+                      <span className="relative inline-flex size-2 rounded-full bg-red-400"></span>
+                    </span>
+                    <span className="text-red-100 font-medium">
+                      Remark: {campaignData.remark}
                     </span>
                   </div>
                 )}
               </div>
-            }
-          />
-        </div>
+              <button
+                onClick={onClose}
+                className="text-white hover:bg-blue-800 rounded-full p-2 transition-colors"
+                disabled={formLoading}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Form Content */}
+          <div className="max-h-[70vh] overflow-y-auto">
+            <FormBuilder
+              onSubmit={handleUpdate}
+              fieldsConfig={deepFieldsConfig}
+              dropdowns={{
+                ...dropdowns,
+                pincode: dropdowns.pincodes,
+              }}
+              methods={methods}
+              isEdit={true}
+              loading={formLoading}
+              estimateApi={estimatePrice}
+              estimateWatchFields={[
+                "product",
+                "regions",
+                "targetDevices",
+                "pincode",
+              ]}
+              estimateSetField="baseBid"
+              estimatePayloadFn={prepareEstimatePayload}
+              isPlus={false}
+              submitLabel="Update Campaign"
+              customSelectRenderers={{
+                product: renderProductSelect,
+                targetDevices: renderTargetDevicesSelect,
+              }}
+              title=""
+            />
+          </div>
+        {/* </div> */}
       </FormProvider>
     </Modal>
        </>

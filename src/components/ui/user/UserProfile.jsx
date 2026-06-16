@@ -75,7 +75,7 @@ const UserProfile = ({ profile, onAddAdminClick, onClose }) => {
 
   const name   = profile?.name || profile?.fullName || "User";
   const email  = profile?.email || "";
-  const avatar = profile?.avatar || profile?.profile_url;
+  const avatar = profile?.profileUrl || profile?.avatar || profile?.profile_url;
   const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase();
 
   return (

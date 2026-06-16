@@ -17,6 +17,7 @@ import tierReducer from './slices/admin/tierSlice'
 import productReducer from './slices/admin/productSlice'
 import payoutReducer from './slices/admin/payoutSlice'
 import adminRevenueReducer from './slices/admin/adminRevenueSlice'
+import terminalReducer from './slices/admin/terminalSlice'
 
 export const store = configureStore({
   reducer: {
@@ -37,5 +38,6 @@ export const store = configureStore({
     tier: tierReducer,
     product: productReducer,
     payout: payoutReducer,
+    adminTerminal: terminalReducer,
   },
 })

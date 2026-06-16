@@ -44,6 +44,7 @@ export const adminMenuItems = [
   { name: "Withdrawal Request", icon: ArrowDownToLine, path: "/request-withdrawal" },
   { name: "Revenue & Payouts", icon: Wallet, path: "/revenue-payouts" },
   { name: "Bid Review", icon: Scale, path: "/manage-bids" },
+  {name: "Terminals", icon: Ticket, path: "/terminals"},
   { name: "Ticket System", icon: Ticket, path: "/ticket" },
   { name: "Setting", icon: Settings, path: "/setting" },
 ];

@@ -3,6 +3,9 @@ import axiosInstance from "../../../config/axiosConfig";
 export const createCampaignAPI = async (data) => {
   const token = localStorage.getItem("token");
 
+  console.log("Data before FormData:", data);
+  console.log("cityRegions before FormData:", data.cityRegions);
+
   const formData = new FormData();
 
   Object.entries(data).forEach(([key, value]) => {
@@ -16,11 +19,18 @@ export const createCampaignAPI = async (data) => {
     } else if (Array.isArray(value)) {
       formData.append(key, JSON.stringify(value));
     } else if (typeof value === "object" && value !== null && !(value instanceof File)) {
-      formData.append(key, JSON.stringify(value));
+      const stringified = JSON.stringify(value);
+      console.log(`Stringifying ${key}:`, stringified);
+      formData.append(key, stringified);
     } else {
       formData.append(key, value);
     }
   });
+
+  console.log("FormData entries:");
+  for (let pair of formData.entries()) {
+    console.log(pair[0] + ': ' + pair[1]);
+  }
 
   const response = await axiosInstance.post("/api/v1/campaign/create", formData, {
     headers: {

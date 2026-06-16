@@ -128,17 +128,25 @@ const CreateCampaign = () => {
   const handleSubmit = async (formData) => {
     if (formLoading) return;
 
-    const payload = customizePayload(formData);
-    const result = await dispatch(createCampaign(payload));
+    try {
+      console.log("Form data before customization:", formData);
+      const payload = customizePayload(formData, dropdowns.pincodeMap);
+      console.log("Payload after customization:", payload);
+      
+      const result = await dispatch(createCampaign(payload));
 
-    if (createCampaign.fulfilled.match(result)) {
-      dispatch(fetchCampaigns());
-      methods.reset();
-      navigate("/");
-      Toast.success("Campaign created successfully!")
-    } else if (createCampaign.rejected.match(result)) {
-      const errorMessage = result.payload?.message || "Something went wrong.";
-      Toast.error(errorMessage)
+      if (createCampaign.fulfilled.match(result)) {
+        dispatch(fetchCampaigns());
+        methods.reset();
+        navigate("/");
+        Toast.success("Campaign created successfully!")
+      } else if (createCampaign.rejected.match(result)) {
+        const errorMessage = result.payload?.message || "Something went wrong.";
+        Toast.error(errorMessage)
+      }
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+      Toast.error(error.message || "Failed to create campaign");
     }
   };
 

@@ -45,26 +45,65 @@ const CampaignList = () => {
 
   const handleDelete = (row) => {
     Swal.fire({
-      title: "Are you sure you want to delete?",
+      title: "Delete Campaign",
+      html: `
+        <div style="text-align: left;">
+          <p style="color: #374151; margin-bottom: 12px;">Are you sure you want to delete this campaign?</p>
+          <div style="background: #FEF2F2; border-left: 4px solid #EF4444; padding: 12px; border-radius: 6px;">
+            <p style="color: #991B1B; font-size: 14px; margin: 0;">
+              <strong>Warning:</strong> This action cannot be undone.
+            </p>
+          </div>
+        </div>
+      `,
       icon: "warning",
+      iconColor: "#EF4444",
       showCancelButton: true,
-      confirmButtonText: "Yes",
+      confirmButtonText: "Yes, Delete",
       cancelButtonText: "Cancel",
       reverseButtons: true,
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#445E94",
+      cancelButtonColor: "#6B7280",
+      confirmButtonColor: "#4684ff",
+      customClass: {
+        popup: 'rounded-xl',
+        title: 'text-xl font-bold text-gray-800',
+        confirmButton: 'px-6 py-2.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all',
+        cancelButton: 'px-6 py-2.5 rounded-lg font-semibold'
+      },
+      buttonsStyling: true,
     }).then((result) => {
       if (result.isConfirmed) {
         const campaignId = row.id || row._id || row.campaignCode;
         dispatch(deleteCampaign(campaignId))
           .unwrap()
           .then(() => {
-            Toast.success("Deleted!","The campaign has been deleted.")
+            Swal.fire({
+              title: "Deleted!",
+              text: "The campaign has been deleted successfully.",
+              icon: "success",
+              iconColor: "#10B981",
+              confirmButtonColor: "#2563EB",
+              confirmButtonText: "OK",
+              customClass: {
+                popup: 'rounded-xl',
+                confirmButton: 'px-6 py-2.5 rounded-lg font-semibold'
+              }
+            });
             refreshCampaigns();
           })
           .catch(() => {
-            Toast.error("Error",
-              "There was a problem deleting the campaign.")
+            Swal.fire({
+              title: "Error",
+              text: "There was a problem deleting the campaign.",
+              icon: "error",
+              iconColor: "#EF4444",
+              confirmButtonColor: "#2563EB",
+              confirmButtonText: "OK",
+              customClass: {
+                popup: 'rounded-xl',
+                confirmButton: 'px-6 py-2.5 rounded-lg font-semibold'
+              }
+            });
           });
       }
     });

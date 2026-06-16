@@ -1,19 +1,21 @@
 import { Modal as MUIModal, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useEffect } from "react";
-import LoaderEmpt from "../../../components/loader/LoaderEmpt"
+import LoaderEmpt from "../../../components/loader/LoaderEmpt";
+
 export const Modal = ({
   isOpen,
   onClose,
+  title,
   children,
   showCloseButton = true,
   isFullscreen = false,
-  size = "md", // "sm", "md", "lg", "xl", "full"hy
+  size = "md", // "sm", "md", "lg", "xl", "full"
   containerClassName = "",
   containerSx = {},
   modalSx = {},
   disableBackdropClick = false,
-  formLoading = false
+  formLoading = false,
 }) => {
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
@@ -58,7 +60,7 @@ export const Modal = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          padding: "24px",
+          padding: 0,
           scrollbarWidth: "thin",
           scrollbarColor: "#5B7FE5 #E0E7FF",
           "&::-webkit-scrollbar": {
@@ -79,20 +81,40 @@ export const Modal = ({
           ...containerSx,
         }}
       >
-        {showCloseButton && (
-          <IconButton
-            onClick={onClose}
-            className="!absolute right-4 top-4 text-gray-400 hover:text-blue-600 z-10 transition-colors"
-          >
-            <CloseIcon className="text-white" />
-          </IconButton>
+        {/* Blue header bar — renders when title prop is provided */}
+        {title ? (
+          <div className="flex items-center justify-between px-6 py-4 bg-[#4684ff] rounded-t-2xl">
+            <h2 id="modal-title" className="text-xl font-bold text-white">
+              {title}
+            </h2>
+            {showCloseButton && (
+              <IconButton
+                onClick={onClose}
+                size="small"
+                className="!text-white/80 hover:!text-white hover:!bg-white/20 transition-colors"
+                aria-label="Close modal"
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            )}
+          </div>
+        ) : (
+          showCloseButton && (
+            <IconButton
+              onClick={onClose}
+              className="!absolute right-4 top-4 !text-gray-400 hover:!text-blue-600 z-10 transition-colors"
+              aria-label="Close modal"
+            >
+              <CloseIcon />
+            </IconButton>
+          )
         )}
-        {formLoading && (
-          <LoaderEmpt size="large" />)}
-        {children}
 
-
-
+        {/* Modal body */}
+        <div className="p-6">
+          {formLoading && <LoaderEmpt size="large" />}
+          {children}
+        </div>
       </Box>
     </MUIModal>
   );

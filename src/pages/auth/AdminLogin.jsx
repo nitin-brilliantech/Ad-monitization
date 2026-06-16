@@ -252,7 +252,7 @@ const AdminLogin = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting || loading}
-                  className={`w-full py-3.5 flex justify-center items-center gap-2 text-white font-semibold rounded-lg transition-all duration-200 ${
+                  className={`w-full py-3.5 flex justify-center items-center gap-2 text-white font-semibold rounded-full transition-all duration-200 ${
                     isSubmitting || loading
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-[#4684ff] hover:bg-[#3a6fe6] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"

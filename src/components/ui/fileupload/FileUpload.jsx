@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useController } from 'react-hook-form';
 import Label from '../label/Label';
+import Button from '../button/Button';
 import { FiImage, FiX } from 'react-icons/fi';
 
 const FileUpload = ({
@@ -169,13 +170,14 @@ const handleFileChange = (e) => {
               className="hidden"
               {...inputProps}
             />
-            <button
+            <Button
               type="button"
-              className="px-4 py-1 border border-blue-400 rounded text-blue-500 hover:bg-blue-50 text-sm cursor-pointer"
+              variant="primary"
+              isIcon={false}
+              label="Browse Files"
               onClick={() => inputRef.current?.click()}
-            >
-              Browse Files
-            </button>
+              className="px-5 py-1.5 text-sm"
+            />
           </div>
         ) : (
           <div>
@@ -240,13 +242,14 @@ const handleFileChange = (e) => {
                 className="hidden"
                 {...inputProps}
               />
-              <button
+              <Button
                 type="button"
-                className="px-4 py-1 border border-blue-400 rounded text-blue-500 hover:bg-blue-50 text-sm"
+                variant="primary"
+                isIcon={false}
+                label="Browse Files"
                 onClick={() => inputRef.current?.click()}
-              >
-                Browse Files
-              </button>
+                className="px-5 py-1.5 text-sm"
+              />
               <p className="text-xs text-gray-400 mt-1">
   Format: jpeg, png, mp4. Max file size: {maxFileSizeMB}MB.
 </p>

@@ -21,7 +21,7 @@ const ReusableAccordion = ({
   };
 
   return (
-    <Box sx={{ width: "100%", ...sx.container }}>
+    <Box sx={{ width: "100%", ...sx.container  }}>
       {items.map((item) => (
         <Accordion
           key={item.id}
@@ -40,20 +40,27 @@ const ReusableAccordion = ({
             "&:last-of-type": {
               borderRadius: sx.accordion?.borderRadius || 2,
             },
+            "&:hover": {
+              bgcolor: "#DBEAFE",
+              borderColor: "#93C5FD",
+            },
             ...sx.accordion,
           }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             sx={{
-                paddingRight:"10px",
-              bgcolor: expandedId === item.id ? "#f5f5f5" : "transparent",
-              "&:hover": { bgcolor: "#f5f5f5" },
+              pr: 3,
+              pl: 3,
+              bgcolor: expandedId === item.id ? "#EFF6FF" : "transparent",
               borderRadius: "inherit",
+              "& .MuiAccordionSummary-expandIconWrapper": {
+                mr: 1.5,
+              },
               ...sx.summary,
             }}
           >
-            <Box sx={{ paddingLeft: "15px", display: "flex", alignItems: "center", width: "auto" }}>
+            <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
               <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
                 {item.question}
               </Typography>
@@ -62,23 +69,19 @@ const ReusableAccordion = ({
 
           <AccordionDetails 
             sx={{ 
+              px: 3,
+              py: 2,
               bgcolor: "#fafafa",
               borderRadius: "inherit",
               ...sx.details 
             }}
           >
-
-
-            <Divider sx={{ mb: 1, 
-            paddingRight:"10px"
-            }} />
-
-
+            <Divider sx={{ mb: 2 }} />
             <Typography 
-            sx={{ 
-              paddingLeft: "15px",
-            }}
-            variant="body2" color="text.secondary">
+              sx={{ pl: 0 }}
+              variant="body2" 
+              color="text.secondary"
+            >
               {item.solution}
             </Typography>
           </AccordionDetails>

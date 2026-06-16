@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Button from "../../../../../components/ui/button/Button";
 import { Switch } from "@mui/material";
 import Breadcrumbs from "../../../../../components/ui/bread-crumb/Breadcrumbs";
-import PermissionList from "../../../../../components/PermissionsList/PermissionList";
+import PermissionList from "../../../../../components/PermissionsList/PermissionsList";
 import EditUserProfileInSettings from "./EditUserProfileInSettings";
 import Toast from "../../../../../components/ui/toast/Toast";
 

@@ -85,14 +85,9 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
 
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md" showCloseButton={true}>
+    <Modal isOpen={isOpen} onClose={onClose} size="md" title="Add Device">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-6">
-          {/* Header */}
-          <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
-            <h2 className="text-2xl font-bold text-white">Add Device</h2>
-          </div>
-          <div className="space-y-4 pt-2">
+        <div className="space-y-4">
             {/* Device Type */}
             <div>
               <label className="block font-semibold text-md text-gray-900 mb-1">Device Type</label>
@@ -150,7 +145,6 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
               <Button type="submit" variant="primary" label="Add Device" loading={formLoading} />
             </div>
           </div>
-        </div>
       </form>
     </Modal>
   );

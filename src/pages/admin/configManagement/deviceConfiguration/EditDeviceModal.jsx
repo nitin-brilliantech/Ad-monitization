@@ -109,14 +109,9 @@ const EditDeviceModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md" showCloseButton={true}>
+    <Modal isOpen={isOpen} onClose={onClose} size="md" title="Edit Device">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-6">
-          {/* Header */}
-          <div className="flex items-center justify-between -m-6 mb-0 p-6 pr-20 bg-[#4684ff] rounded-t-2xl">
-            <h2 className="text-2xl font-bold text-white">Edit Device</h2>
-          </div>
-          <div className="space-y-4 pt-6">
+        <div className="space-y-4">
             {/* Device Type */}
             <Controller control={control} name="name" rules={{ required: "Device type is required" }}
               render={({ field }) => (
@@ -170,7 +165,6 @@ const EditDeviceModal = ({
               <Button type="submit" variant="primary" label="Update Device" isIcon={false} loading={formLoading} />
             </div>
           </div>
-        </div>
       </form>
     </Modal>
   );

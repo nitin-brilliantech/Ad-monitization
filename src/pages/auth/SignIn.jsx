@@ -261,7 +261,7 @@ const SignIn = () => {
                 <button
                   type="submit"
                   disabled={isLoginSubmitting || formLoading}
-                  className={`w-full py-2.5 sm:py-3.5 flex justify-center items-center gap-2 text-white text-sm sm:text-base font-semibold rounded-lg transition-all duration-200 ${isLoginSubmitting || formLoading
+                  className={`w-full py-2.5 sm:py-3.5 flex justify-center items-center gap-2 text-white text-sm sm:text-base font-semibold rounded-full transition-all duration-200 ${isLoginSubmitting || formLoading
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-[#4684ff] hover:bg-[#3a6fe6] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
                     }`}
